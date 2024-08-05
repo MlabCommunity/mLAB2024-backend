@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -16,12 +16,6 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.7" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\QuizBackend.Application\QuizBackend.Application.csproj" />
-    <ProjectReference Include="..\QuizBackend.Domain\QuizBackend.Domain.csproj" />
-    <ProjectReference Include="..\QuizBackend.Infrastructure\QuizBackend.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

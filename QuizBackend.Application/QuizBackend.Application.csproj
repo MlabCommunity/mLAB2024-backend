@@ -17,8 +17,4 @@
     <PackageReference Include="Microsoft.Extensions.Identity.Core" Version="8.0.7" />
   </ItemGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\QuizBackend.Domain\QuizBackend.Domain.csproj" />
-  </ItemGroup>
-
 </Project>

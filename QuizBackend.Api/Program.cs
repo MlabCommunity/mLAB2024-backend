@@ -1,20 +1,11 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using QuizBackend.Domain.Entities;
-using QuizBackend.Infrastructure.Data;
-using QuizBackend.Infrastructure.Extensions;
-using QuizBackend.Infrastructure;
-using QuizBackend.Application.Extensions;
-using QuizBackend.Application.Services;
-
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container.
+
 builder.Services.AddControllers();
+// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddInfrastracture(builder.Configuration);
-builder.Services.AddApplication();
 
 var app = builder.Build();
 
