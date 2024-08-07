@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace QuizBackend.Infrastructure.Data
 {
-    public class AppDbContext : IdentityDbContext<User, Role, string>
+    public class AppDbContext : IdentityDbContext
     {
         public DbSet<RefreshToken> RefreshTokens { get; set; }
         public AppDbContext() { }

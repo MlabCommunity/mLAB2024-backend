@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc;
 using QuizBackend.Application.Dtos;
 using QuizBackend.Application.Interfaces;
 
@@ -9,7 +9,7 @@ namespace QuizBackend.Api.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
-        
+
         public AuthController(IAuthService authService)
         {
             _authService = authService;
@@ -32,6 +32,19 @@ namespace QuizBackend.Api.Controllers
             {
                 return Unauthorized(new { ex.Message });
             }
+        }
+
+        [HttpPost("signup")]
+        public async Task<ActionResult> SignUp(RegisterRequestDto request)
+        {
+            var (IsSuceed, UserId) = await _authService.SignUp(request);
+
+            if (!IsSuceed)
+            {
+                return BadRequest("Error in signUp");
+            }
+
+            return Ok(new { message = "User has been created", id = UserId });
         }
 
         [HttpPost("logout")]

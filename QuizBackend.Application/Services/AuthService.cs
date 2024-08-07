@@ -51,5 +51,27 @@ namespace QuizBackend.Application.Services
         {
             await _signInManager.SignOutAsync();
         }
+
+        public async Task<(bool succeed, string UserId)> SignUp(RegisterRequestDto request)
+        {
+
+            var existingUser = await _userManager.FindByEmailAsync(request.Email);
+            if (existingUser != null)
+            {
+                return (false, string.Empty);
+            }
+
+            var user = new User { UserName = request.Email, Email = request.Email };
+
+            var result = await _userManager.CreateAsync(user, request.Password);
+            if (!result.Succeeded)
+            {
+
+                return (false, string.Empty);
+            }
+
+            return (true, user.Id);
+        }
+
     }
 }

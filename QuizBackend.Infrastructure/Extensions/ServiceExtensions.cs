@@ -15,7 +15,7 @@ namespace QuizBackend.Infrastructure.Extensions
 {
     public static class ServiceExtensions
     {
-        public static IServiceCollection AddInfrastracture(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection AddInfrastracture(this IServiceCollection services, IConfiguration configuration) 
         {
             services.AddDbContext<AppDbContext>(options =>
                      options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
@@ -30,6 +30,6 @@ namespace QuizBackend.Infrastructure.Extensions
             return services;
 
         }
-
+           
     }
 }
