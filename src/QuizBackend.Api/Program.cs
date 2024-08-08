@@ -1,3 +1,4 @@
+using QuizBackend.Api.Extensions;
 using QuizBackend.Application.Extensions;
 using QuizBackend.Infrastructure.Extensions;
 
@@ -11,7 +12,7 @@ builder.Services.AddInfrastracture(builder.Configuration);
 builder.Services.AddApplication(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerDocumentation();
 
 
 var app = builder.Build();
