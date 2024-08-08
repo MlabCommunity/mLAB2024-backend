@@ -1,0 +1,47 @@
+name: Trigger auto deployment for mlab2024-backend
+
+# When this action will be executed
+on:
+  # Automatically trigger it when detected changes in repo
+  push:
+    branches: 
+      [ develop ]
+    paths:
+    - '**'
+    - '.github/workflows/mlab2024-backend-AutoDeployTrigger-6346a5a4-ee30-460a-8dfb-8582fb361045.yml'
+
+  # Allow manual trigger 
+  workflow_dispatch:      
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    permissions: 
+      id-token: write #This is required for requesting the OIDC JWT Token
+      contents: read #Required when GH token is used to authenticate with private repo
+
+    steps:
+      - name: Checkout to the branch
+        uses: actions/checkout@v2
+
+      - name: Azure Login
+        uses: azure/login@v1
+        with:
+          client-id: ${{ secrets.MLAB2024BACKEND_AZURE_CLIENT_ID }}
+          tenant-id: ${{ secrets.MLAB2024BACKEND_AZURE_TENANT_ID }}
+          subscription-id: ${{ secrets.MLAB2024BACKEND_AZURE_SUBSCRIPTION_ID }}
+
+      - name: Build and push container image to registry
+        uses: azure/container-apps-deploy-action@v2
+        with:
+          appSourcePath: ${{ github.workspace }} 
+          registryUrl: 
+          registryUsername: ${{ secrets.MLAB2024BACKEND_REGISTRY_USERNAME }}
+          registryPassword: ${{ secrets.MLAB2024BACKEND_REGISTRY_PASSWORD }}
+          containerAppName: mlab2024-backend
+          resourceGroup: rg-mlab2024
+          imageToBuild: default/[parameters('containerAppName')]:${{ github.sha }}
+          _buildArgumentsKey_: |
+            _buildArgumentsValues_
+
+
