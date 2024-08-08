@@ -17,11 +17,6 @@ namespace QuizBackend.Infrastructure.Data
         public AppDbContext() { }
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer("Server=127.0.0.1;Database=QuizBackendDatabase;User Id=SA;Password=Pass@word;Encrypt=false;TrustServerCertificate=true;Integrated Security=false;");
-        }
-
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
