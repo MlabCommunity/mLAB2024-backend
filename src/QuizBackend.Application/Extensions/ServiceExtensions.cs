@@ -15,7 +15,9 @@ namespace QuizBackend.Application.Extensions
         public static void AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddAuthExtension(configuration);
+            services.AddProfileExtensions();
             services.AddFluentValidationExtension(configuration);
+           
         }
 
     }
