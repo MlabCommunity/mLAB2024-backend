@@ -35,7 +35,7 @@ jobs:
         uses: azure/container-apps-deploy-action@v2
         with:
           appSourcePath: ${{ github.workspace }} 
-          registryUrl: 
+          registryUrl: mobitouchnet.azurecr.io
           registryUsername: ${{ secrets.MLAB2024BACKEND_REGISTRY_USERNAME }}
           registryPassword: ${{ secrets.MLAB2024BACKEND_REGISTRY_PASSWORD }}
           containerAppName: mlab2024-backend
