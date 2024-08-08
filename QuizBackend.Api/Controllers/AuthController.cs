@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using QuizBackend.Application.Dtos;
 using QuizBackend.Application.Interfaces;
+using System.Security.Authentication;
 
 namespace QuizBackend.Api.Controllers
 {
@@ -15,8 +16,8 @@ namespace QuizBackend.Api.Controllers
             _authService = authService;
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login([FromQuery] LoginDto loginDto)
+        [HttpPost("signin")]
+        public async Task<IActionResult> SignIn([FromQuery] LoginDto loginDto)
         {
             if (!ModelState.IsValid)
             {
@@ -28,7 +29,7 @@ namespace QuizBackend.Api.Controllers
                 var jwtAuthResult = await _authService.LoginAsync(loginDto);
                 return Ok(jwtAuthResult);
             }
-            catch (Exception ex)
+            catch (InvalidCredentialException ex)
             {
                 return Unauthorized(new { ex.Message });
             }
@@ -37,14 +38,14 @@ namespace QuizBackend.Api.Controllers
         [HttpPost("signup")]
         public async Task<ActionResult> SignUp(RegisterRequestDto request)
         {
-            var (IsSuceed, UserId) = await _authService.SignUp(request);
+            var response = await _authService.SignUp(request);
 
-            if (!IsSuceed)
+            if (!response.Succeed)
             {
                 return BadRequest("Error in signUp");
             }
 
-            return Ok(new { message = "User has been created", id = UserId });
+            return Ok(new { message = "User has been created", id = response.UserId });
         }
 
         [HttpPost("logout")]

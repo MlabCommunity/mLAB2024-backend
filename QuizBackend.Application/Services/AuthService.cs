@@ -5,6 +5,7 @@ using QuizBackend.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,11 +29,11 @@ namespace QuizBackend.Application.Services
         {
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
             if (user == null)
-                throw new Exception("Invalid login attempt");
+                throw new InvalidCredentialException("Invalid login attempt");
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
             if (!result.Succeeded)
-                throw new Exception("Invalid login attempt");
+                throw new InvalidCredentialException("Invalid login attempt");
 
             var claims = await _jwtService.GetClaimsAsync(user);
             await _signInManager.SignInAsync(user, isPersistent: false);
@@ -52,13 +53,18 @@ namespace QuizBackend.Application.Services
             await _signInManager.SignOutAsync();
         }
 
-        public async Task<(bool succeed, string UserId)> SignUp(RegisterRequestDto request)
+        public async Task<SignUpResponseDto> SignUp(RegisterRequestDto request)
         {
 
             var existingUser = await _userManager.FindByEmailAsync(request.Email);
             if (existingUser != null)
             {
-                return (false, string.Empty);
+                return new SignUpResponseDto
+                {
+                    Succeed = false,
+                    UserId = string.Empty,
+                    Message = "User is already exist"
+                };
             }
 
             var user = new User { UserName = request.Email, Email = request.Email };
@@ -67,10 +73,20 @@ namespace QuizBackend.Application.Services
             if (!result.Succeeded)
             {
 
-                return (false, string.Empty);
+                return new SignUpResponseDto
+                {
+                    Succeed = false,
+                    UserId = string.Empty,
+                    Message = "Error in sign up"
+                };
             }
 
-            return (true, user.Id);
+            return new SignUpResponseDto
+            {
+                Succeed = true,
+                UserId = user.Id,
+                Message = "User has been created successfully"
+            };
         }
 
     }
