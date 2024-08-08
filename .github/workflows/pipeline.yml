@@ -1,8 +1,9 @@
 name: build_image
 on:
   push:
-    paths:
-      - "src/docker/**"
+    branches: [ "develop" ]
+  pull_request:
+    branches: [ "develop" ]
 jobs:
   build:
     runs-on: ubuntu-latest
