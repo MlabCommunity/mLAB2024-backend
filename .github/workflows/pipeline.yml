@@ -1,31 +1,22 @@
-name: Docker Image CI
-
+name: build_image
 on:
   push:
-    branches: [ "develop" ]
-  pull_request:
-    branches: [ "develop" ]
-
+    paths:
+      - "src/docker/**"
 jobs:
-  build-and-push:
+  build:
     runs-on: ubuntu-latest
-    
     steps:
-    - uses: actions/checkout@v3
-
-    - name: Azure Login
-      uses: azure/login@v1
-      with:
-        client-id: ${{ secrets.AZURE_CLIENT_ID }}
-        client-secret: ${{ secrets.AZURE_CLIENT_SECRET }}
-        tenant-id: ${{ secrets.AZURE_TENANT_ID }}
-    
-    # Set up Docker build and push
-    - name: Build and push Docker image
-      uses: docker/build-push-action@v3
-      with:
-        image-name: mlab2024backend
-        registry: mobitouchnet.azurecr.io 
-        context: .
-        push: true
-        tags: mlab2024backend:${{ github.sha }}
+      - name: ACR build
+        id: acr
+        uses: azure/acr-build@v1
+        with:
+          service_principal: ${{ secrets.service_principal }}
+          service_principal_password: ${{ secrets.service_principal_password }}
+          tenant: ${{ secrets.tenant }}
+          registry: ${{ secrets.registry }}
+          repository: mlab2024-backend
+          image: mlab2024backend
+          dockerfile: Dockerfile
+          branch: develop
+          build_args: '[]'
