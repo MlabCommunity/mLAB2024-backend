@@ -7,6 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
@@ -19,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\QuizBackend.Domain\QuizBackend.Domain.csproj" />
+    <ProjectReference Include="..\QuizBackend.Infrastructure\QuizBackend.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>

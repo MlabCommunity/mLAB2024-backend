@@ -7,6 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="8.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
@@ -20,7 +21,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\QuizBackend.Application\QuizBackend.Application.csproj" />
-    <ProjectReference Include="..\QuizBackend.Domain\QuizBackend.Domain.csproj" />
     <ProjectReference Include="..\QuizBackend.Infrastructure\QuizBackend.Infrastructure.csproj" />
   </ItemGroup>
 
