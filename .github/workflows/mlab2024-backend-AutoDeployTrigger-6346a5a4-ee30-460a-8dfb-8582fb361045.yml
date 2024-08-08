@@ -40,7 +40,6 @@ jobs:
           registryPassword: ${{ secrets.MLAB2024BACKEND_REGISTRY_PASSWORD }}
           containerAppName: mlab2024-backend
           resourceGroup: rg-mlab2024
-          imageToBuild: mlab2024backend:${{ github.sha }}
           _buildArgumentsKey_: |
             _buildArgumentsValues_
 
