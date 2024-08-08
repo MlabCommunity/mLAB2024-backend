@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using QuizBackend.Application.Services;
 using System;
 using System.Collections.Generic;
@@ -11,11 +12,10 @@ namespace QuizBackend.Application.Extensions
 {
     public static class ServiceExtensions
     {
-        public static IServiceCollection AddApplication(this IServiceCollection services)
+        public static void AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddScoped<IAuthService, AuthService>();
-
-            return services;
+            services.AddAuthExtension(configuration);
+            services.AddFluentValidationExtension(configuration);
         }
 
     }

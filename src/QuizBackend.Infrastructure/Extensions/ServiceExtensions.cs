@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 using QuizBackend.Domain.Entities;
 using QuizBackend.Infrastructure.Data;
 using System;
@@ -20,9 +21,11 @@ namespace QuizBackend.Infrastructure.Extensions
                      options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services
-                .AddIdentityCore<User>()
+                .AddIdentity<User, Role>()
                 .AddRoles<Role>()
                 .AddEntityFrameworkStores<AppDbContext>();
+
+            services.AddJwtExtension(configuration);
 
             return services;
 
