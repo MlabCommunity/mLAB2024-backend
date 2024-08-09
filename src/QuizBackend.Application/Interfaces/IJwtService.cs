@@ -1,4 +1,5 @@
-﻿using QuizBackend.Application.Dtos;
+﻿using Microsoft.AspNetCore.Http;
+using QuizBackend.Application.Dtos;
 using QuizBackend.Domain.Entities;
 using System.Security.Claims;
 
@@ -7,6 +8,12 @@ namespace QuizBackend.Application.Interfaces
     public interface IJwtService
     {
         string GenerateJwtToken(List<Claim> claims);
+        Task<string> GenerateRefreshTokenAsync(string userId);
+        string GetAccessTokenFromCookie(HttpRequest request);
         Task<List<Claim>> GetClaimsAsync(User user);
+        Task<JwtAuthResultDto> RefreshTokenAsync(string refreshToken, string userId);
+        void SetAccessTokenCookie(string token, HttpResponse response);
+        void SetRefreshTokenCookie(string refreshToken, HttpResponse response);
+        Task InvalidateRefreshTokenAsync(string userId);
     }
 }

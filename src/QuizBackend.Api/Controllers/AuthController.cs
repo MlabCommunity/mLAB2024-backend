@@ -50,9 +50,9 @@ namespace QuizBackend.Api.Controllers
         }
 
         [HttpPost("logout")]
-        public async Task<IActionResult> Logout()
+        public async Task<IActionResult> Logout(HttpContext httpContext)
         {
-            await _authService.LogoutAsync();
+            await _authService.LogoutAsync(httpContext);
             return Ok();
         }
     }

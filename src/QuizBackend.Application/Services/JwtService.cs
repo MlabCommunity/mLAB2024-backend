@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
@@ -113,5 +114,45 @@ namespace QuizBackend.Application.Services
             return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
         }
 
+        public async Task InvalidateRefreshTokenAsync(string userId)
+        {
+            var refreshTokens = await _appDbContext.RefreshTokens
+                .Where(rt => rt.UserId == userId && !rt.IsRevoked)
+                .ToListAsync();
+
+            foreach (var token in refreshTokens)
+            {
+                token.IsRevoked = true;
+                token.Revoked = DateTime.UtcNow;
+            }
+
+            _appDbContext.RefreshTokens.UpdateRange(refreshTokens);
+            await _appDbContext.SaveChangesAsync();
+        }
+
+        private CookieOptions CreateCookieOptions()
+        {
+            return new CookieOptions
+            {
+                HttpOnly = true,
+                Secure = true,
+                SameSite = SameSiteMode.Strict
+            };
+        }
+
+        public void SetAccessTokenCookie(string token, HttpResponse response)
+        {
+            response.Cookies.Append("AccessToken", token, CreateCookieOptions());
+        }
+
+        public void SetRefreshTokenCookie(string refreshToken, HttpResponse response)
+        {
+            response.Cookies.Append("RefreshToken", refreshToken, CreateCookieOptions());
+        }
+
+        public string GetAccessTokenFromCookie(HttpRequest request)
+        {
+            return request.Cookies["AccessToken"]!;
+        }
     }
 }
