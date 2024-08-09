@@ -26,7 +26,7 @@ namespace QuizBackend.Application.Services
 
             var currentUser = await _userManager.FindByIdAsync(_userContext.UserId);
 
-            if (currentUser == null) throw new UnauthorizedAccessException("User not authenticated");
+            if (currentUser == null) throw new ApplicationException("User not found");
 
             var userProfileDto = new UserProfileDto
             {
@@ -44,7 +44,7 @@ namespace QuizBackend.Application.Services
 
             var user = await _userManager.FindByIdAsync(id);
 
-            if (user == null) throw new ApplicationException($"User is not authenticated.");
+            if (user == null) throw new ApplicationException($"User not found.");
 
             user.UserName = profile.UserName;
             var result = await _userManager.UpdateAsync(user);
