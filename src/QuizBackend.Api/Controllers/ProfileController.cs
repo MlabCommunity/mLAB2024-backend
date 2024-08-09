@@ -1,8 +1,9 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using QuizBackend.Application.Dtos;
+using QuizBackend.Application.Dtos.Profile;
 using QuizBackend.Application.Interfaces;
 using QuizBackend.Application.Services;
+using QuizBackend.Domain.Entities;
 using System.Security.Authentication;
 
 
@@ -36,6 +37,12 @@ namespace QuizBackend.Api.Controllers
                 return Unauthorized(ex.Message);
             }
             
+        }
+        [HttpPut]
+        public async Task<ActionResult<UserProfileDto>> UpdateUserProfile(UpdateUserProfileRequest request)
+        {
+            var updatedUser = await _profileService.UpdateProfileAsync(request);
+            return Ok(updatedUser);
         }
     }
 }

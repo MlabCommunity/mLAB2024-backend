@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using QuizBackend.Application.Dtos;
+using QuizBackend.Application.Dtos.Profile;
 using QuizBackend.Application.Interfaces;
 using QuizBackend.Domain.Entities;
 using System;
@@ -38,5 +38,29 @@ namespace QuizBackend.Application.Services
             return userProfileDto;
         }
 
+        public async Task<UserProfileDto> UpdateProfileAsync(UpdateUserProfileRequest profile)
+        {
+            var id = _userContext.UserId;
+
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null) throw new ApplicationException($"User is not authenticated.");
+
+            user.UserName = profile.UserName;
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                throw new ApplicationException($"Error updating user profile: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+            }
+
+            return new UserProfileDto
+            {
+                Id = user.Id,
+                Email = user.Email!,
+                UserName = user.UserName
+            };
+
+        }
     }
 }
