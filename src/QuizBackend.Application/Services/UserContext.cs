@@ -30,8 +30,19 @@ namespace QuizBackend.Application.Services
         {
             get
             {
-                var id = _httpContextAccessor.HttpContext?.User.FindFirstValue(ClaimTypes.NameIdentifier);
-                return id ?? throw new AuthenticationException("User context is unavailable or user is not authenticated");
+                var user = _httpContextAccessor?.HttpContext?.User;
+                if (user == null)
+                {
+                    throw new InvalidOperationException("User context is not present");
+                }
+
+                if (user.Identity == null || !user.Identity.IsAuthenticated)
+                {
+                    throw new UnauthorizedAccessException("User is not authenticated");
+                }
+
+                var id = user.FindFirstValue(ClaimTypes.NameIdentifier)!;
+                return id;
             }
         }
        

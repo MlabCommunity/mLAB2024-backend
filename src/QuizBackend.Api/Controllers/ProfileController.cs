@@ -31,7 +31,7 @@ namespace QuizBackend.Api.Controllers
                 var profile = await _profileService.GetProfileAsync();
                 return Ok(profile);
             }
-            catch (UnauthorizedAccessException ex)
+            catch (InvalidOperationException ex)
             {
                 return Unauthorized(ex.Message);
             }
