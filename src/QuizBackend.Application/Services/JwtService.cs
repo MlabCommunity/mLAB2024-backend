@@ -1,11 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using QuizBackend.Application.Dtos;
 using QuizBackend.Application.Interfaces;
 using QuizBackend.Domain.Entities;
 using QuizBackend.Infrastructure.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace QuizBackend.Application.Services
@@ -56,5 +59,59 @@ namespace QuizBackend.Application.Services
 
             return claims;
         }
+
+        public async Task<string> GenerateRefreshTokenAsync(string userId)
+        {
+            var refreshToken = new RefreshToken
+            {
+                Id = Guid.NewGuid(),
+                Token = GenerateRandomToken(),
+                UserId = userId,
+                Expires = DateTime.UtcNow.AddDays(7),
+                Created = DateTime.UtcNow
+            };
+
+            _appDbContext.RefreshTokens.Add(refreshToken);
+            await _appDbContext.SaveChangesAsync();
+
+            return refreshToken.Token;
+        }
+
+        public async Task<JwtAuthResultDto> RefreshTokenAsync(string refreshToken, string userId)
+        {
+            var refreshTokenEntity = await _appDbContext.RefreshTokens.FirstOrDefaultAsync(rt => rt.Token == refreshToken);
+
+            if (refreshTokenEntity == null || refreshTokenEntity.Expires <= DateTime.UtcNow || refreshTokenEntity.IsRevoked)
+            {
+                throw new SecurityTokenException("Invalid refresh token");
+            }
+
+            refreshTokenEntity.IsRevoked = true;
+            refreshTokenEntity.Revoked = DateTime.UtcNow;
+            _appDbContext.RefreshTokens.Update(refreshTokenEntity);
+            await _appDbContext.SaveChangesAsync();
+
+            var user = await _userManager.FindByIdAsync(userId);
+
+            if (user == null)
+            {
+                throw new SecurityTokenException("User not found");
+            }
+
+            var claims = await GetClaimsAsync(user);
+            var newJwtToken = GenerateJwtToken(claims);
+            var newRefreshToken = await GenerateRefreshTokenAsync(userId);
+
+            return new JwtAuthResultDto
+            {
+                AccessToken = newJwtToken,
+                RefreshToken = newRefreshToken
+            };
+        }
+        private string GenerateRandomToken()
+        {
+            return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+        }
+
     }
 }
