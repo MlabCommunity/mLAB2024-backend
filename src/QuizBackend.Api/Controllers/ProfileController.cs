@@ -11,7 +11,6 @@ namespace QuizBackend.Api.Controllers
 {
     [ApiController]
     [Route("api/profile")]
-    [Authorize]
     public class ProfileController : ControllerBase
     {
         private readonly IProfileService _profileService;
