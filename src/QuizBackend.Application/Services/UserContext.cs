@@ -38,7 +38,7 @@ namespace QuizBackend.Application.Services
 
                 if (user.Identity == null || !user.Identity.IsAuthenticated)
                 {
-                    throw new UnauthorizedAccessException("User is not authenticated");
+                    throw new ApplicationException("User is not authenticated");
                 }
 
                 var id = user.FindFirstValue(ClaimTypes.NameIdentifier)!;
