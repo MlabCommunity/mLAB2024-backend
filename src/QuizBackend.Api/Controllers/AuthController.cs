@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authentication;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using QuizBackend.Application.Dtos;
 using QuizBackend.Application.Interfaces;
@@ -6,7 +7,7 @@ using System.Security.Authentication;
 
 namespace QuizBackend.Api.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/")]
     [ApiController]
     public class AuthController : ControllerBase
     {
@@ -39,14 +40,21 @@ namespace QuizBackend.Api.Controllers
         [HttpPost("signup")]
         public async Task<ActionResult> SignUp(RegisterRequestDto request)
         {
-            var response = await _authService.SignUp(request);
-
-            if (!response.Succeed)
+            try
             {
-                return BadRequest("Error in signUp");
-            }
+                var response = await _authService.SignUpAsync(request);
 
-            return Ok(new { message = "User has been created", id = response.UserId });
+                return Ok(response); 
+            }
+            catch (ValidationException ex)
+            {
+                if (ex.Message.Contains("User already exists."))
+                {
+                    return Conflict(ex.Message);
+                   
+                }
+                return BadRequest(ex.Message);   
+            }
         }
 
         [HttpPost("logout")]

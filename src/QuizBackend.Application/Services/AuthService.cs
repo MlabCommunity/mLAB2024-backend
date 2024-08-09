@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using FluentValidation;
+using Microsoft.AspNetCore.Identity;
 using QuizBackend.Application.Dtos;
 using QuizBackend.Application.Interfaces;
 using QuizBackend.Domain.Entities;
@@ -17,12 +18,14 @@ namespace QuizBackend.Application.Services
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IJwtService _jwtService;
+        private readonly IValidator<RegisterRequestDto> _registerRequestValidator;
 
-        public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, IJwtService jwtService)
+        public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, IJwtService jwtService, IValidator<RegisterRequestDto> registerRequestValidator)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _jwtService = jwtService;
+            _registerRequestValidator = registerRequestValidator;
         }
 
         public async Task<JwtAuthResultDto> LoginAsync(LoginDto loginDto)
@@ -53,39 +56,35 @@ namespace QuizBackend.Application.Services
             await _signInManager.SignOutAsync();
         }
 
-        public async Task<SignUpResponseDto> SignUp(RegisterRequestDto request)
+        public async Task<SignUpResponseDto> SignUpAsync(RegisterRequestDto request)
         {
+            var validationResult = await _registerRequestValidator.ValidateAsync(request);
+            if (!validationResult.IsValid)
+            {
+                var errorMessages = validationResult.Errors;
+                throw new ValidationException("Validation failed", errorMessages);
+            }
 
             var existingUser = await _userManager.FindByEmailAsync(request.Email);
             if (existingUser != null)
             {
-                return new SignUpResponseDto
-                {
-                    Succeed = false,
-                    UserId = string.Empty,
-                    Message = "User is already exist"
-                };
+                throw new ValidationException("User already exists.");
             }
 
             var user = new User { UserName = request.Email, Email = request.Email };
-
             var result = await _userManager.CreateAsync(user, request.Password);
+
             if (!result.Succeeded)
             {
-
-                return new SignUpResponseDto
-                {
-                    Succeed = false,
-                    UserId = string.Empty,
-                    Message = "Error in sign up"
-                };
+                var errorMessages = result.Errors.Select(e => e.Description).ToArray();
+                throw new ValidationException($"User creation failed: {string.Join(", ", errorMessages)}");
             }
 
             return new SignUpResponseDto
             {
                 Succeed = true,
                 UserId = user.Id,
-                Message = "User has been created successfully"
+                Errors = []
             };
         }
 
