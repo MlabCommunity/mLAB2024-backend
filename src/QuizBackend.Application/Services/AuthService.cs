@@ -65,12 +65,6 @@ namespace QuizBackend.Application.Services
                 throw new ValidationException("Validation failed", errorMessages);
             }
 
-            var existingUser = await _userManager.FindByEmailAsync(request.Email);
-            if (existingUser != null)
-            {
-                throw new ValidationException("User already exists.");
-            }
-
             var user = new User { UserName = request.Email, Email = request.Email };
             var result = await _userManager.CreateAsync(user, request.Password);
 
