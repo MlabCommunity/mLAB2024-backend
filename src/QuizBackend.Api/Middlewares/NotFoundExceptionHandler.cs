@@ -1,26 +1,33 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using QuizBackend.Domain.Exceptions;
 
 namespace QuizBackend.Api.Middlewares
 {
-    internal sealed class GlobalExceptionHandler : IExceptionHandler
+    internal sealed class NotFoundExceptionHandler : IExceptionHandler
     {
-        private readonly ILogger<GlobalExceptionHandler> _logger;
-
-        public GlobalExceptionHandler(ILogger<GlobalExceptionHandler> logger)
+        private readonly ILogger<NotFoundExceptionHandler> _logger;
+        public NotFoundExceptionHandler(ILogger<NotFoundExceptionHandler> logger)
         {
             _logger = logger;
         }
-
         public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
         {
+            if (exception is not NotFoundException notFoundException) 
+            {
+                return false;
+            }
+
             _logger.LogError(
-                exception, "Exception occurred: {Message}", exception.Message);
+              notFoundException,
+              "Exception occurred: {Message}",
+              notFoundException.Message);
 
             var problemDetails = new ProblemDetails
             {
-                Status = StatusCodes.Status500InternalServerError,
-                Title = "Server error"
+                Status = StatusCodes.Status404NotFound,
+                Title = "Not Found",
+                Detail = notFoundException.Message
             };
 
             httpContext.Response.StatusCode = problemDetails.Status.Value;
@@ -29,6 +36,7 @@ namespace QuizBackend.Api.Middlewares
                 .WriteAsJsonAsync(problemDetails, cancellationToken);
 
             return true;
+
         }
     }
 }
