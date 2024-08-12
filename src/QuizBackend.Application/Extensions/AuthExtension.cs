@@ -9,6 +9,7 @@ namespace QuizBackend.Application.Extensions
     {
         public static void AddAuthExtension(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddHttpContextAccessor();
             services.AddScoped<IJwtService, JwtService>();
             services.AddScoped<IAuthService, AuthService>();
 

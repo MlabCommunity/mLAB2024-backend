@@ -52,7 +52,7 @@ namespace QuizBackend.Application.Services
             };
         }
 
-        public async Task LogoutAsync(HttpContext httpContext)
+        public async Task<LogoutResponseDto> LogoutAsync(HttpContext httpContext)
         {
             var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -65,6 +65,11 @@ namespace QuizBackend.Application.Services
 
             _jwtService.SetAccessTokenCookie("", httpContext.Response);
             _jwtService.SetRefreshTokenCookie("", httpContext.Response);
+
+            return new LogoutResponseDto
+            {
+                Message = "User has been logged out successfully."
+            };
         }
 
         public async Task<SignUpResponseDto> SignUp(RegisterRequestDto request)
@@ -101,6 +106,15 @@ namespace QuizBackend.Application.Services
                 UserId = user.Id,
                 Message = "User has been created successfully"
             };
+        }
+
+        public async Task<JwtAuthResultDto> RefreshTokenAsync(string refreshToken, string userId, HttpResponse response)
+        {
+            var jwtAuthResult = await _jwtService.RefreshTokenAsync(refreshToken, userId);
+            _jwtService.SetAccessTokenCookie(jwtAuthResult.AccessToken, response);
+            _jwtService.SetRefreshTokenCookie(jwtAuthResult.RefreshToken, response);
+
+            return jwtAuthResult;
         }
 
     }

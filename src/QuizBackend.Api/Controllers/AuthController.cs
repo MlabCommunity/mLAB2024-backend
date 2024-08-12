@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using QuizBackend.Application.Dtos;
 using QuizBackend.Application.Interfaces;
+using System.Security;
 using System.Security.Authentication;
+using System.Security.Claims;
 
 namespace QuizBackend.Api.Controllers
 {
@@ -18,7 +20,7 @@ namespace QuizBackend.Api.Controllers
         }
 
         [HttpPost("signin")]
-        public async Task<IActionResult> SignIn([FromQuery] LoginDto loginDto)
+        public async Task<IActionResult> SignIn([FromBody] LoginDto loginDto)
         {
             if (!ModelState.IsValid)
             {
@@ -27,7 +29,7 @@ namespace QuizBackend.Api.Controllers
 
             try
             {
-                var jwtAuthResult = await _authService.LoginAsync(loginDto);
+                var jwtAuthResult = await _authService.LoginAsync(loginDto, HttpContext.Response);
                 return Ok(jwtAuthResult);
             }
             catch (InvalidCredentialException ex)
@@ -50,10 +52,31 @@ namespace QuizBackend.Api.Controllers
         }
 
         [HttpPost("logout")]
-        public async Task<IActionResult> Logout(HttpContext httpContext)
+        public async Task<IActionResult> Logout()
         {
-            await _authService.LogoutAsync(httpContext);
-            return Ok();
+           var result = await _authService.LogoutAsync(HttpContext);
+            return Ok(result);
+        }
+
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequestDto refreshTokenRequest)
+        {
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            try
+            {
+                var jwtAuthResult = await _authService.RefreshTokenAsync(refreshTokenRequest.RefreshToken, userId, HttpContext.Response);
+                return Ok(jwtAuthResult);
+            }
+            catch(SecurityException ex) 
+            {
+                return Unauthorized(new { ex.Message });
+            }
         }
     }
 }
