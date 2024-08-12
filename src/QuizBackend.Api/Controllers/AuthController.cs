@@ -21,40 +21,17 @@ namespace QuizBackend.Api.Controllers
         [HttpPost("signin")]
         public async Task<IActionResult> SignIn([FromQuery] LoginDto loginDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            try
-            {
-                var jwtAuthResult = await _authService.LoginAsync(loginDto);
-                return Ok(jwtAuthResult);
-            }
-            catch (InvalidCredentialException ex)
-            {
-                return Unauthorized(new { ex.Message });
-            }
+          
+            var jwtAuthResult = await _authService.LoginAsync(loginDto);
+            return Ok(jwtAuthResult);
+           
         }
 
         [HttpPost("signup")]
         public async Task<ActionResult> SignUp(RegisterRequestDto request)
         {
-            try
-            {
-                var response = await _authService.SignUpAsync(request);
-
-                return Ok(response); 
-            }
-            catch (ValidationException ex)
-            {
-                if (ex.Message.Contains("User already exists."))
-                {
-                    return Conflict(ex.Message);
-                   
-                }
-                return BadRequest(ex.Message);   
-            }
+            var response = await _authService.SignUpAsync(request);
+            return Ok(new { message = "User created successfully", id = response.UserId});  
         }
 
         [HttpPost("logout")]

@@ -29,7 +29,8 @@ namespace QuizBackend.Api.Middlewares
             {
                 Status = StatusCodes.Status400BadRequest,
                 Title = "Bad Request",
-                Detail = badRequestException.Message
+                Detail = badRequestException.Message,
+                Extensions = { ["errors"] = badRequestException.Errors.ToArray() }
             };
 
             httpContext.Response.StatusCode = problemDetails.Status.Value;

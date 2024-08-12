@@ -7,6 +7,7 @@ namespace QuizBackend.Api.Extensions
     {
         public static IServiceCollection AddExceptionHandlers(this IServiceCollection services) 
         {
+            services.AddExceptionHandler<ValidationExceptionHandler>();
             services.AddExceptionHandler<BadRequestExceptionHandler>();
             services.AddExceptionHandler<UnathorizedExceptionHandler>();
             services.AddExceptionHandler<NotFoundExceptionHandler>();

@@ -1,8 +1,10 @@
 ﻿using FluentValidation;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using QuizBackend.Application.Dtos;
 using QuizBackend.Application.Interfaces;
 using QuizBackend.Domain.Entities;
+using QuizBackend.Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,11 +34,11 @@ namespace QuizBackend.Application.Services
         {
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
             if (user == null)
-                throw new InvalidCredentialException("Invalid login attempt");
+                throw new NotFoundException(nameof(user), loginDto.Email);
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
             if (!result.Succeeded)
-                throw new InvalidCredentialException("Invalid login attempt");
+                throw new BadRequestException("Email or Password is incorrect");
 
             var claims = await _jwtService.GetClaimsAsync(user);
             await _signInManager.SignInAsync(user, isPersistent: false);
@@ -58,27 +60,21 @@ namespace QuizBackend.Application.Services
 
         public async Task<SignUpResponseDto> SignUpAsync(RegisterRequestDto request)
         {
-            var validationResult = await _registerRequestValidator.ValidateAsync(request);
-            if (!validationResult.IsValid)
-            {
-                var errorMessages = validationResult.Errors;
-                throw new ValidationException("Validation failed", errorMessages);
-            }
-
+           
             var user = new User { UserName = request.Email, Email = request.Email };
             var result = await _userManager.CreateAsync(user, request.Password);
 
             if (!result.Succeeded)
             {
-                var errorMessages = result.Errors.Select(e => e.Description).ToArray();
-                throw new ValidationException($"User creation failed: {string.Join(", ", errorMessages)}");
+                var errors = result.Errors.Select(error => error.Description);
+                throw new BadRequestException("User creation failed", errors);
             }
 
             return new SignUpResponseDto
             {
-                Succeed = true,
+                
                 UserId = user.Id,
-                Errors = []
+               
             };
         }
 

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using QuizBackend.Application.Extensions;
 using QuizBackend.Domain.Entities;
+using QuizBackend.Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
@@ -33,12 +34,12 @@ namespace QuizBackend.Application.Services
                 var user = _httpContextAccessor?.HttpContext?.User;
                 if (user == null)
                 {
-                    throw new InvalidOperationException("User context is not present");
+                    throw new BadRequestException("User context is not present");
                 }
 
                 if (user.Identity == null || !user.Identity.IsAuthenticated)
                 {
-                    throw new ApplicationException("User is not authenticated");
+                    throw new UnauthorizedException("User is not authenticated");
                 }
 
                 var id = user.FindFirstValue(ClaimTypes.NameIdentifier)!;

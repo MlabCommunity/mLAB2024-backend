@@ -8,8 +8,6 @@ namespace QuizBackend.Application.Dtos
 {
     public class SignUpResponseDto
     {
-        public bool Succeed { get; set; }
         public string? UserId { get; set; }
-        public string[] Errors { get; set; } = [];
     }
 }

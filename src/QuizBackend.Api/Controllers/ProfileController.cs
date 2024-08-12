@@ -25,16 +25,8 @@ namespace QuizBackend.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<UserProfileDto>> GetProfile()
         {
-            try
-            {
-                var profile = await _profileService.GetProfileAsync();
-                return Ok(profile);
-            }
-            catch (ApplicationException ex)
-            {
-                return Unauthorized(ex.Message);
-            }
-            
+            var profile = await _profileService.GetProfileAsync();
+            return Ok(profile);
         }
     }
 }

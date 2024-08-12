@@ -2,6 +2,7 @@
 using QuizBackend.Application.Dtos;
 using QuizBackend.Application.Interfaces;
 using QuizBackend.Domain.Entities;
+using QuizBackend.Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,7 +26,7 @@ namespace QuizBackend.Application.Services
         {
             var currentUser = await _userManager.FindByIdAsync(_userContext.UserId);
 
-            if (currentUser == null) throw new ApplicationException("User not found");
+            if (currentUser == null) throw new NotFoundException(nameof(User), _userContext.UserId);
 
             var userProfileDto = new UserProfileDto
             {
