@@ -13,7 +13,7 @@ builder.Services.AddApplication(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerDocumentation();
-
+builder.Services.AddExceptionHandlers();
 
 var app = builder.Build();
 
@@ -23,7 +23,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
-
+app.UseExceptionHandler();
 app.UseAuthentication();
 app.UseAuthorization();
 
