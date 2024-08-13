@@ -5,7 +5,7 @@ using QuizBackend.Domain.Entities;
 using QuizBackend.Domain.Exceptions;
 
 
-namespace QuizBackend.Application.Services
+namespace QuizBackend.Infrastructure.Services.Identity
 {
     public class ProfileService : IProfileService
     {

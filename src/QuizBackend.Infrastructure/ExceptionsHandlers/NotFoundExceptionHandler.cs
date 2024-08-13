@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using QuizBackend.Domain.Exceptions;
 
-namespace QuizBackend.Api.Middlewares
+namespace QuizBackend.Infrastructure.ExceptionsHandlers
 {
     internal sealed class NotFoundExceptionHandler : IExceptionHandler
     {

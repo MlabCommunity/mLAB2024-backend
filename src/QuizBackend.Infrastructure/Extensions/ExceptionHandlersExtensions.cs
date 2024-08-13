@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using QuizBackend.Api.Middlewares;
+using QuizBackend.Infrastructure.ExceptionsHandlers;
 
-namespace QuizBackend.Api.Extensions
+namespace QuizBackend.Infrastructure.Extensions
 {
     public static class ExceptionHandlersExtensions
     {

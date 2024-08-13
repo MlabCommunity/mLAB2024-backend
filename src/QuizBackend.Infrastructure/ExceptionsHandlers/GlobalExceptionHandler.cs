@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-namespace QuizBackend.Api.Middlewares
+namespace QuizBackend.Infrastructure.ExceptionsHandlers
 {
     internal sealed class GlobalExceptionHandler : IExceptionHandler
     {
