@@ -8,6 +8,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace QuizBackend.Application.Services
 {
@@ -24,9 +25,9 @@ namespace QuizBackend.Application.Services
 
         public async Task<UserProfileDto> GetProfileAsync()
         {
-            var currentUser = await _userManager.FindByIdAsync(_userContext.UserId);
-
-            if (currentUser == null) throw new NotFoundException(nameof(User), _userContext.UserId);
+            var id = _userContext.UserId;
+            var currentUser = await _userManager.FindByIdAsync(id)
+                ?? throw new NotFoundException(nameof(User), id);
 
             var userProfileDto = new UserProfileDto
             {
@@ -38,5 +39,27 @@ namespace QuizBackend.Application.Services
             return userProfileDto;
         }
 
+        public async Task<UserProfileDto> UpdateProfileAsync(UpdateUserProfileRequest request)
+        {
+            var id = _userContext.UserId;
+            var user = await _userManager.FindByIdAsync(id) 
+                ?? throw new NotFoundException(nameof(User), id);
+
+            user.UserName = request.UserName;
+            var result = await _userManager.UpdateAsync(user);
+
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(error => error.Description);
+                throw new BadRequestException($"Error updating user profile:", errors);
+            }
+
+           return new UserProfileDto 
+           { 
+               Id = user.Id, 
+               Email = user.Email!, 
+               UserName = user.UserName 
+           };
+        }
     }
 }
