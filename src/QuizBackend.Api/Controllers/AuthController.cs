@@ -1,5 +1,4 @@
-﻿using Microsoft.AspNetCore.Authentication;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using QuizBackend.Application.Dtos;
 using QuizBackend.Application.Interfaces;
 using System.Security;
@@ -20,16 +19,11 @@ namespace QuizBackend.Api.Controllers
         }
 
         [HttpPost("signin")]
-        public async Task<IActionResult> SignIn([FromBody] LoginDto loginDto)
+        public async Task<IActionResult> SignIn(LoginDto loginDto)
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
             try
             {
-                var jwtAuthResult = await _authService.LoginAsync(loginDto, HttpContext.Response);
+                var jwtAuthResult = await _authService.LoginAsync(loginDto);
                 return Ok(jwtAuthResult);
             }
             catch (InvalidCredentialException ex)
@@ -41,25 +35,24 @@ namespace QuizBackend.Api.Controllers
         [HttpPost("signup")]
         public async Task<ActionResult> SignUp(RegisterRequestDto request)
         {
-            var response = await _authService.SignUp(request);
+            var signUpResponse = await _authService.SignUp(request);
 
-            if (!response.Succeed)
+            if (!signUpResponse.Succeed)
             {
                 return BadRequest("Error in signUp");
             }
-
-            return Ok(new { message = "User has been created", id = response.UserId });
+            return Ok(signUpResponse);
         }
 
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
-           var result = await _authService.LogoutAsync(HttpContext);
+           var result = await _authService.LogoutAsync();
             return Ok(result);
         }
 
         [HttpPost("refresh-token")]
-        public async Task<IActionResult> RefreshToken([FromBody] RefreshTokenRequestDto refreshTokenRequest)
+        public async Task<IActionResult> RefreshToken(RefreshTokenRequestDto refreshTokenRequest)
         {
             var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
@@ -67,10 +60,9 @@ namespace QuizBackend.Api.Controllers
             {
                 return Unauthorized();
             }
-
             try
             {
-                var jwtAuthResult = await _authService.RefreshTokenAsync(refreshTokenRequest.RefreshToken, userId, HttpContext.Response);
+                var jwtAuthResult = await _authService.RefreshTokenAsync(refreshTokenRequest.RefreshToken, userId);
                 return Ok(jwtAuthResult);
             }
             catch(SecurityException ex) 

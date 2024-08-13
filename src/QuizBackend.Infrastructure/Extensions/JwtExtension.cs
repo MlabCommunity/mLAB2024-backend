@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Protocols.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
@@ -10,7 +11,11 @@ namespace QuizBackend.Infrastructure.Extensions
     {
         public static void AddJwtExtension(this IServiceCollection services, IConfiguration configuration)
         {
-            var key = Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"]);
+            var secretKey = configuration["Jwt:SecretKey"];
+
+            var key = secretKey != null
+                ? Encoding.UTF8.GetBytes(secretKey)
+                : throw new InvalidConfigurationException("JWT secret key is not configured or is empty.");
 
             services.AddAuthentication(options =>
             {

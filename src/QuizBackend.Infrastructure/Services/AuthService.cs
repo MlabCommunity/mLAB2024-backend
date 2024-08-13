@@ -3,30 +3,27 @@ using Microsoft.AspNetCore.Identity;
 using QuizBackend.Application.Dtos;
 using QuizBackend.Application.Interfaces;
 using QuizBackend.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Security.Authentication;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace QuizBackend.Application.Services
+namespace QuizBackend.Infrastructure.Services
 {
     public class AuthService : IAuthService
     {
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IJwtService _jwtService;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, IJwtService jwtService)
+        public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, IJwtService jwtService, IHttpContextAccessor httpContextAccessor)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _jwtService = jwtService;
+            _httpContextAccessor = httpContextAccessor;
         }
 
-        public async Task<JwtAuthResultDto> LoginAsync(LoginDto loginDto, HttpResponse response)
+        public async Task<JwtAuthResultDto> LoginAsync(LoginDto loginDto)
         {
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
             if (user == null)
@@ -42,8 +39,8 @@ namespace QuizBackend.Application.Services
             var accessToken = _jwtService.GenerateJwtToken(claims);
             var refreshToken = await _jwtService.GenerateRefreshTokenAsync(user.Id);
 
-            _jwtService.SetAccessTokenCookie(accessToken, response);
-            _jwtService.SetRefreshTokenCookie(refreshToken, response);
+            _jwtService.SetAccessTokenCookie(accessToken);
+            _jwtService.SetRefreshTokenCookie(refreshToken);
 
             return new JwtAuthResultDto
             {
@@ -52,9 +49,9 @@ namespace QuizBackend.Application.Services
             };
         }
 
-        public async Task<LogoutResponseDto> LogoutAsync(HttpContext httpContext)
+        public async Task<LogoutResponseDto> LogoutAsync()
         {
-            var userId = httpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
 
             if(userId != null)
             {
@@ -63,8 +60,8 @@ namespace QuizBackend.Application.Services
 
             await _signInManager.SignOutAsync();
 
-            _jwtService.SetAccessTokenCookie("", httpContext.Response);
-            _jwtService.SetRefreshTokenCookie("", httpContext.Response);
+            _jwtService.SetAccessTokenCookie("");
+            _jwtService.SetRefreshTokenCookie("");
 
             return new LogoutResponseDto
             {
@@ -108,14 +105,13 @@ namespace QuizBackend.Application.Services
             };
         }
 
-        public async Task<JwtAuthResultDto> RefreshTokenAsync(string refreshToken, string userId, HttpResponse response)
+        public async Task<JwtAuthResultDto> RefreshTokenAsync(string refreshToken, string userId)
         {
             var jwtAuthResult = await _jwtService.RefreshTokenAsync(refreshToken, userId);
-            _jwtService.SetAccessTokenCookie(jwtAuthResult.AccessToken, response);
-            _jwtService.SetRefreshTokenCookie(jwtAuthResult.RefreshToken, response);
+            _jwtService.SetAccessTokenCookie(jwtAuthResult.AccessToken);
+            _jwtService.SetRefreshTokenCookie(jwtAuthResult.RefreshToken);
 
             return jwtAuthResult;
         }
-
     }
 }

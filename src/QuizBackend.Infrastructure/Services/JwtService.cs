@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Protocols.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using QuizBackend.Application.Dtos;
 using QuizBackend.Application.Interfaces;
@@ -12,31 +13,39 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace QuizBackend.Application.Services
+namespace QuizBackend.Infrastructure.Services
 {
     public class JwtService : IJwtService
     {
         private readonly IConfiguration _configuration;
         private readonly AppDbContext _appDbContext;
         private readonly UserManager<User> _userManager;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public JwtService(IConfiguration configuration, AppDbContext appDbContext, UserManager<User> userManager)
+        public JwtService(IConfiguration configuration, AppDbContext appDbContext, UserManager<User> userManager, IHttpContextAccessor httpContextAccessor)
         {
             _configuration = configuration;
             _appDbContext = appDbContext;
             _userManager = userManager;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public string GenerateJwtToken(List<Claim> claims)
         {
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:SecretKey"]));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            var secretKey = _configuration["Jwt:SecretKey"];
+            var expire = (_configuration.GetValue<double>("Jwt:AccessTokenExpirationMinutes"));
 
+            var key = secretKey != null
+                ? new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
+                : throw new InvalidConfigurationException("JWT secret key is not configured or is empty.");
+
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.Now.AddMinutes(30),
+                expires: DateTime.UtcNow.AddMinutes(expire),
                 signingCredentials: creds);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
@@ -44,12 +53,16 @@ namespace QuizBackend.Application.Services
 
         public async Task<List<Claim>> GetClaimsAsync(User user)
         {
+            var userName = user.UserName ?? throw new ArgumentNullException(nameof(user.UserName), "UserName cannot be null when creating claims.");
+            var email = user.Email ?? throw new ArgumentNullException(nameof(user.Email), "Email cannot be null when creating claims.");
+            
+
             var claims = new List<Claim>
             {
                 new Claim(JwtRegisteredClaimNames.Sub, user.Id),
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(ClaimTypes.Name, user.UserName),
-                new Claim(ClaimTypes.Email, user.Email)
+                new Claim(ClaimTypes.Name, userName),
+                new Claim(ClaimTypes.Email, email)
             };
 
             var roles = await _userManager.GetRolesAsync(user);
@@ -63,12 +76,14 @@ namespace QuizBackend.Application.Services
 
         public async Task<string> GenerateRefreshTokenAsync(string userId)
         {
+            var expire = _configuration.GetValue<int>("Jwt:RefreshTokenExpirationDays");
+
             var refreshToken = new RefreshToken
             {
                 Id = Guid.NewGuid(),
                 Token = GenerateRandomToken(),
                 UserId = userId,
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddDays(expire),
                 Created = DateTime.UtcNow
             };
 
@@ -140,19 +155,19 @@ namespace QuizBackend.Application.Services
             };
         }
 
-        public void SetAccessTokenCookie(string token, HttpResponse response)
+        public void SetAccessTokenCookie(string token)
         {
-            response.Cookies.Append("AccessToken", token, CreateCookieOptions());
+            _httpContextAccessor.HttpContext?.Response.Cookies.Append("AccessToken", token, CreateCookieOptions());
         }
 
-        public void SetRefreshTokenCookie(string refreshToken, HttpResponse response)
+        public void SetRefreshTokenCookie(string refreshToken)
         {
-            response.Cookies.Append("RefreshToken", refreshToken, CreateCookieOptions());
+            _httpContextAccessor.HttpContext?.Response.Cookies.Append("RefreshToken", refreshToken, CreateCookieOptions());
         }
 
-        public string GetAccessTokenFromCookie(HttpRequest request)
+        public string GetAccessTokenFromCookie()
         {
-            return request.Cookies["AccessToken"]!;
+            return _httpContextAccessor.HttpContext?.Request.Cookies["AccessToken"]!;
         }
     }
 }

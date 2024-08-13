@@ -1,15 +1,8 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.IdentityModel.Tokens;
 using QuizBackend.Domain.Entities;
 using QuizBackend.Infrastructure.Data;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QuizBackend.Infrastructure.Extensions
 {
@@ -26,10 +19,10 @@ namespace QuizBackend.Infrastructure.Extensions
                 .AddEntityFrameworkStores<AppDbContext>();
 
             services.AddJwtExtension(configuration);
+            services.AddAuthExtension(configuration);
+            services.AddHttpContextAccessor();
 
             return services;
-
-        }
-           
+        } 
     }
 }
