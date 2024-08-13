@@ -20,14 +20,12 @@ namespace QuizBackend.Infrastructure.Services.Identity
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly IJwtService _jwtService;
-        private readonly IValidator<RegisterRequestDto> _registerRequestValidator;
 
-        public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, IJwtService jwtService, IValidator<RegisterRequestDto> registerRequestValidator)
+        public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, IJwtService jwtService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _jwtService = jwtService;
-            _registerRequestValidator = registerRequestValidator;
         }
 
         public async Task<JwtAuthResultDto> LoginAsync(LoginDto loginDto)
