@@ -9,17 +9,13 @@ using System.Security.Authentication;
 
 namespace QuizBackend.Api.Controllers
 {
-    [ApiController]
-    [Route("api/profile")]
-    public class ProfileController : ControllerBase
+    public class ProfileController : BaseController
     {
         private readonly IProfileService _profileService;
-        private readonly IUserContext _userContext;
 
-        public ProfileController(IProfileService profileService, IUserContext userContext)
+        public ProfileController(IProfileService profileService)
         {
             _profileService = profileService;
-            _userContext = userContext;
         }
 
         [HttpGet]

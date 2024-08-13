@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using QuizBackend.Application.Extensions;
 using QuizBackend.Domain.Entities;
 using QuizBackend.Infrastructure.Data;
 using System;
@@ -26,6 +27,8 @@ namespace QuizBackend.Infrastructure.Extensions
                 .AddEntityFrameworkStores<AppDbContext>();
 
             services.AddJwtExtension(configuration);
+            services.AddAuthExtension(configuration);
+            services.AddProfileExtensions();
 
             return services;
 

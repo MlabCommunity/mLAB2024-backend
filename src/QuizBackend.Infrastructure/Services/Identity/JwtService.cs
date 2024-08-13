@@ -8,7 +8,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 
-namespace QuizBackend.Application.Services
+namespace QuizBackend.Infrastructure.Services.Identity
 {
     public class JwtService : IJwtService
     {

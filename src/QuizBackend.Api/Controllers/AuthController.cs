@@ -7,9 +7,7 @@ using System.Security.Authentication;
 
 namespace QuizBackend.Api.Controllers
 {
-    [Route("api/")]
-    [ApiController]
-    public class AuthController : ControllerBase
+    public class AuthController : BaseController
     {
         private readonly IAuthService _authService;
 

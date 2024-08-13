@@ -13,7 +13,7 @@ using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuizBackend.Application.Services
+namespace QuizBackend.Infrastructure.Services.Identity
 {
     public class AuthService : IAuthService
     {
@@ -60,7 +60,7 @@ namespace QuizBackend.Application.Services
 
         public async Task<SignUpResponseDto> SignUpAsync(RegisterRequestDto request)
         {
-           
+
             var user = new User { UserName = request.Email, Email = request.Email };
             var result = await _userManager.CreateAsync(user, request.Password);
 
@@ -72,9 +72,7 @@ namespace QuizBackend.Application.Services
 
             return new SignUpResponseDto
             {
-                
                 UserId = user.Id,
-               
             };
         }
 

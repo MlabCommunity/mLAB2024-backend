@@ -11,8 +11,7 @@ namespace QuizBackend.Api.Extensions
             services.AddExceptionHandler<UnathorizedExceptionHandler>();
             services.AddExceptionHandler<NotFoundExceptionHandler>();
             services.AddExceptionHandler<GlobalExceptionHandler>();
-            
-
+          
             services.AddProblemDetails();
 
             return services;

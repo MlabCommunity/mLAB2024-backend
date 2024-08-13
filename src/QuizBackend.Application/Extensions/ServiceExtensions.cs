@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using QuizBackend.Application.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,10 +13,7 @@ namespace QuizBackend.Application.Extensions
     {
         public static void AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddAuthExtension(configuration);
-            services.AddProfileExtensions();
             services.AddFluentValidationExtension(configuration);
-           
         }
 
     }
