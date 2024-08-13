@@ -29,7 +29,7 @@ namespace QuizBackend.Api.Middlewares
                 Title = "Not Found",
                 Detail = notFoundException.Message
             };
-
+            
             httpContext.Response.StatusCode = problemDetails.Status.Value;
 
             await httpContext.Response

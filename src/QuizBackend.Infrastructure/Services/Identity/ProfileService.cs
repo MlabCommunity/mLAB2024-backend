@@ -50,11 +50,17 @@ namespace QuizBackend.Application.Services
 
             if (!result.Succeeded)
             {
-                var errors = result.Errors.Select(error => error.Description);
-                throw new BadRequestException($"Error updating user profile:", errors);
+                var errors = result.Errors
+                    .GroupBy(e => e.Code)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => g.Select(e => e.Description).ToArray()
+                    );
+
+                throw new BadRequestException("Error updating user profile.", errors);
             }
 
-           return new UserProfileDto 
+            return new UserProfileDto 
            { 
                Id = user.Id, 
                Email = user.Email!, 
