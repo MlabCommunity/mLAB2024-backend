@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 
-
 namespace QuizBackend.Infrastructure.ExceptionsHandlers
 {
     internal sealed class ValidationExceptionHandler : IExceptionHandler
