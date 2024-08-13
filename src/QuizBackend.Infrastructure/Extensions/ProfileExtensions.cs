@@ -2,12 +2,6 @@
 using QuizBackend.Application.Interfaces;
 using QuizBackend.Application.Services;
 using QuizBackend.Infrastructure.Services.Identity;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace QuizBackend.Infrastructure.Extensions
 {

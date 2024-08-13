@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using QuizBackend.Application.Dtos;
+using Microsoft.AspNetCore.Mvc;
+using QuizBackend.Application.Dtos.Profile;
 using QuizBackend.Application.Interfaces;
 
 namespace QuizBackend.Api.Controllers
@@ -26,5 +26,6 @@ namespace QuizBackend.Api.Controllers
             var updatedUser = await _profileService.UpdateProfileAsync(request);
             return Ok(updatedUser);
         }
+       
     }
 }

@@ -1,6 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using QuizBackend.Api.Middlewares;
-using QuizBackend.Domain.Exceptions;
 
 namespace QuizBackend.Api.Extensions
 {
