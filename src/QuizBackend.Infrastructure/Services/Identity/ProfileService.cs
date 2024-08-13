@@ -1,12 +1,14 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using QuizBackend.Application.Dtos.Profile;
+using QuizBackend.Application.Dtos;
 using QuizBackend.Application.Interfaces;
 using QuizBackend.Domain.Entities;
+using QuizBackend.Domain.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace QuizBackend.Application.Services
 {
@@ -23,10 +25,9 @@ namespace QuizBackend.Application.Services
 
         public async Task<UserProfileDto> GetProfileAsync()
         {
-
-            var currentUser = await _userManager.FindByIdAsync(_userContext.UserId);
-
-            if (currentUser == null) throw new ApplicationException("User not found");
+            var id = _userContext.UserId;
+            var currentUser = await _userManager.FindByIdAsync(id)
+                ?? throw new NotFoundException(nameof(User), id);
 
             var userProfileDto = new UserProfileDto
             {
@@ -38,29 +39,33 @@ namespace QuizBackend.Application.Services
             return userProfileDto;
         }
 
-        public async Task<UserProfileDto> UpdateProfileAsync(UpdateUserProfileRequest profile)
+        public async Task<UserProfileDto> UpdateProfileAsync(UpdateUserProfileRequest request)
         {
             var id = _userContext.UserId;
+            var user = await _userManager.FindByIdAsync(id) 
+                ?? throw new NotFoundException(nameof(User), id);
 
-            var user = await _userManager.FindByIdAsync(id);
-
-            if (user == null) throw new ApplicationException($"User not found.");
-
-            user.UserName = profile.UserName;
+            user.UserName = request.UserName;
             var result = await _userManager.UpdateAsync(user);
 
             if (!result.Succeeded)
             {
-                throw new ApplicationException($"Error updating user profile: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+                var errors = result.Errors
+                    .GroupBy(e => e.Code)
+                    .ToDictionary(
+                        g => g.Key,
+                        g => g.Select(e => e.Description).ToArray()
+                    );
+
+                throw new BadRequestException("Error updating user profile.", errors);
             }
 
-            return new UserProfileDto
-            {
-                Id = user.Id,
-                Email = user.Email!,
-                UserName = user.UserName
-            };
-
+            return new UserProfileDto 
+           { 
+               Id = user.Id, 
+               Email = user.Email!, 
+               UserName = user.UserName 
+           };
         }
     }
 }

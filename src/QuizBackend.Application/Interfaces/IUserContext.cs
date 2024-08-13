@@ -4,10 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuizBackend.Application.Dtos
+namespace QuizBackend.Application.Interfaces
 {
-    public class SignUpResponseDto
+    public interface IUserContext
     {
-        public string? UserId { get; set; }
+        public string UserId { get; }
     }
 }

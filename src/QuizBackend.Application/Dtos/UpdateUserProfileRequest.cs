@@ -6,8 +6,7 @@ using System.Threading.Tasks;
 
 namespace QuizBackend.Application.Dtos
 {
-    public class SignUpResponseDto
+    public record UpdateUserProfileRequest(string UserName)
     {
-        public string? UserId { get; set; }
     }
 }

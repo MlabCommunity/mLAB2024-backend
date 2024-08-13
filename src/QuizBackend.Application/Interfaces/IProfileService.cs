@@ -1,4 +1,5 @@
-﻿using QuizBackend.Application.Dtos.Profile;
+﻿using QuizBackend.Application.Dtos;
+using QuizBackend.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,6 @@ namespace QuizBackend.Application.Interfaces
     public interface IProfileService
     {
         Task<UserProfileDto> GetProfileAsync();
-        Task<UserProfileDto> UpdateProfileAsync(UpdateUserProfileRequest profile);
+        Task<UserProfileDto> UpdateProfileAsync(UpdateUserProfileRequest request);
     }
 }

@@ -10,33 +10,27 @@ using System.Security.Authentication;
 
 namespace QuizBackend.Api.Controllers
 {
-    [ApiController]
-    [Route("api/profile")]
-    [Authorize]
-    public class ProfileController : ControllerBase
+    public class ProfileController : BaseController
     {
         private readonly IProfileService _profileService;
-        private readonly IUserContext _userContext;
 
-        public ProfileController(IProfileService profileService, IUserContext userContext)
+        public ProfileController(IProfileService profileService)
         {
             _profileService = profileService;
-            _userContext = userContext;
         }
 
         [HttpGet]
         public async Task<ActionResult<UserProfileDto>> GetProfile()
         {
-            try
-            {
-                var profile = await _profileService.GetProfileAsync();
-                return Ok(profile);
-            }
-            catch (UnauthorizedAccessException ex)
-            {
-                return Unauthorized(ex.Message);
-            }
-            
+            var profile = await _profileService.GetProfileAsync();
+            return Ok(profile);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<UserProfileDto>> UpdateUserProfile(UpdateUserProfileRequest request)
+        {
+            var updatedUser = await _profileService.UpdateProfileAsync(request);
+            return Ok(updatedUser);
         }
         [HttpPut]
         public async Task<ActionResult<UserProfileDto>> UpdateUserProfile(UpdateUserProfileRequest request)

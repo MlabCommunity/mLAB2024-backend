@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\QuizBackend.Application\QuizBackend.Application.csproj" />
     <ProjectReference Include="..\QuizBackend.Domain\QuizBackend.Domain.csproj" />
   </ItemGroup>
 
