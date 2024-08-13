@@ -32,11 +32,6 @@ namespace QuizBackend.Api.Controllers
             var updatedUser = await _profileService.UpdateProfileAsync(request);
             return Ok(updatedUser);
         }
-        [HttpPut]
-        public async Task<ActionResult<UserProfileDto>> UpdateUserProfile(UpdateUserProfileRequest request)
-        {
-            var updatedUser = await _profileService.UpdateProfileAsync(request);
-            return Ok(updatedUser);
-        }
+       
     }
 }

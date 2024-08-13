@@ -1,14 +1,9 @@
 ﻿using Microsoft.AspNetCore.Identity;
-using QuizBackend.Application.Dtos;
+using QuizBackend.Application.Dtos.Profile;
 using QuizBackend.Application.Interfaces;
 using QuizBackend.Domain.Entities;
 using QuizBackend.Domain.Exceptions;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Runtime.InteropServices.JavaScript.JSType;
+
 
 namespace QuizBackend.Application.Services
 {

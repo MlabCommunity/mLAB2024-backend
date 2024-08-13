@@ -1,4 +1,4 @@
-﻿using QuizBackend.Application.Dtos;
+﻿using QuizBackend.Application.Dtos.Profile;
 using QuizBackend.Domain.Entities;
 using System;
 using System.Collections.Generic;
