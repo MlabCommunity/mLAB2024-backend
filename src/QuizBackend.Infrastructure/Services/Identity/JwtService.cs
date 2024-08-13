@@ -13,7 +13,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 
-namespace QuizBackend.Infrastructure.Services
+namespace QuizBackend.Infrastructure.Services.Identity
 {
     public class JwtService : IJwtService
     {
@@ -33,14 +33,14 @@ namespace QuizBackend.Infrastructure.Services
         public string GenerateJwtToken(List<Claim> claims)
         {
             var secretKey = _configuration["Jwt:SecretKey"];
-            var expire = (_configuration.GetValue<double>("Jwt:AccessTokenExpirationMinutes"));
+            var expire = _configuration.GetValue<double>("Jwt:AccessTokenExpirationMinutes");
 
             var key = secretKey != null
                 ? new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey))
                 : throw new InvalidConfigurationException("JWT secret key is not configured or is empty.");
 
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-            
+
             var token = new JwtSecurityToken(
                 issuer: _configuration["Jwt:Issuer"],
                 audience: _configuration["Jwt:Audience"],
@@ -55,7 +55,7 @@ namespace QuizBackend.Infrastructure.Services
         {
             var userName = user.UserName ?? throw new ArgumentNullException(nameof(user.UserName), "UserName cannot be null when creating claims.");
             var email = user.Email ?? throw new ArgumentNullException(nameof(user.Email), "Email cannot be null when creating claims.");
-            
+
 
             var claims = new List<Claim>
             {
