@@ -1,13 +1,15 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using QuizBackend.Domain.Exceptions;
 
 namespace QuizBackend.Api.Middlewares
 {
-    internal sealed class UnathorizedExceptionHandler : IExceptionHandler
+    internal sealed class UnauthorizedExceptionHandler : IExceptionHandler
     {
-        private readonly ILogger<UnathorizedExceptionHandler> _logger;
-        public UnathorizedExceptionHandler(ILogger<UnathorizedExceptionHandler> logger)
+        private readonly ILogger<UnauthorizedExceptionHandler> _logger;
+        public UnauthorizedExceptionHandler(ILogger<UnauthorizedExceptionHandler> logger)
         {
             _logger = logger;
         }

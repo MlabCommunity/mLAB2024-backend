@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Diagnostics;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using QuizBackend.Domain.Exceptions;
 
 namespace QuizBackend.Api.Middlewares
@@ -13,7 +15,7 @@ namespace QuizBackend.Api.Middlewares
         }
         public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
         {
-            if (exception is not NotFoundException notFoundException) 
+            if (exception is not NotFoundException notFoundException)
             {
                 return false;
             }
@@ -29,14 +31,13 @@ namespace QuizBackend.Api.Middlewares
                 Title = "Not Found",
                 Detail = notFoundException.Message
             };
-            
+
             httpContext.Response.StatusCode = problemDetails.Status.Value;
 
             await httpContext.Response
                 .WriteAsJsonAsync(problemDetails, cancellationToken);
 
             return true;
-
         }
     }
 }

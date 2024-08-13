@@ -9,7 +9,7 @@ using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuizBackend.Application.Extensions
+namespace QuizBackend.Infrastructure.Extensions
 {
     public static class ProfileExtensions
     {

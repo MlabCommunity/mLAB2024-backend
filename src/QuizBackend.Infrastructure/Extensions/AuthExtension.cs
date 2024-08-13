@@ -4,7 +4,7 @@ using QuizBackend.Application.Interfaces;
 using QuizBackend.Application.Services;
 using QuizBackend.Infrastructure.Services.Identity;
 
-namespace QuizBackend.Application.Extensions
+namespace QuizBackend.Infrastructure.Extensions
 {
     public static class AuthExtension
     {
