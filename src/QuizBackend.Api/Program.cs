@@ -1,20 +1,14 @@
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using QuizBackend.Domain.Entities;
-using QuizBackend.Infrastructure.Data;
-using QuizBackend.Infrastructure.Extensions;
-using QuizBackend.Infrastructure;
 using QuizBackend.Application.Extensions;
-using QuizBackend.Application.Services;
+using QuizBackend.Infrastructure.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Add services to the container.
+builder.Services.AddInfrastructure(builder.Configuration);
+builder.Services.AddApplication(builder.Configuration);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-
-builder.Services.AddInfrastracture(builder.Configuration);
-builder.Services.AddApplication();
 
 var app = builder.Build();
 
@@ -25,6 +19,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
