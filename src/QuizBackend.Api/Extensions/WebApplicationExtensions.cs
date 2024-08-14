@@ -1,4 +1,4 @@
-﻿using QuizBackend.Application.Interfaces;
+﻿using QuizBackend.Infrastructure.Interfaces;
 
 namespace QuizBackend.Api.Extensions
 {
