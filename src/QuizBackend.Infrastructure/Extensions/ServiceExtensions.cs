@@ -28,6 +28,8 @@ namespace QuizBackend.Infrastructure.Extensions
 
             services.AddProfileExtensions();
 
+            services.AddDataMigrator();
+
             return services;
         } 
     }
