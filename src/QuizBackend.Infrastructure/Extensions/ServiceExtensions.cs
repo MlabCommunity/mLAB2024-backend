@@ -14,13 +14,19 @@ namespace QuizBackend.Infrastructure.Extensions
                      options.UseSqlServer(configuration.GetConnectionString("DefaultConnection")));
 
             services
-                .AddIdentity<User, Role>()
+                .AddIdentity<User, Role>(options =>
+                {
+                    options.User.AllowedUserNameCharacters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+' ";
+                })
                 .AddRoles<Role>()
                 .AddEntityFrameworkStores<AppDbContext>();
 
             services.AddJwtExtension(configuration);
             services.AddAuthExtension(configuration);
+
             services.AddHttpContextAccessor();
+
+            services.AddProfileExtensions();
 
             return services;
         } 

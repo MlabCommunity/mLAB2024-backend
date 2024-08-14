@@ -1,12 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using QuizBackend.Application.Dtos;
 using QuizBackend.Application.Interfaces;
 using QuizBackend.Domain.Entities;
-using System.Security.Authentication;
+using QuizBackend.Domain.Exceptions;
 using System.Security.Claims;
 
-namespace QuizBackend.Infrastructure.Services
+namespace QuizBackend.Infrastructure.Services.Identity
 {
     public class AuthService : IAuthService
     {
@@ -27,11 +27,11 @@ namespace QuizBackend.Infrastructure.Services
         {
             var user = await _userManager.FindByEmailAsync(loginDto.Email);
             if (user == null)
-                throw new InvalidCredentialException("Invalid login attempt");
+                throw new NotFoundException(nameof(user), loginDto.Email);
 
             var result = await _signInManager.CheckPasswordSignInAsync(user, loginDto.Password, false);
             if (!result.Succeeded)
-                throw new InvalidCredentialException("Invalid login attempt");
+                throw new BadRequestException("Email or Password is incorrect");
 
             var claims = await _jwtService.GetClaimsAsync(user);
             await _signInManager.SignInAsync(user, isPersistent: false);
@@ -69,39 +69,20 @@ namespace QuizBackend.Infrastructure.Services
             };
         }
 
-        public async Task<SignUpResponseDto> SignUp(RegisterRequestDto request)
+        public async Task<SignUpResponseDto> SignUpAsync(RegisterRequestDto request)
         {
-
-            var existingUser = await _userManager.FindByEmailAsync(request.Email);
-            if (existingUser != null)
-            {
-                return new SignUpResponseDto
-                {
-                    Succeed = false,
-                    UserId = string.Empty,
-                    Message = "User is already exist"
-                };
-            }
-
             var user = new User { UserName = request.Email, Email = request.Email };
-
             var result = await _userManager.CreateAsync(user, request.Password);
+
             if (!result.Succeeded)
             {
-
-                return new SignUpResponseDto
-                {
-                    Succeed = false,
-                    UserId = string.Empty,
-                    Message = "Error in sign up"
-                };
+                var errors = result.Errors.Select(error => error.Description);
+                throw new BadRequestException("User creation failed", errors);
             }
 
             return new SignUpResponseDto
             {
-                Succeed = true,
                 UserId = user.Id,
-                Message = "User has been created successfully"
             };
         }
 

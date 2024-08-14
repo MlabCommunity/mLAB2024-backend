@@ -2,14 +2,11 @@
 using QuizBackend.Application.Dtos;
 using QuizBackend.Application.Interfaces;
 using System.Security;
-using System.Security.Authentication;
 using System.Security.Claims;
 
 namespace QuizBackend.Api.Controllers
 {
-    [ApiController]
-    [Route("/api")]
-    public class AuthController : ControllerBase
+    public class AuthController : BaseController
     {
         private readonly IAuthService _authService;
 
@@ -21,34 +18,22 @@ namespace QuizBackend.Api.Controllers
         [HttpPost("signin")]
         public async Task<IActionResult> SignIn(LoginDto loginDto)
         {
-            try
-            {
-                var jwtAuthResult = await _authService.LoginAsync(loginDto);
-                return Ok(jwtAuthResult);
-            }
-            catch (InvalidCredentialException ex)
-            {
-                return Unauthorized(new { ex.Message });
-            }
+            var jwtAuthResult = await _authService.LoginAsync(loginDto);
+            return Ok(jwtAuthResult);
         }
 
         [HttpPost("signup")]
         public async Task<ActionResult> SignUp(RegisterRequestDto request)
         {
-            var signUpResponse = await _authService.SignUp(request);
-
-            if (!signUpResponse.Succeed)
-            {
-                return BadRequest("Error in signUp");
-            }
-            return Ok(signUpResponse);
+            var response = await _authService.SignUpAsync(request);
+            return Ok(new { message = "User created successfully", id = response.UserId});  
         }
 
         [HttpPost("logout")]
         public async Task<IActionResult> Logout()
         {
            var result = await _authService.LogoutAsync();
-            return Ok(result);
+           return Ok(result);
         }
 
         [HttpPost("refresh-token")]
