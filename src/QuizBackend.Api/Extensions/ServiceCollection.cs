@@ -32,6 +32,7 @@ namespace QuizBackend.Api.Extensions
                         Array.Empty<string>()
                     }
                 });
+                c.EnableAnnotations();
             });
             return services;
         }
