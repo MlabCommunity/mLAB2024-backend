@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using QuizBackend.Application.Interfaces;
 using QuizBackend.Infrastructure.Data;
+using QuizBackend.Infrastructure.Interfaces;
 
 namespace QuizBackend.Infrastructure.Extensions
 {
