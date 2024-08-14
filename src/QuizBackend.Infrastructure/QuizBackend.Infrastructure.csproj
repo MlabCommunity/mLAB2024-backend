@@ -23,4 +23,8 @@
     <ProjectReference Include="..\QuizBackend.Domain\QuizBackend.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Repositories\" />
+  </ItemGroup>
+
 </Project>

@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using QuizBackend.Application.Dtos;
 using QuizBackend.Application.Interfaces;
-using System.Security;
 using System.Security.Claims;
 
 namespace QuizBackend.Api.Controllers
@@ -16,6 +15,7 @@ namespace QuizBackend.Api.Controllers
         }
 
         [HttpPost("signin")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(JwtAuthResultDto))]
         public async Task<IActionResult> SignIn(LoginDto loginDto)
         {
             var jwtAuthResult = await _authService.LoginAsync(loginDto);
@@ -37,6 +37,7 @@ namespace QuizBackend.Api.Controllers
         }
 
         [HttpPost("refresh-token")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(JwtAuthResultDto))]
         public async Task<IActionResult> RefreshToken(RefreshTokenRequestDto refreshTokenRequest)
         {
             var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
@@ -45,15 +46,8 @@ namespace QuizBackend.Api.Controllers
             {
                 return Unauthorized();
             }
-            try
-            {
                 var jwtAuthResult = await _authService.RefreshTokenAsync(refreshTokenRequest.RefreshToken, userId);
                 return Ok(jwtAuthResult);
-            }
-            catch(SecurityException ex) 
-            {
-                return Unauthorized(new { ex.Message });
-            }
         }
     }
 }

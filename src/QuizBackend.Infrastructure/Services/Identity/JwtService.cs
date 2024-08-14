@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using QuizBackend.Application.Dtos;
 using QuizBackend.Application.Interfaces;
 using QuizBackend.Domain.Entities;
+using QuizBackend.Domain.Exceptions;
 using QuizBackend.Infrastructure.Data;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
@@ -99,7 +100,7 @@ namespace QuizBackend.Infrastructure.Services.Identity
 
             if (refreshTokenEntity == null || refreshTokenEntity.Expires <= DateTime.UtcNow || refreshTokenEntity.IsRevoked)
             {
-                throw new SecurityTokenException("Invalid refresh token");
+                throw new UnauthorizedException("Invalid refresh token");
             }
 
             refreshTokenEntity.IsRevoked = true;
@@ -111,7 +112,7 @@ namespace QuizBackend.Infrastructure.Services.Identity
 
             if (user == null)
             {
-                throw new SecurityTokenException("User not found");
+                throw new NotFoundException(nameof(user), userId);
             }
 
             var claims = await GetClaimsAsync(user);
