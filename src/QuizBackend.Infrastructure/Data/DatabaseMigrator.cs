@@ -1,5 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using QuizBackend.Application.Interfaces;
+using QuizBackend.Infrastructure.Interfaces;
 
 namespace QuizBackend.Infrastructure.Data
 {

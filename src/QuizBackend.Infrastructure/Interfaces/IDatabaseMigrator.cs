@@ -1,4 +1,4 @@
-﻿namespace QuizBackend.Application.Interfaces
+﻿namespace QuizBackend.Infrastructure.Interfaces
 {
     public interface IDatabaseMigrator
     {
