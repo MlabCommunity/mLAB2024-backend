@@ -26,7 +26,8 @@ namespace QuizBackend.Api.Controllers
         public async Task<ActionResult> SignUp(RegisterRequestDto request)
         {
             var response = await _authService.SignUpAsync(request);
-            return Ok(new { message = "User created successfully", id = response.UserId});  
+            return Ok(response);
+         
         }
 
         [HttpPost("logout")]

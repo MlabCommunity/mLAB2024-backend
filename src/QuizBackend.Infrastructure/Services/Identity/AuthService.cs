@@ -85,7 +85,7 @@ namespace QuizBackend.Infrastructure.Services.Identity
 
             return new SignUpResponseDto
             {
-                UserId = user.Id,
+                Message = "Registration successful. Please sign in now",
             };
         }
 
