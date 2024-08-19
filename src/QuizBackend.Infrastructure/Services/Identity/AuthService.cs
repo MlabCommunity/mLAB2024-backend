@@ -71,33 +71,16 @@ namespace QuizBackend.Infrastructure.Services.Identity
 
         public async Task<SignUpResponseDto> SignUpAsync(RegisterRequestDto request)
         {
-            var existingUser = await _userManager.FindByEmailAsync(request.Email);
-            if (existingUser != null)
-            {
-                var errors = new List<ValidationFailure>
-                {
-                    new() {
-                        PropertyName = "Email",
-                        ErrorMessage = "A user with that email address already exists."
-                    }
-                };
-
-                throw new ValidationException("User creation failed due to validation errors.", errors);
-            }
-
             var user = new User { UserName = request.Email, Email = request.Email };
             var result = await _userManager.CreateAsync(user, request.Password);
 
             if (!result.Succeeded)
             {
                 var errors = result.Errors
-                   .GroupBy(e => e.Code)
-                   .ToDictionary(
-                       g => g.Key,
-                       g => g.Select(e => e.Description).ToArray()
-                   );
-                
-                throw new BadRequestException("User creation failed", errors);
+                    .Select(e => new ValidationFailure() { PropertyName = e.Code, ErrorMessage = e.Description })
+                    .ToList();
+
+                throw new ValidationException("User creation failed", errors);
             }
 
             return new SignUpResponseDto
