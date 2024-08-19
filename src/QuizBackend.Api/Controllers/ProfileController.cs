@@ -17,6 +17,7 @@ namespace QuizBackend.Api.Controllers
         [HttpGet]
         [SwaggerOperation(Summary = "Retrieves the current user's profile.", Description = "Returns the profile of the currently authenticated user.")]
         [ProducesResponseType(typeof(UserProfileDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<UserProfileDto>> GetProfile()
         {
