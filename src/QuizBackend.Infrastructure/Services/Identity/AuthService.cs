@@ -76,13 +76,16 @@ namespace QuizBackend.Infrastructure.Services.Identity
 
             if (!result.Succeeded)
             {
-                var errors = result.Errors.Select(error => error.Description);
-                throw new BadRequestException("User creation failed", errors);
+                var errors = result.Errors
+                    .Select(e => new ValidationFailure() { PropertyName = e.Code, ErrorMessage = e.Description })
+                    .ToList();
+
+                throw new ValidationException("User creation failed", errors);
             }
 
             return new SignUpResponseDto
             {
-                UserId = user.Id,
+                Message = "Registration successful. Please sign in now",
             };
         }
 
