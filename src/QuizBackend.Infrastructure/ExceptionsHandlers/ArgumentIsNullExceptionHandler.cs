@@ -6,32 +6,32 @@ using QuizBackend.Domain.Exceptions;
 
 namespace QuizBackend.Infrastructure.ExceptionsHandlers
 {
-    internal sealed class AiClientNotSupportedExceptionHandler : IExceptionHandler
+    internal sealed class ArgumentIsNullExceptionHandler : IExceptionHandler
     {
-        private readonly ILogger<AiClientNotSupportedExceptionHandler> _logger;
+        private readonly ILogger<ArgumentIsNullExceptionHandler> _logger;
 
-        public AiClientNotSupportedExceptionHandler(ILogger<AiClientNotSupportedExceptionHandler> logger)
+        public ArgumentIsNullExceptionHandler(ILogger<ArgumentIsNullExceptionHandler> logger)
         {
             _logger = logger;
         }
 
         public async ValueTask<bool> TryHandleAsync(HttpContext httpContext, Exception exception, CancellationToken cancellationToken)
         {
-            if (exception is not AiClientNotSupportedException aiClientNotSupportedException)
+            if (exception is not ArgumentIsNullException argumentIsNullException)
             {
                 return false;
             }
 
             _logger.LogError(
-                aiClientNotSupportedException,
-                "Ai Client not supported: {Message}",
-                aiClientNotSupportedException.Message);
+                argumentIsNullException,
+                "Parameter '{ParamName}' is null. Message: {Message}",
+                argumentIsNullException.ParamName, argumentIsNullException.Message);
 
             var problemDetails = new ProblemDetails
             {
                 Status = StatusCodes.Status400BadRequest,
-                Title = "AI Client Not Supported",
-                Detail = aiClientNotSupportedException.Message
+                Title = "Bad Request",
+                Detail = argumentIsNullException.Message
             };
 
             httpContext.Response.ContentType = "application/problem+json";

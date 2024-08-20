@@ -11,6 +11,7 @@ namespace QuizBackend.Infrastructure.Extensions
             services.AddExceptionHandler<BadRequestExceptionHandler>();
             services.AddExceptionHandler<UnauthorizedExceptionHandler>();
             services.AddExceptionHandler<NotFoundExceptionHandler>();
+            services.AddExceptionHandler<ArgumentIsNullExceptionHandler>();
             services.AddExceptionHandler<AiClientNotSupportedExceptionHandler>();
             services.AddExceptionHandler<GlobalExceptionHandler>();
           

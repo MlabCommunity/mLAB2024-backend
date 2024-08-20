@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Options;
 using Microsoft.SemanticKernel;
 using QuizBackend.Application.AiConfiguration;
+using QuizBackend.Domain.Exceptions;
 using QuizBackend.Infrastructure.Interfaces;
 
 namespace QuizBackend.Infrastructure.Services.AI
@@ -11,25 +12,17 @@ namespace QuizBackend.Infrastructure.Services.AI
 
         public AiClientFactory(IOptions<AiSettings> options)
         {
-            _settings = options.Value;
+            _settings = options?.Value ?? throw new ArgumentIsNullException(nameof(options), "AI settings cannot be null");
         }
         public Kernel CreateAiClient()
         {
-            try
-            {
                 return _settings.Type.ToLower() switch
                 {
                     "openai" => CreateOpenAIKernel(),
                     "azureopenai" => CreateAzureOpenAIKernel(),
                     "local" => CreateLocalAIKernel(),
-                    _ => throw new NotSupportedException($"AI provider '{_settings.Type}' is not supported")
+                    _ => throw new AiClientNotSupportedException($"AI provider '{_settings.Type}' is not supported")
                 };
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Failed to create AiClient{ex.Message}");
-                return null;
-            }
         }
 
         private Kernel CreateOpenAIKernel()
