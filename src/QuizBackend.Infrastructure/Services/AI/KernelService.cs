@@ -1,5 +1,4 @@
 ﻿using Microsoft.SemanticKernel;
-using QuizBackend.Domain.Exceptions;
 using QuizBackend.Infrastructure.Interfaces;
 
 namespace QuizBackend.Infrastructure.Services.AI
@@ -17,11 +16,7 @@ namespace QuizBackend.Infrastructure.Services.AI
         {
             var completionResult = await _kernel.InvokePromptAsync(prompt);
 
-            if (completionResult != null)
-            {
-                return completionResult.ToString();
-            }
-            throw new ConfigurationException("Failed to connect with AI service. Please check the configuration or try again later.");
+            return completionResult.ToString();
         }
     }
 }

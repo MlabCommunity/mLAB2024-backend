@@ -23,7 +23,6 @@ namespace QuizBackend.Infrastructure.ExceptionsHandlers
             {
                 Status = StatusCodes.Status500InternalServerError,
                 Title = "Server error",
-                Detail = $"Exception type: {exception.GetType().Name} - Message: {exception.Message}"
             };
 
             httpContext.Response.StatusCode = problemDetails.Status.Value;
