@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace QuizBackend.Domain.Exceptions
+﻿namespace QuizBackend.Domain.Exceptions
 {
     public class BadRequestException : Exception
     {
@@ -17,7 +11,7 @@ namespace QuizBackend.Domain.Exceptions
         {
             Errors = new Dictionary<string, string[]>
             {
-                { "errors", errors.ToArray() }
+                { "error", errors.ToArray() }
             };
         }
         public BadRequestException(string message, IDictionary<string, string[]> errors) : base(message)

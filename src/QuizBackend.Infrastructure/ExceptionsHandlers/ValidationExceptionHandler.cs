@@ -1,8 +1,8 @@
-﻿using FluentValidation;
-using Microsoft.AspNetCore.Diagnostics;
+﻿using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using QuizBackend.Domain.Exceptions;
 
 namespace QuizBackend.Infrastructure.ExceptionsHandlers
 {
@@ -41,7 +41,7 @@ namespace QuizBackend.Infrastructure.ExceptionsHandlers
             {
                 Status = StatusCodes.Status400BadRequest,
                 Title = "Validation Failed",
-                Detail = "One or more validation errors occurred."
+                Detail = validationException.Message
             };
 
             httpContext.Response.ContentType = "application/problem+json";
