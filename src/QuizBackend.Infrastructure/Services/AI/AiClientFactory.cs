@@ -3,6 +3,7 @@ using Microsoft.SemanticKernel;
 using QuizBackend.Application.AiConfiguration;
 using QuizBackend.Domain.Exceptions;
 using QuizBackend.Infrastructure.Interfaces;
+using System.Reflection;
 
 namespace QuizBackend.Infrastructure.Services.AI
 {
@@ -13,6 +14,21 @@ namespace QuizBackend.Infrastructure.Services.AI
         public AiClientFactory(IOptions<AiSettings> options)
         {
             _settings = options?.Value ?? throw new ArgumentIsNullException(nameof(options), "AI settings cannot be null");
+            ValidateSettings(_settings);
+        }
+
+        private void ValidateSettings(AiSettings settings)
+        {
+            var properties = settings.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance);
+
+            foreach (var property in properties)
+            {
+                var value = property.GetValue(settings) as string;
+                if (string.IsNullOrWhiteSpace(value))
+                {
+                    throw new ArgumentIsNullException(property.Name);
+                }
+            }
         }
         public Kernel CreateAiClient()
         {

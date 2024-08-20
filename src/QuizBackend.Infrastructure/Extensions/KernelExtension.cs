@@ -7,7 +7,7 @@ namespace QuizBackend.Infrastructure.Extensions
 {
     public static class KernelExtension
     {
-        public static void AddKernelExtension(this IServiceCollection services, IConfiguration configuration)
+        public static void AddKernelExtension(this IServiceCollection services)
         {
             services.AddScoped<IKernelService, KernelService>(sp =>
             {

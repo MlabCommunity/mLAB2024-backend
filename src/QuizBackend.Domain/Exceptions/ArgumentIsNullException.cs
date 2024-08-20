@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 namespace QuizBackend.Domain.Exceptions
 {
     public class ArgumentIsNullException : ArgumentNullException
@@ -11,7 +6,7 @@ namespace QuizBackend.Domain.Exceptions
         public string ParamName { get; }
 
         public ArgumentIsNullException(string paramName)
-            : base($"Parameter '{paramName}' cannot be null.")
+            : base(ValidateParam(paramName))
         {
             ParamName = paramName;
         }
@@ -26,6 +21,15 @@ namespace QuizBackend.Domain.Exceptions
             : base(message, innerException)
         {
             ParamName = paramName;
+        }
+
+        private static string ValidateParam(string paramName)
+        {
+            if (string.IsNullOrWhiteSpace(paramName))
+            {
+                throw new ArgumentException("Parameter name cannot be null, empty, or whitespace.", nameof(paramName));
+            }
+            return $"Parameter '{paramName}' cannot be null or whitespace.";
         }
     }
 }
