@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using QuizBackend.Application.Dtos;
 using QuizBackend.Application.Interfaces;
+using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 
 namespace QuizBackend.Api.Controllers
@@ -15,14 +16,21 @@ namespace QuizBackend.Api.Controllers
         }
 
         [HttpPost("signin")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(JwtAuthResultDto))]
+        [SwaggerOperation(Summary = "User sign-in", Description = "Logs in the user with the provided credentials.")]
+        [ProducesResponseType(typeof(JwtAuthResultDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<IActionResult> SignIn(LoginDto loginDto)
         {
             var jwtAuthResult = await _authService.LoginAsync(loginDto);
             return Ok(jwtAuthResult);
         }
 
+
         [HttpPost("signup")]
+        [SwaggerOperation(Summary = "User sign-up", Description = "Registers a new user with the provided details.")]
+        [ProducesResponseType(typeof(SignUpResponseDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> SignUp(RegisterRequestDto request)
         {
             var response = await _authService.SignUpAsync(request);
@@ -30,15 +38,23 @@ namespace QuizBackend.Api.Controllers
          
         }
 
+
         [HttpPost("logout")]
+        [SwaggerOperation(Summary = "User logout", Description = "Logs out the current user.")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Logout()
         {
            var result = await _authService.LogoutAsync();
            return Ok(result);
         }
 
+
         [HttpPost("refresh-token")]
-        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(JwtAuthResultDto))]
+        [SwaggerOperation(Summary = "Refresh JWT token", Description = "Refreshes the JWT token using a valid refresh token.")]
+        [ProducesResponseType(typeof(JwtAuthResultDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> RefreshToken(RefreshTokenRequestDto refreshTokenRequest)
         {
             var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
