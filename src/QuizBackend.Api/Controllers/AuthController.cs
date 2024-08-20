@@ -29,7 +29,7 @@ namespace QuizBackend.Api.Controllers
 
         [HttpPost("signup")]
         [SwaggerOperation(Summary = "User sign-up", Description = "Registers a new user with the provided details.")]
-        [ProducesResponseType(typeof(object), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(SignUpResponseDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<ActionResult> SignUp(RegisterRequestDto request)
         {
