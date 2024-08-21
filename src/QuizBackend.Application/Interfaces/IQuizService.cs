@@ -8,5 +8,6 @@ namespace QuizBackend.Application.Interfaces
 {
     public interface IQuizService
     {
+        Task<string> GetTextFromPromptAsync(string prompt);
     }
 }

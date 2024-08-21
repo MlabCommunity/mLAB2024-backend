@@ -3,6 +3,7 @@ using Microsoft.SemanticKernel;
 using QuizBackend.Application.AiConfiguration;
 using QuizBackend.Domain.Exceptions;
 using QuizBackend.Infrastructure.Interfaces;
+using QuizBackend.Infrastructure.Services.Delegating;
 using System.Reflection;
 
 namespace QuizBackend.Infrastructure.Services.AI
@@ -58,8 +59,9 @@ namespace QuizBackend.Infrastructure.Services.AI
 
         private Kernel CreateGroqAIKernel()
         {
+            HttpClient httpClient = new(new GroqDelegatingHandler());
             var kernelBuilder = Kernel.CreateBuilder()
-                .AddOpenAIChatCompletion(_settings.Model, _settings.Endpoint, _settings.Key);
+                .AddOpenAIChatCompletion(_settings.Model, _settings.Key, httpClient: httpClient);
             return kernelBuilder.Build();
         }
 

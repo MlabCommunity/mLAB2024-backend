@@ -11,5 +11,14 @@ namespace QuizBackend.Api.Controllers
         {
             _quizService = quizService;
         }
+
+        [HttpPost("GenerateFromPrompt")]
+        public async Task<string> GenerateResponseFromPromptAsync([FromBody] string prompt)
+        {
+
+            var response = await _quizService.GetTextFromPromptAsync(prompt);
+
+            return response;
+        }
     }
 }
