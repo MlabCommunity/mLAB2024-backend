@@ -11,6 +11,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerDocumentation();
 builder.Services.AddExceptionHandlers();
 
+builder.Services.AddConfigureCors(builder.Configuration);
+
 builder.Services.AddRouting(options =>
 {
     options.LowercaseUrls = true;
@@ -26,6 +28,7 @@ if (app.Environment.IsDevelopment())
 app.UseExceptionHandler();
 app.UseAuthentication();
 app.UseAuthorization();
+app.UseCors("AllowSpecificOrigins");
 
 app.MapControllers();
 
