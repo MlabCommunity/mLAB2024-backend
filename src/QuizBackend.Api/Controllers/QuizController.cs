@@ -1,4 +1,5 @@
-﻿using QuizBackend.Application.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc;
+using QuizBackend.Application.Interfaces;
 
 namespace QuizBackend.Api.Controllers
 {

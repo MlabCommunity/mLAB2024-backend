@@ -37,6 +37,7 @@ namespace QuizBackend.Infrastructure.Services.AI
                     "openai" => CreateOpenAIKernel(),
                     "azureopenai" => CreateAzureOpenAIKernel(),
                     "local" => CreateLocalAIKernel(),
+                    "groq" => CreateGroqAIKernel(),
                     _ => throw new AiClientNotSupportedException($"AI provider '{_settings.Type}' is not supported")
                 };
         }
@@ -52,6 +53,13 @@ namespace QuizBackend.Infrastructure.Services.AI
         {
             var kernelBuilder = Kernel.CreateBuilder()
                 .AddAzureOpenAIChatCompletion(_settings.Model, _settings.Endpoint, _settings.Key);
+            return kernelBuilder.Build();
+        }
+
+        private Kernel CreateGroqAIKernel()
+        {
+            var kernelBuilder = Kernel.CreateBuilder()
+                .AddOpenAIChatCompletion(_settings.Model, _settings.Endpoint, _settings.Key);
             return kernelBuilder.Build();
         }
 
