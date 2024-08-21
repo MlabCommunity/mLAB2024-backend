@@ -151,7 +151,7 @@ namespace QuizBackend.Infrastructure.Services.Identity
             return new CookieOptions
             {
                 HttpOnly = true,
-                Secure = true,
+                Secure = false,
                 SameSite = SameSiteMode.None
             };
         }
