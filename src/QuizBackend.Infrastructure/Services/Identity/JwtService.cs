@@ -151,8 +151,9 @@ namespace QuizBackend.Infrastructure.Services.Identity
             return new CookieOptions
             {
                 HttpOnly = true,
-                Secure = false,
-                SameSite = SameSiteMode.None
+                //commented for frontend on http localhost to integrate with backend 
+                //Secure = true, 
+                //SameSite = SameSiteMode.Strict
             };
         }
 
