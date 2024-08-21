@@ -14,7 +14,8 @@
                     {
                         builder.WithOrigins(allowedOrigins)
                                .AllowAnyHeader()
-                               .AllowAnyMethod();
+                               .AllowAnyMethod()
+                               .AllowCredentials();
                     }
                     else
                     {
