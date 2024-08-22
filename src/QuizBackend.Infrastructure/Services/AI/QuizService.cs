@@ -1,4 +1,5 @@
-﻿using QuizBackend.Application.Interfaces;
+﻿using QuizBackend.Application.Dtos.Quiz;
+using QuizBackend.Application.Interfaces;
 using QuizBackend.Infrastructure.Interfaces;
 
 namespace QuizBackend.Infrastructure.Services.AI
@@ -12,12 +13,12 @@ namespace QuizBackend.Infrastructure.Services.AI
             _kernelService = kernelService;
         }
 
-        public async Task<string> GetTextFromPromptAsync(string prompt)
+       public async Task<QuizDto> GenerateQuizFromPromptAsync(string topic, int numberOfQuestions, int numberOfAnswers)
         {
-            var response = await _kernelService.InvokePromptAsync(prompt);
-
-            return response;
-
+            var prompt = $"Generate a quiz based on the following topic: \"{topic}\". "+
+                $"The quiz should contain exactly \"{numberOfQuestions}\" question and \"{numberOfAnswers}\" answers, only one answer should be correct. Respond only with JSON." +
+                "Here is the required JSON format: "+
+                "";
         }
     }
 }

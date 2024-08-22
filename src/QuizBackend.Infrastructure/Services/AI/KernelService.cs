@@ -1,4 +1,5 @@
 ﻿using Microsoft.SemanticKernel;
+using Newtonsoft.Json.Linq;
 using QuizBackend.Infrastructure.Interfaces;
 
 namespace QuizBackend.Infrastructure.Services.AI
