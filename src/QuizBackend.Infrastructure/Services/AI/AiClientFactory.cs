@@ -59,7 +59,7 @@ namespace QuizBackend.Infrastructure.Services.AI
 
         private Kernel CreateGroqAIKernel()
         {
-            HttpClient httpClient = new(new GroqDelegatingHandler());
+            HttpClient httpClient = new(new GroqDelegatingHandler(_settings.Endpoint));
             var kernelBuilder = Kernel.CreateBuilder()
                 .AddOpenAIChatCompletion(_settings.Model, _settings.Key, httpClient: httpClient);
             return kernelBuilder.Build();
