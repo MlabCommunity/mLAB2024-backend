@@ -1,6 +1,6 @@
 ﻿using QuizBackend.Application.Dtos;
 
-namespace QuizBackend.Application.Interfaces
+namespace QuizBackend.Application.Interfaces.Users
 {
     public interface IAuthService
     {

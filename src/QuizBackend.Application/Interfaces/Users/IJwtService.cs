@@ -2,7 +2,7 @@
 using QuizBackend.Domain.Entities;
 using System.Security.Claims;
 
-namespace QuizBackend.Application.Interfaces
+namespace QuizBackend.Application.Interfaces.Users
 {
     public interface IJwtService
     {

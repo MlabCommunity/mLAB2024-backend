@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
-using QuizBackend.Application.Interfaces;
+using QuizBackend.Application.Interfaces.Users;
 using QuizBackend.Infrastructure.ExceptionsHandlers;
 using QuizBackend.Infrastructure.Services.Identity;
 

@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using QuizBackend.Application.Dtos.Profile;
-using QuizBackend.Application.Interfaces;
+using QuizBackend.Application.Interfaces.Users;
 using QuizBackend.Domain.Entities;
 using QuizBackend.Domain.Exceptions;
 

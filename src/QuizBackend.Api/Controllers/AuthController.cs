@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using QuizBackend.Application.Dtos;
-using QuizBackend.Application.Interfaces;
+using QuizBackend.Application.Interfaces.Users;
 using Swashbuckle.AspNetCore.Annotations;
 using System.Security.Claims;
 
