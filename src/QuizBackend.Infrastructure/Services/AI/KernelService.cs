@@ -11,12 +11,5 @@ namespace QuizBackend.Infrastructure.Services.AI
         {
             _kernel = kernel;
         }
-
-        public async Task<string> InvokePromptAsync(string prompt)
-        {
-            var completionResult = await _kernel.InvokePromptAsync(prompt);
-
-            return completionResult.ToString();
-        }
     }
 }
