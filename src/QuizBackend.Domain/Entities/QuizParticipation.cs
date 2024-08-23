@@ -2,7 +2,7 @@
 {
     public class QuizParticipation
     { 
-        public Guid Id { get; private init; } = Guid.NewGuid();
+        public Guid Id { get; private set; } = Guid.NewGuid();
         public required Guid QuizId { get; set; }
         public Quiz Quiz { get; set; } = null!;
         public required string ParticipantId { get; set; }
