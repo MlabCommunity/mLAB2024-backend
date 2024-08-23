@@ -31,6 +31,10 @@ namespace QuizBackend.Infrastructure.Extensions
 
             services.AddDataMigrator();
 
+            services.AddAiClientFactoryExtension(configuration);
+            services.AddKernelExtension();
+            services.AddAiServiceExtension();
+
             return services;
         } 
     }
