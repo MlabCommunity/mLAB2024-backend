@@ -1,19 +1,33 @@
-﻿Generate a quiz based on the following topic: "{{topic}}". The quiz should contain exactly "{{numberOfQuestions}}" questions and "{{numberOfAnswers}}" answers per question, with only {{numberofCorrectAnswers}} correct answer. Respond only with JSON. Here is the required JSON format:
+﻿Generate a quiz based on the following content: "{{content}}". The quiz should contain exactly "{{numberOfQuestions}}" questions. For "multiple choices" questions, each question should have exactly 4 answers, with only one correct answer. For "true/false" questions, each question should have exactly 2 answers: "true" and "false", with one being correct. Respond only with JSON. Here is the required JSON format:
 {
-  "id": "Quiz Guid Id",
-  "title": "Quiz Title",
-  "description": "Quiz Description",
-  "questions": [
+  "Title": "Sample Quiz Title",
+  "Description": "Sample quiz description",
+  "QuestionsDto": [
     {
-      "id": "question int id",
-      "title": "Question text",
-      "description": "number of correct answer"
-      "answers": [
+      "Title": "Sample Question 1",
+      "Description": "Description for question 1",
+      "AnswersDto": [
         {
-          "id": "Answer id",
-          "content": "Answer text",
-          "isCorrect": true,
-          "questionId": "Question int id",
+          "Content": "Answer 1 for Question 1",
+          "Iscorrect": true
+        },
+        {
+          "Content": "Answer 2 for Question 1",
+          "Iscorrect": false
+        }
+      ]
+    },
+    {
+      "Title": "Sample Question 2",
+      "Description": "Description for question 2",
+      "AnswersDto": [
+        {
+          "Content": "Answer 1 for Question 2",
+          "Iscorrect": false
+        },
+        {
+          "Content": "Answer 2 for Question 2",
+          "Iscorrect": true
         }
       ]
     }

@@ -1,7 +1,7 @@
 ﻿{
   "schema": 1,
   "type": "completion",
-  "description": "Generate quiz based on the given user topic, number of questions, number of answers and correct answer. Respond only with JSON.",
+  "description": "Generate quiz based on the given user topic, number of questions, and type of answers. Respond only with JSON.",
   "execution_settings": {
     "default": {
       "temperature": 0,
@@ -12,7 +12,7 @@
   },
   "input_variables": [
     {
-      "name": "topic",
+      "name": "content",
       "description": "Background information about quiz",
       "required": true
     },
@@ -22,13 +22,8 @@
       "required": true
     },
     {
-      "name": "numberOfAnswers",
-      "description": "number of answers to generate per question",
-      "required": true
-    },
-    {
-      "name": "numberOfCorrectAnswers",
-      "description": "number of correct answers to generate per question",
+      "name": "typeOfQuestions",
+      "description": "type of questions to generate(multiple choices, true/false)",
       "required": true
     }
   ]

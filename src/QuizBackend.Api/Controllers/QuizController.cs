@@ -1,4 +1,6 @@
-﻿using QuizBackend.Application.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc;
+using QuizBackend.Application.Dtos.CreateQuiz;
+using QuizBackend.Application.Interfaces;
 
 namespace QuizBackend.Api.Controllers
 {
@@ -9,6 +11,18 @@ namespace QuizBackend.Api.Controllers
         public QuizController(IQuizService quizService)
         {
             _quizService = quizService;
+        }
+
+        [HttpPost("generate-quiz")]
+        public async Task<IActionResult> GenerateQuizFromPromptTemplateAsync(QuizArgumentsDto quizArguments)
+        {
+            if (quizArguments == null)
+            {
+                return BadRequest();
+            }
+
+            var jsonResponse = await _quizService.GenerateQuizFromPromptTemplateAsync(quizArguments);
+            return Ok(jsonResponse);
         }
     }
 }

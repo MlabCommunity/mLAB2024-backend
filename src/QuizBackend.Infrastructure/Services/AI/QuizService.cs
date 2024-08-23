@@ -1,4 +1,7 @@
-﻿using QuizBackend.Application.Dtos.Quiz;
+﻿using Microsoft.SemanticKernel;
+using Newtonsoft.Json;
+using QuizBackend.Application.Dtos.CreateQuiz;
+using QuizBackend.Application.Dtos.Quiz;
 using QuizBackend.Application.Interfaces;
 using QuizBackend.Infrastructure.Interfaces;
 
@@ -13,12 +16,20 @@ namespace QuizBackend.Infrastructure.Services.AI
             _kernelService = kernelService;
         }
 
-       public async Task<QuizDto> GenerateQuizFromPromptAsync(string topic, int numberOfQuestions, int numberOfAnswers)
+        public async Task<CreateQuizDto> GenerateQuizFromPromptTemplateAsync(QuizArgumentsDto quizArguments)
         {
-            var prompt = $"Generate a quiz based on the following topic: \"{topic}\". "+
-                $"The quiz should contain exactly \"{numberOfQuestions}\" question and \"{numberOfAnswers}\" answers, only one answer should be correct. Respond only with JSON." +
-                "Here is the required JSON format: "+
-                "";
+            var kernelArguments = new KernelArguments
+            {
+                {"content", quizArguments.Content },
+                {"numberOfQuestions", quizArguments.NumberOfQuestions},
+                {"typeOfQuestions", quizArguments.TypeOfQuestions}
+            };
+
+            var jsonResponse = await _kernelService.CreatePluginFromPromptDirectory("GenerateQuiz", kernelArguments);
+            var quizDto = JsonConvert.DeserializeObject<CreateQuizDto>(jsonResponse);
+
+            return quizDto;
+            
         }
     }
 }
