@@ -22,7 +22,7 @@ namespace QuizBackend.Infrastructure.ExceptionsHandlers
             var problemDetails = new ProblemDetails
             {
                 Status = StatusCodes.Status500InternalServerError,
-                Title = "Server error"
+                Title = "Server error",
             };
 
             httpContext.Response.StatusCode = problemDetails.Status.Value;

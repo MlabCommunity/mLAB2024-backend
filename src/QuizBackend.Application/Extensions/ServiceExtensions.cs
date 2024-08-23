@@ -8,6 +8,7 @@ namespace QuizBackend.Application.Extensions
         public static void AddApplication(this IServiceCollection services, IConfiguration configuration)
         {
             services.AddFluentValidationExtension(configuration);
+            services.AddMediatRExtension(configuration);
         }
     }
 }
