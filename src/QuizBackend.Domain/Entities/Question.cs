@@ -11,7 +11,7 @@ namespace QuizBackend.Domain.Entities
         public DateTime? UpdatedAtUtc { get; set; }
         public ICollection<Answer> Answers { get; set; } = [];
         public QuestionType QuestionType { get; set; }
-        public required Guid QuizId {  get; set; }
+        public Guid QuizId {  get; set; }
         public Quiz Quiz { get; set; } = null!;
     }
 }

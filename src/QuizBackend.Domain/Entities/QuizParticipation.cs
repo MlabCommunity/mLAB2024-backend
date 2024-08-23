@@ -3,9 +3,9 @@
     public class QuizParticipation
     { 
         public Guid Id { get; set; } 
-        public required Guid QuizId { get; set; }
+        public Guid QuizId { get; set; }
         public Quiz Quiz { get; set; } = null!;
-        public required string ParticipantId { get; set; }
+        public string ParticipantId { get; set; } = null!;
         public User Participant { get; set; } = null!;
         public DateTime ParticipationDateUtc { get; set; }
     }
