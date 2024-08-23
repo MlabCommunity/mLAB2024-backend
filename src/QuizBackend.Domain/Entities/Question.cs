@@ -4,7 +4,7 @@ namespace QuizBackend.Domain.Entities
 {
     public class Question
     {
-        public int Id { get; private set; }
+        public Guid Id { get; set; }
         public required string Title { get; set; }
         public string? Description { get; set; }
         public DateTime CreatedAtUtc { get; init; }

@@ -4,7 +4,7 @@ namespace QuizBackend.Domain.Entities
 {
     public class Quiz
     {
-        public Guid Id { get; private set; } = Guid.NewGuid();
+        public Guid Id { get; set; }
         public required string Title { get; set; }
         public string? Description { get; set; }
         public Status Status { get; set; } = Status.Active;

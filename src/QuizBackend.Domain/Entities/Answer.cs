@@ -2,10 +2,10 @@
 {
     public class Answer
     {
-        public int Id { get; private set; }
+        public Guid Id { get; set; }
         public required string Content { get; set; }
         public bool IsCorrect { get; set; } = false;
-        public required int QuestionId { get; set; }
+        public required Guid QuestionId { get; set; }
         public Question Question { get; set; } = null!;
     }
 }
