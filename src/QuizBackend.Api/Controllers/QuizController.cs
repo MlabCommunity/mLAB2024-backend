@@ -1,8 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using QuizBackend.Application.Commands.GenerateQuiz;
-using QuizBackend.Application.Dtos.CreateQuiz;
-using QuizBackend.Application.Dtos.Quiz;
+using QuizBackend.Application.Commands.Quizzes.CreateQuiz;
+using QuizBackend.Application.Commands.Quizzes.GenerateQuiz;
+using QuizBackend.Application.Dtos.Quizzes.CreateQuiz;
+using QuizBackend.Application.Dtos.Quizzes.GenerateQuiz;
 
 namespace QuizBackend.Api.Controllers
 {
@@ -28,6 +29,18 @@ namespace QuizBackend.Api.Controllers
             var result = await _mediator.Send(command);
 
             return Ok(result);
+        }
+
+        [HttpPost("create-quiz")]
+        [ProducesResponseType(typeof(CreateQuizDto), StatusCodes.Status200OK)]
+        public async Task<IActionResult> CreateQuiz(CreateQuizDto createQuizDto)
+        {
+            //TODO Validator to createQuizDto
+            var command = new CreateQuizCommand(createQuizDto);
+
+            var quizId = await _mediator.Send(command);
+
+            return Ok(quizId);
         }
     }
 }

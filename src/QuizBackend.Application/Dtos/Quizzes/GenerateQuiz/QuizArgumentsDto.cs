@@ -1,5 +1,4 @@
-﻿
-namespace QuizBackend.Application.Dtos.CreateQuiz
+﻿namespace QuizBackend.Application.Dtos.Quizzes.GenerateQuiz
 {
     public class QuizArgumentsDto
     {

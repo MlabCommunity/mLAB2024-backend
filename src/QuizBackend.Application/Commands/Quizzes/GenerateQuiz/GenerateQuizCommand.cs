@@ -1,7 +1,7 @@
-﻿using QuizBackend.Application.Dtos.Quiz;
+﻿using QuizBackend.Application.Dtos.Quizzes.GenerateQuiz;
 using QuizBackend.Application.Interfaces.Messaging;
 
-namespace QuizBackend.Application.Commands.GenerateQuiz
+namespace QuizBackend.Application.Commands.Quizzes.GenerateQuiz
 {
     public class GenerateQuizCommand : ICommand<GenerateQuizDto>
     {

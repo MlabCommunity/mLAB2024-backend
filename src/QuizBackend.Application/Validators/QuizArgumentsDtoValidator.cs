@@ -1,5 +1,5 @@
 ﻿using FluentValidation;
-using QuizBackend.Application.Dtos.CreateQuiz;
+using QuizBackend.Application.Dtos.Quizzes.GenerateQuiz;
 
 namespace QuizBackend.Application.Validators
 {
