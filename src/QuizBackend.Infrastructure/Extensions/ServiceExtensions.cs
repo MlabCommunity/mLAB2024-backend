@@ -35,6 +35,8 @@ namespace QuizBackend.Infrastructure.Extensions
             services.AddKernelExtension();
             services.AddAiServiceExtension();
 
+            services.AddRepositories();
+
             return services;
         } 
     }
