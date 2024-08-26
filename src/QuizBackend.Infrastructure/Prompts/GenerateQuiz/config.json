@@ -1,0 +1,30 @@
+﻿{
+  "schema": 1,
+  "type": "completion",
+  "description": "Generate quiz based on the given user topic, number of questions, and type of answers. Respond only with JSON.",
+  "execution_settings": {
+    "default": {
+      "temperature": 0,
+      "response_format": {
+        "type": "json_object"
+      }
+    }
+  },
+  "input_variables": [
+    {
+      "name": "content",
+      "description": "Background information about quiz",
+      "required": true
+    },
+    {
+      "name": "numberOfQuestions",
+      "description": "number of questions to generate",
+      "required": true
+    },
+    {
+      "name": "typeOfQuestions",
+      "description": "type of questions to generate(multiple choices or true/false or both)",
+      "required": true
+    }
+  ]
+}
