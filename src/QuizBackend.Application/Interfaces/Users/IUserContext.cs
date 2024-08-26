@@ -1,4 +1,4 @@
-﻿namespace QuizBackend.Application.Interfaces
+﻿namespace QuizBackend.Application.Interfaces.Users
 {
     public interface IUserContext
     {

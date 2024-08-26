@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using QuizBackend.Application.Interfaces;
+using QuizBackend.Application.Interfaces.Users;
 using QuizBackend.Infrastructure.Services.Identity;
 
 namespace QuizBackend.Infrastructure.Extensions

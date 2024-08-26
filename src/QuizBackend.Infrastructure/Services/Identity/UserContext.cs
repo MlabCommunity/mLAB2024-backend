@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using QuizBackend.Application.Interfaces;
+using QuizBackend.Application.Interfaces.Users;
 using QuizBackend.Domain.Exceptions;
 using System.Security.Claims;
 
