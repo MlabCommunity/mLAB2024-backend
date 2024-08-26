@@ -4,7 +4,7 @@ using QuizBackend.Application.Interfaces.Messaging;
 
 namespace QuizBackend.Application.Commands.GenerateQuiz
 {
-    public class GenerateQuizCommandHandler : ICommandHandler<GenerateQuizCommand, CreateQuizDto>
+    public class GenerateQuizCommandHandler : ICommandHandler<GenerateQuizCommand, GenerateQuizDto>
     {
         private readonly IQuizService _quizService;
 
@@ -13,7 +13,7 @@ namespace QuizBackend.Application.Commands.GenerateQuiz
             _quizService = quizService;
         }
 
-        public async Task<CreateQuizDto> Handle(GenerateQuizCommand command, CancellationToken cancellationToken)
+        public async Task<GenerateQuizDto> Handle(GenerateQuizCommand command, CancellationToken cancellationToken)
         {
             var quizDto = await _quizService.GenerateQuizFromPromptTemplateAsync(command);
 

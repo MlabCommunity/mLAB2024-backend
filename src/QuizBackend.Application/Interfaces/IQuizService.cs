@@ -6,6 +6,6 @@ namespace QuizBackend.Application.Interfaces
 {
     public interface IQuizService
     {
-        Task<CreateQuizDto> GenerateQuizFromPromptTemplateAsync(GenerateQuizCommand command);
+        Task<GenerateQuizDto> GenerateQuizFromPromptTemplateAsync(GenerateQuizCommand command);
     }
 }

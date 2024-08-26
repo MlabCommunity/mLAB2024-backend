@@ -1,10 +1,10 @@
 ﻿
 namespace QuizBackend.Application.Dtos.Quiz
 {
-    public class CreateQuizDto
+    public class GenerateQuizDto
     {
         public string Title { get; set; }
         public string Description { get; set; }
-        public List<CreateQuestionDto> CreateQuestionsDto { get; set; } 
+        public List<GenerateQuestionDto> GenerateQuestionsDto { get; set; } 
     }
 }

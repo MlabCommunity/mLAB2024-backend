@@ -3,7 +3,7 @@ using QuizBackend.Application.Interfaces.Messaging;
 
 namespace QuizBackend.Application.Commands.GenerateQuiz
 {
-    public class GenerateQuizCommand : ICommand<CreateQuizDto>
+    public class GenerateQuizCommand : ICommand<GenerateQuizDto>
     {
         public string Content { get; set; }
         public int NumberOfQuestions { get; set; }

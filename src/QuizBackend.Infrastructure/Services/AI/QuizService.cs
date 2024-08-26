@@ -16,7 +16,7 @@ namespace QuizBackend.Infrastructure.Services.AI
             _kernelService = kernelService;
         }
 
-        public async Task<CreateQuizDto> GenerateQuizFromPromptTemplateAsync(GenerateQuizCommand command)
+        public async Task<GenerateQuizDto> GenerateQuizFromPromptTemplateAsync(GenerateQuizCommand command)
         {
             var kernelArguments = new KernelArguments
             {
@@ -26,7 +26,7 @@ namespace QuizBackend.Infrastructure.Services.AI
             };
 
             var jsonResponse = await _kernelService.CreatePluginFromPromptDirectory("GenerateQuiz", kernelArguments);
-            var quizDto = JsonConvert.DeserializeObject<CreateQuizDto>(jsonResponse);
+            var quizDto = JsonConvert.DeserializeObject<GenerateQuizDto>(jsonResponse);
 
             return quizDto;
             
