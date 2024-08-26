@@ -20,8 +20,10 @@ namespace QuizBackend.Api.Controllers
             Summary = "Retrieves a quiz by its unique Id.",
             Description = "Fetches the details of a quiz specified by its unique Id.")]
         [ProducesResponseType(typeof(QuizDetailsDto), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status403Forbidden)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
         public async Task<ActionResult<QuizDetailsDto>> GetQuiz([FromRoute] Guid Id, CancellationToken cancellationToken)
         {
             var query = new GetQuizQuery(Id);

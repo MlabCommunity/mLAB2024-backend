@@ -17,9 +17,10 @@ namespace QuizBackend.Infrastructure.Repositories
         public async Task<Quiz?> Get(Guid id, CancellationToken cancellationToken = default)
         {
             Quiz? quiz = await _dbContext.Quizzes
+                .AsNoTracking()
+                .Include(quiz => quiz.Owner)
                 .Include(quiz => quiz.Questions)
                 .ThenInclude(q => q.Answers)
-                .AsNoTracking()
                 .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
 
             return quiz;
