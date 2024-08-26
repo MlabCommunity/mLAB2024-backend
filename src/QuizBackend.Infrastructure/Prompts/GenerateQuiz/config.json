@@ -23,7 +23,7 @@
     },
     {
       "name": "typeOfQuestions",
-      "description": "type of questions to generate(multiple choices, true/false)",
+      "description": "type of questions to generate(multiple choices or true/false or both)",
       "required": true
     }
   ]
