@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using QuizBackend.Application.Dtos;
-using QuizBackend.Application.Interfaces;
+using QuizBackend.Application.Interfaces.Users;
 using QuizBackend.Domain.Entities;
 using QuizBackend.Domain.Exceptions;
 using System.Security.Claims;
