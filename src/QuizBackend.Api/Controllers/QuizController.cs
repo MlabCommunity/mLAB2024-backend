@@ -19,11 +19,6 @@ namespace QuizBackend.Api.Controllers
         [ProducesResponseType(typeof(GenerateQuizDto), StatusCodes.Status200OK)]
         public async Task<IActionResult> GenerateQuizFromPromptTemplateAsync(QuizArgumentsDto quizArguments)
         {
-            if (quizArguments == null)
-            {
-                return BadRequest();
-            }
-
             var command = new GenerateQuizCommand(
                 quizArguments.Content,
                 quizArguments.NumberOfQuestions,
