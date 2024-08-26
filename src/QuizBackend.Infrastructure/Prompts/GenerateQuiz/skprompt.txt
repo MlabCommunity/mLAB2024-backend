@@ -1,12 +1,17 @@
-﻿Generate a quiz based on the following content: "{{content}}". The quiz should contain exactly "{{numberOfQuestions}}" questions. For "multiple choices" questions, each question should have exactly 4 answers, with only one correct answer. For "true/false" questions, each question should have exactly 2 answers: "true" and "false", with one being correct. Respond only with JSON. Here is the required JSON format:
+﻿Generate a quiz in JSON format based on the following content: "{{$content}}". The quiz should contain exactly "{{$numberOfQuestions}}" questions. The quiz should include the following types of questions: {{$typesOfQuestions}}.
+
+- For "multiple choices" questions, each question should have exactly 4 answers, with only one correct answer. 
+- For "true/false" questions, each question should have exactly 2 answers: "true" and "false", with one being correct.
+
+Respond **only** with the JSON object, and **no** additional text or explanations.
 {
   "Title": "Sample Quiz Title",
   "Description": "Sample quiz description",
-  "QuestionsDto": [
+  "CreateQuestionsDto": [
     {
       "Title": "Sample Question 1",
       "Description": "Description for question 1",
-      "AnswersDto": [
+      "CreateAnswersDto": [
         {
           "Content": "Answer 1 for Question 1",
           "Iscorrect": true
@@ -20,7 +25,7 @@
     {
       "Title": "Sample Question 2",
       "Description": "Description for question 2",
-      "AnswersDto": [
+      "CreateAnswersDto": [
         {
           "Content": "Answer 1 for Question 2",
           "Iscorrect": false

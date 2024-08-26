@@ -18,11 +18,12 @@ namespace QuizBackend.Infrastructure.Services.AI
 
         public async Task<CreateQuizDto> GenerateQuizFromPromptTemplateAsync(QuizArgumentsDto quizArguments)
         {
+            var typesOfQuestionsString = string.Join(", ", quizArguments.TypesOfQuestions);
             var kernelArguments = new KernelArguments
             {
                 {"content", quizArguments.Content },
                 {"numberOfQuestions", quizArguments.NumberOfQuestions},
-                {"typeOfQuestions", quizArguments.TypeOfQuestions}
+                {"typeOfQuestions", typesOfQuestionsString}
             };
 
             var jsonResponse = await _kernelService.CreatePluginFromPromptDirectory("GenerateQuiz", kernelArguments);

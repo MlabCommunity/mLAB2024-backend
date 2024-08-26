@@ -5,6 +5,6 @@ namespace QuizBackend.Application.Dtos.Quiz
     {
         public string Content { get; set; }
         public bool Iscorrect { get; set; }
-        public CreateQuestionDto QuestionDto { get; set; }
+        public CreateQuestionDto CreateQuestionsDto { get; set; }
     }
 }
