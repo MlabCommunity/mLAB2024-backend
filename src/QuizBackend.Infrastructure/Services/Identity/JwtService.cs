@@ -100,7 +100,7 @@ namespace QuizBackend.Infrastructure.Services.Identity
 
             if (refreshTokenEntity == null || refreshTokenEntity.Expires <= DateTime.UtcNow || refreshTokenEntity.IsRevoked)
             {
-                throw new UnauthorizedException("Invalid refresh token");
+                throw new ApplicationException("Invalid refresh token");
             }
 
             refreshTokenEntity.IsRevoked = true;
@@ -144,27 +144,6 @@ namespace QuizBackend.Infrastructure.Services.Identity
 
             _appDbContext.RefreshTokens.UpdateRange(refreshTokens);
             await _appDbContext.SaveChangesAsync();
-        }
-
-        private CookieOptions CreateCookieOptions()
-        {
-            return new CookieOptions
-            {
-                HttpOnly = true,
-                //commented for frontend on http localhost to integrate with backend 
-                //Secure = true, 
-                //SameSite = SameSiteMode.Strict
-            };
-        }
-
-        public void SetAccessTokenCookie(string token)
-        {
-            _httpContextAccessor.HttpContext?.Response.Cookies.Append("AccessToken", token, CreateCookieOptions());
-        }
-
-        public void SetRefreshTokenCookie(string refreshToken)
-        {
-            _httpContextAccessor.HttpContext?.Response.Cookies.Append("RefreshToken", refreshToken, CreateCookieOptions());
         }
 
         public string GetAccessTokenFromCookie()

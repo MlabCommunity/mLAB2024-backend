@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuizBackend.Application.Commands.GenerateQuiz;
 using QuizBackend.Application.Dtos.CreateQuiz;
@@ -18,6 +19,7 @@ namespace QuizBackend.Api.Controllers
             _mediator = mediator;
         }
 
+        [Authorize]
         [HttpPost("generate-quiz")]
         [ProducesResponseType(typeof(GenerateQuizDto), StatusCodes.Status200OK)]
         public async Task<IActionResult> GenerateQuizFromPromptTemplateAsync(QuizArgumentsDto quizArguments)
@@ -33,6 +35,7 @@ namespace QuizBackend.Api.Controllers
             return Ok(result);
         }
 
+        [Authorize]
         [HttpGet("{Id}")]
         [SwaggerOperation(
             Summary = "Retrieves a quiz by its unique Id.",

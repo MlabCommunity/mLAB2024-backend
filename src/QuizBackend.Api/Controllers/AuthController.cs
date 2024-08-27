@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using QuizBackend.Application.Dtos;
 using QuizBackend.Application.Interfaces.Users;
 using Swashbuckle.AspNetCore.Annotations;
@@ -35,7 +36,7 @@ namespace QuizBackend.Api.Controllers
         {
             var response = await _authService.SignUpAsync(request);
             return Ok(response);
-         
+
         }
 
 
@@ -50,6 +51,7 @@ namespace QuizBackend.Api.Controllers
         }
 
 
+        [Authorize]
         [HttpPost("refresh-token")]
         [SwaggerOperation(Summary = "Refresh JWT token", Description = "Refreshes the JWT token using a valid refresh token.")]
         [ProducesResponseType(typeof(JwtAuthResultDto), StatusCodes.Status200OK)]

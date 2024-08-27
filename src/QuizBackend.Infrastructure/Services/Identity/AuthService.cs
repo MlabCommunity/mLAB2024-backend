@@ -39,9 +39,6 @@ namespace QuizBackend.Infrastructure.Services.Identity
             var accessToken = _jwtService.GenerateJwtToken(claims);
             var refreshToken = await _jwtService.GenerateRefreshTokenAsync(user.Id);
 
-            _jwtService.SetAccessTokenCookie(accessToken);
-            _jwtService.SetRefreshTokenCookie(refreshToken);
-
             return new JwtAuthResultDto
             {
                 AccessToken = accessToken,
@@ -59,9 +56,6 @@ namespace QuizBackend.Infrastructure.Services.Identity
             }
 
             await _signInManager.SignOutAsync();
-
-            _jwtService.SetAccessTokenCookie("");
-            _jwtService.SetRefreshTokenCookie("");
 
             return new LogoutResponseDto
             {
@@ -92,8 +86,6 @@ namespace QuizBackend.Infrastructure.Services.Identity
         public async Task<JwtAuthResultDto> RefreshTokenAsync(string refreshToken, string userId)
         {
             var jwtAuthResult = await _jwtService.RefreshTokenAsync(refreshToken, userId);
-            _jwtService.SetAccessTokenCookie(jwtAuthResult.AccessToken);
-            _jwtService.SetRefreshTokenCookie(jwtAuthResult.RefreshToken);
 
             return jwtAuthResult;
         }
