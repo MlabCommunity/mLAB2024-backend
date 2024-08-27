@@ -56,7 +56,6 @@ namespace QuizBackend.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> CreateQuiz(CreateQuizCommand command)
         {
-            //TODO Validator to createQuizDto
             var quizId = await _mediator.Send(command);
 
             return Ok(quizId);
