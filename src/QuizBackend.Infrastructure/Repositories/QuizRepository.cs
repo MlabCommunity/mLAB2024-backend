@@ -15,6 +15,17 @@ namespace QuizBackend.Infrastructure.Repositories
             _dbContext = dbContext;
         }
 
+        public async Task<Quiz?> Get(Guid id, CancellationToken cancellationToken = default)
+        {
+            Quiz? quiz = await _dbContext.Quizzes
+                .AsNoTracking()
+                .Include(quiz => quiz.Owner)
+                .Include(quiz => quiz.Questions)
+                .ThenInclude(q => q.Answers)
+                .SingleOrDefaultAsync(x => x.Id == id, cancellationToken);
+
+            return quiz;
+        }
         public async Task AddAsync(Quiz quiz)
         {
             _dbContext.Quizzes.Add(quiz);
