@@ -1,5 +1,6 @@
 ﻿using QuizBackend.Application.Dtos.Quizzes.GenerateQuiz;
 using QuizBackend.Application.Interfaces.Messaging;
+using QuizBackend.Domain.Enums;
 
 namespace QuizBackend.Application.Commands.Quizzes.GenerateQuiz
 {
@@ -7,13 +8,13 @@ namespace QuizBackend.Application.Commands.Quizzes.GenerateQuiz
     {
         public string Content { get; set; }
         public int NumberOfQuestions { get; set; }
-        public string TypeOfQuestions { get; set; }
+        public QuestionType QuestionType { get; set; }
 
-        public GenerateQuizCommand(string content, int numberOfQuestions, string typesOfQuestions)
+        public GenerateQuizCommand(string content, int numberOfQuestions, QuestionType questionType)
         {
             Content = content;
             NumberOfQuestions = numberOfQuestions;
-            TypeOfQuestions = typesOfQuestions;
+            QuestionType = questionType;
         }
     }
 }

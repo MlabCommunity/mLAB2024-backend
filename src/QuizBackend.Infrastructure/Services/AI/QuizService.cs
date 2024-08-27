@@ -22,7 +22,7 @@ namespace QuizBackend.Infrastructure.Services.AI
             {
                 {"content", command.Content },
                 {"numberOfQuestions", command.NumberOfQuestions},
-                {"typeOfQuestions", command.TypeOfQuestions}
+                {"typeOfQuestions", command.QuestionType}
             };
 
             var jsonResponse = await _kernelService.CreatePluginFromPromptDirectory("GenerateQuiz", kernelArguments);

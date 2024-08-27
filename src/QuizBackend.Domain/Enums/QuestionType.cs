@@ -2,8 +2,8 @@
 {
     public enum QuestionType
     {
-        MultipleChoice,
-        TrueFalse,
-        ShortAnswer
+        MultipleChoices = 0,
+        TrueFalse = 1,
+        ShortAnswer = 2
     }
 }
