@@ -5,12 +5,8 @@ using QuizBackend.Application.Commands.Quizzes.GenerateQuiz;
 using QuizBackend.Application.Dtos.Quizzes.CreateQuiz;
 using QuizBackend.Application.Dtos.Quizzes.GenerateQuiz;
 using Swashbuckle.AspNetCore.Annotations;
-using QuizBackend.Application.Commands.GenerateQuiz;
-using QuizBackend.Application.Dtos.CreateQuiz;
-using QuizBackend.Application.Dtos.Quiz;
 using QuizBackend.Application.Dtos.Quizzes;
 using QuizBackend.Application.Queries.Quizzes.GetQuiz;
-using Swashbuckle.AspNetCore.Annotations;
 
 namespace QuizBackend.Api.Controllers
 {
