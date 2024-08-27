@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using QuizBackend.Application.Commands.Quizzes.CreateQuiz;
 using QuizBackend.Application.Commands.Quizzes.GenerateQuiz;
-using QuizBackend.Application.Dtos.Quizzes.CreateQuiz;
 using QuizBackend.Application.Dtos.Quizzes.GenerateQuiz;
 using Swashbuckle.AspNetCore.Annotations;
 using QuizBackend.Application.Dtos.Quizzes;
@@ -53,12 +52,11 @@ namespace QuizBackend.Api.Controllers
         }
 
         [HttpPost("create-quiz")]
-        [ProducesResponseType(typeof(CreateQuizDto), StatusCodes.Status200OK)]
-        public async Task<IActionResult> CreateQuiz(CreateQuizDto createQuizDto)
+        [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateQuiz(CreateQuizCommand command)
         {
             //TODO Validator to createQuizDto
-            var command = new CreateQuizCommand(createQuizDto);
-
             var quizId = await _mediator.Send(command);
 
             return Ok(quizId);

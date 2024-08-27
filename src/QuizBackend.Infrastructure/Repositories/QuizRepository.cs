@@ -1,5 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using QuizBackend.Application.Dtos.Quizzes.CreateQuiz;
 using QuizBackend.Domain.Entities;
 using QuizBackend.Domain.Repositories;
 using QuizBackend.Infrastructure.Data;

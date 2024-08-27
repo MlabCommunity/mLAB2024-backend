@@ -1,7 +1,7 @@
 ﻿using FluentValidation;
 using QuizBackend.Application.Dtos.Quizzes.GenerateQuiz;
 
-namespace QuizBackend.Application.Validators
+namespace QuizBackend.Application.Validators.Quizzes
 {
     public class QuizArgumentsDtoValidator : AbstractValidator<QuizArgumentsDto>
     {
