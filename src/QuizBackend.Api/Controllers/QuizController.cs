@@ -1,18 +1,36 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using QuizBackend.Application.Commands.GenerateQuiz;
+using QuizBackend.Application.Dtos.CreateQuiz;
+using QuizBackend.Application.Dtos.Quiz;
 using QuizBackend.Application.Dtos.Quizzes;
 using QuizBackend.Application.Queries.Quizzes.GetQuiz;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace QuizBackend.Api.Controllers
 {
-    public class QuizzesController : BaseController
+    public class QuizController : BaseController
     {
         private readonly IMediator _mediator;
 
-        public QuizzesController(IMediator mediator)
+        public QuizController(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        [HttpPost("generate-quiz")]
+        [ProducesResponseType(typeof(GenerateQuizDto), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GenerateQuizFromPromptTemplateAsync(QuizArgumentsDto quizArguments)
+        {
+            var command = new GenerateQuizCommand(
+                quizArguments.Content,
+                quizArguments.NumberOfQuestions,
+                quizArguments.TypeOfQuestions
+            );
+
+            var result = await _mediator.Send(command);
+
+            return Ok(result);
         }
 
         [HttpGet("{Id}")]
