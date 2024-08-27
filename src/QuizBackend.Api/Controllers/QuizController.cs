@@ -4,6 +4,7 @@ using QuizBackend.Application.Commands.Quizzes.CreateQuiz;
 using QuizBackend.Application.Commands.Quizzes.GenerateQuiz;
 using QuizBackend.Application.Dtos.Quizzes.CreateQuiz;
 using QuizBackend.Application.Dtos.Quizzes.GenerateQuiz;
+using Swashbuckle.AspNetCore.Annotations;
 
 namespace QuizBackend.Api.Controllers
 {
@@ -17,6 +18,7 @@ namespace QuizBackend.Api.Controllers
         }
 
         [HttpPost("generate-quiz")]
+        [SwaggerOperation(Summary = "Generating Quiz with questions and anserws", Description = "typeOfQuestions parameter: 'multiple choices' or 'true/false'")]
         [ProducesResponseType(typeof(GenerateQuizDto), StatusCodes.Status200OK)]
         public async Task<IActionResult> GenerateQuizFromPromptTemplateAsync(QuizArgumentsDto quizArguments)
         {
