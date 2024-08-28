@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace QuizBackend.Application.Commands.Quizzes.UpdateQuestionsAndAnswers
+namespace QuizBackend.Application.Commands.Answers.CreateAnswer
 {
-    internal class UpdateQuestionsAndAnswersCommand
+    internal class CreateAnswerCommandHandler
     {
     }
 }

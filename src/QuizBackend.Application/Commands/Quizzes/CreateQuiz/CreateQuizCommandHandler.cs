@@ -23,7 +23,7 @@ namespace QuizBackend.Application.Commands.Quizzes.CreateQuiz
         {
             var ownerId = _userContext.UserId;
 
-            var quiz = request.quizDto.ToEntity(ownerId);
+            var quiz = request.QuizDto.ToEntity(ownerId);
             
             await _quizRepository.AddAsync(quiz);
 

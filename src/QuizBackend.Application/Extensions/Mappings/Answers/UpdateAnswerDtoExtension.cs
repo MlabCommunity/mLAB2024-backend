@@ -1,7 +1,7 @@
 ﻿using QuizBackend.Application.Dtos.Quizzes.UpdateQuiz;
 using QuizBackend.Domain.Entities;
 
-namespace QuizBackend.Application.Extensions.Mappings.Quizzes
+namespace QuizBackend.Application.Extensions.Mappings.Answers
 {
     public static class UpdateAnswerDtoExtension
     {
