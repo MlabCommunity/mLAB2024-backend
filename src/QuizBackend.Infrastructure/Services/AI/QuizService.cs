@@ -1,7 +1,7 @@
 ﻿using Microsoft.SemanticKernel;
 using Newtonsoft.Json;
-using QuizBackend.Application.Commands.GenerateQuiz;
-using QuizBackend.Application.Dtos.Quiz;
+using QuizBackend.Application.Commands.Quizzes.GenerateQuiz;
+using QuizBackend.Application.Dtos.Quizzes.GenerateQuiz;
 using QuizBackend.Application.Interfaces;
 using QuizBackend.Infrastructure.Interfaces;
 
@@ -22,7 +22,7 @@ namespace QuizBackend.Infrastructure.Services.AI
             {
                 {"content", command.Content },
                 {"numberOfQuestions", command.NumberOfQuestions},
-                {"typeOfQuestions", command.TypeOfQuestions}
+                {"typeOfQuestions", command.QuestionType}
             };
 
             var jsonResponse = await _kernelService.CreatePluginFromPromptDirectory("GenerateQuiz", kernelArguments);

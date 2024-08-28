@@ -25,5 +25,10 @@ namespace QuizBackend.Infrastructure.Repositories
 
             return quiz;
         }
+        public async Task AddAsync(Quiz quiz)
+        {
+            _dbContext.Quizzes.Add(quiz);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

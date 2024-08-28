@@ -1,11 +1,12 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using QuizBackend.Application.Commands.GenerateQuiz;
-using QuizBackend.Application.Dtos.CreateQuiz;
-using QuizBackend.Application.Dtos.Quiz;
+using QuizBackend.Application.Commands.Quizzes.CreateQuiz;
+using QuizBackend.Application.Commands.Quizzes.GenerateQuiz;
+using QuizBackend.Application.Dtos.Quizzes.GenerateQuiz;
+using Swashbuckle.AspNetCore.Annotations;
 using QuizBackend.Application.Dtos.Quizzes;
 using QuizBackend.Application.Queries.Quizzes.GetQuiz;
-using Swashbuckle.AspNetCore.Annotations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace QuizBackend.Api.Controllers
 {
@@ -18,21 +19,18 @@ namespace QuizBackend.Api.Controllers
             _mediator = mediator;
         }
 
+        [Authorize]
         [HttpPost("generate-quiz")]
+        [SwaggerOperation(Summary = "Generating Quiz with questions and anserws", Description = "QuestionType: MultipleChoices = 0, TrueFalse = 1")]
         [ProducesResponseType(typeof(GenerateQuizDto), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GenerateQuizFromPromptTemplateAsync(QuizArgumentsDto quizArguments)
+        public async Task<IActionResult> GenerateQuizFromPromptTemplateAsync(GenerateQuizCommand command)
         {
-            var command = new GenerateQuizCommand(
-                quizArguments.Content,
-                quizArguments.NumberOfQuestions,
-                quizArguments.TypeOfQuestions
-            );
-
             var result = await _mediator.Send(command);
 
             return Ok(result);
         }
 
+        [Authorize]
         [HttpGet("{Id}")]
         [SwaggerOperation(
             Summary = "Retrieves a quiz by its unique Id.",
@@ -48,6 +46,17 @@ namespace QuizBackend.Api.Controllers
             var quiz = await _mediator.Send(query);
 
             return Ok(quiz);
+        }
+
+        [Authorize]
+        [HttpPost("create-quiz")]
+        [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> CreateQuiz(CreateQuizCommand command)
+        {
+            var quizId = await _mediator.Send(command);
+
+            return Ok(quizId);
         }
     }
 }
