@@ -44,8 +44,14 @@ namespace QuizBackend.Infrastructure.Repositories
                 .Skip(pageSize * (pageNumber - 1))
                 .Take(pageSize)
                 .ToListAsync(cancellationToken);
-            
+
             return (quizzes, totalCount);
+        }
+
+        public async Task AddAsync(Quiz quiz)
+        {
+            _dbContext.Quizzes.Add(quiz);
+            await _dbContext.SaveChangesAsync();
         }
     }
 }
