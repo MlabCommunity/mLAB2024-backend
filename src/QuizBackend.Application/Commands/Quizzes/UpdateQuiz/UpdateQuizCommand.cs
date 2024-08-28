@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using QuizBackend.Application.Dtos.Quizzes.UpdateQuiz;
+using QuizBackend.Application.Interfaces.Messaging;
 
 namespace QuizBackend.Application.Commands.Quizzes.UpdateQuiz
 {
-    internal class UpdateQuizCommand
-    {
-    }
+    public record UpdateQuizCommand(UpdateQuizDto quizDto) : ICommand<Guid>;
 }
