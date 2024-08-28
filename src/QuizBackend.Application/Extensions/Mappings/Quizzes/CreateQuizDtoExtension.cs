@@ -1,7 +1,7 @@
 ﻿using QuizBackend.Application.Dtos.Quizzes.CreateQuiz;
 using QuizBackend.Domain.Entities;
 
-namespace QuizBackend.Application.Extensions
+namespace QuizBackend.Application.Extensions.Mappings.Quizzes
 {
     public static class CreateQuizDtoExtension
     {

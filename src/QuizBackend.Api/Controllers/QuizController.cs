@@ -21,16 +21,10 @@ namespace QuizBackend.Api.Controllers
 
         [Authorize]
         [HttpPost("generate-quiz")]
-        [SwaggerOperation(Summary = "Generating Quiz with questions and anserws", Description = "typeOfQuestions parameter: 'multiple choices' or 'true/false'")]
+        [SwaggerOperation(Summary = "Generating Quiz with questions and anserws", Description = "QuestionType: MultipleChoices = 0, TrueFalse = 1")]
         [ProducesResponseType(typeof(GenerateQuizDto), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GenerateQuizFromPromptTemplateAsync(QuizArgumentsDto quizArguments)
+        public async Task<IActionResult> GenerateQuizFromPromptTemplateAsync(GenerateQuizCommand command)
         {
-            var command = new GenerateQuizCommand(
-                quizArguments.Content,
-                quizArguments.NumberOfQuestions,
-                quizArguments.TypeOfQuestions
-            );
-
             var result = await _mediator.Send(command);
 
             return Ok(result);
