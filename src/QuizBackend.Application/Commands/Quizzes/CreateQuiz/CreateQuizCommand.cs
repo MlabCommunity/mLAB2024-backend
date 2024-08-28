@@ -3,13 +3,5 @@ using QuizBackend.Application.Interfaces.Messaging;
 
 namespace QuizBackend.Application.Commands.Quizzes.CreateQuiz
 {
-    public class CreateQuizCommand : ICommand<Guid>
-    {
-        public CreateQuizDto QuizDto { get; }
-
-        public CreateQuizCommand(CreateQuizDto quizDto)
-        {
-            QuizDto = quizDto;
-        }
-    }
+    public record CreateQuizCommand(CreateQuizDto QuizDto) : ICommand<Guid>;
 }

@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
-using QuizBackend.Application.Extensions;
+using QuizBackend.Application.Extensions.Mappings.Quizzes;
 using QuizBackend.Application.Interfaces.Messaging;
 using QuizBackend.Application.Interfaces.Users;
 using QuizBackend.Domain.Exceptions;

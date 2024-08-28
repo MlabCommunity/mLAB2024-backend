@@ -1,11 +1,10 @@
 ﻿using FluentValidation;
-using QuizBackend.Application.Dtos.Quizzes.GenerateQuiz;
 
-namespace QuizBackend.Application.Validators.Quizzes
+namespace QuizBackend.Application.Commands.Quizzes.GenerateQuiz
 {
-    public class QuizArgumentsDtoValidator : AbstractValidator<QuizArgumentsDto>
+    public class GenerateQuizCommandValidator : AbstractValidator<GenerateQuizCommand>
     {
-        public QuizArgumentsDtoValidator()
+        public GenerateQuizCommandValidator()
         {
             RuleFor(x => x.Content)
                 .NotEmpty().WithMessage("Content is required");
@@ -13,9 +12,9 @@ namespace QuizBackend.Application.Validators.Quizzes
             RuleFor(x => x.NumberOfQuestions)
                 .GreaterThan(0).WithMessage("Number of questions must be greater than 0");
 
-            RuleFor(x => x.TypeOfQuestions)
+            RuleFor(x => x.QuestionType)
                 .NotEmpty().WithMessage("Type of questions is required")
-                .Must(type => type == "multiple choices" || type == "true/false")
+                .IsInEnum().WithMessage("Invalid question type.")
                 .WithMessage("Type of questions must be either 'multiple choices' or 'true/false'");
         }
     }
