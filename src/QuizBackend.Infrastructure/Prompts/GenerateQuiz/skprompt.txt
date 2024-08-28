@@ -1,7 +1,7 @@
 ﻿Generate a quiz in JSON format based on the following content: "{{$content}}". The quiz should contain exactly "{{$numberOfQuestions}}" questions, **all of which must be of the type** "{{$typeOfQuestions}}".
 
-- If the type is "multiple choices", each question should have exactly 4 answers, with only one correct answer.
-- If the type is "true/false", each question should have exactly 2 answers: "true" and "false", with one being correct.
+- If the type is "MultipleChoice", each question should have exactly 4 answers, with only one correct answer.
+- If the type is "TrueFalse", each question should have exactly 2 answers: "true" and "false", with one being correct.
 
 
 Respond **only** with the JSON object, and **no** additional text or explanations.
