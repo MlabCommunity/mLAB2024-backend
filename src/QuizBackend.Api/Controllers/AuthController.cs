@@ -39,7 +39,7 @@ namespace QuizBackend.Api.Controllers
 
         }
 
-
+        [Authorize]
         [HttpPost("logout")]
         [SwaggerOperation(Summary = "User logout", Description = "Logs out the current user.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -50,8 +50,6 @@ namespace QuizBackend.Api.Controllers
            return Ok(result);
         }
 
-
-        [Authorize]
         [HttpPost("refresh-token")]
         [SwaggerOperation(Summary = "Refresh JWT token", Description = "Refreshes the JWT token using a valid refresh token.")]
         [ProducesResponseType(typeof(JwtAuthResultDto), StatusCodes.Status200OK)]
@@ -65,8 +63,9 @@ namespace QuizBackend.Api.Controllers
             {
                 return Unauthorized();
             }
-                var jwtAuthResult = await _authService.RefreshTokenAsync(refreshTokenRequest.RefreshToken, userId);
-                return Ok(jwtAuthResult);
+
+            var jwtAuthResult = await _authService.RefreshTokenAsync(refreshTokenRequest.RefreshToken, userId);
+            return Ok(jwtAuthResult);
         }
     }
 }
