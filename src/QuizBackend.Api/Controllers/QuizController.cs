@@ -1,12 +1,15 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using QuizBackend.Application.Dtos.Paged;
+using QuizBackend.Application.Dtos.Quizzes;
+using QuizBackend.Application.Queries.Quizzes.GetQuiz;
+using QuizBackend.Application.Queries.Quizzes.GetQuizzes;
+using Swashbuckle.AspNetCore.Annotations;
 using QuizBackend.Application.Commands.Quizzes.CreateQuiz;
 using QuizBackend.Application.Commands.Quizzes.GenerateQuiz;
 using QuizBackend.Application.Dtos.Quizzes.GenerateQuiz;
-using Swashbuckle.AspNetCore.Annotations;
-using QuizBackend.Application.Dtos.Quizzes;
-using QuizBackend.Application.Queries.Quizzes.GetQuiz;
 using Microsoft.AspNetCore.Authorization;
+
 
 namespace QuizBackend.Api.Controllers
 {
@@ -48,6 +51,20 @@ namespace QuizBackend.Api.Controllers
             return Ok(quiz);
         }
 
+        [HttpGet]
+        [SwaggerOperation(
+            Summary = "Retrieves a paginated list of quizzes.",
+            Description = "Fetches a list of quizzes based on pagination.")]
+        [ProducesResponseType(typeof(PagedDto<QuizDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        public async Task<ActionResult<PagedDto<QuizDto>>> GetPagedQuizzes([FromQuery] GetPagedQuizzesQuery query, CancellationToken cancellation)
+        {
+
+            var result = await _mediator.Send(query);
+            return Ok(result);
+        }
+
         [Authorize]
         [HttpPost("create-quiz")]
         [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
@@ -57,6 +74,7 @@ namespace QuizBackend.Api.Controllers
             var quizId = await _mediator.Send(command);
 
             return Ok(quizId);
+
         }
     }
 }
