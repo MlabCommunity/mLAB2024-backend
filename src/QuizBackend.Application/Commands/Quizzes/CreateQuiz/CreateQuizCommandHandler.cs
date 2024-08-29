@@ -1,27 +1,25 @@
 ﻿using Microsoft.AspNetCore.Http;
+using QuizBackend.Application.Extensions;
 using QuizBackend.Application.Extensions.Mappings.Quizzes;
 using QuizBackend.Application.Interfaces.Messaging;
-using QuizBackend.Application.Interfaces.Users;
-using QuizBackend.Domain.Exceptions;
 using QuizBackend.Domain.Repositories;
-using System.Security.Claims;
 
 namespace QuizBackend.Application.Commands.Quizzes.CreateQuiz
 {
     public class CreateQuizCommandHandler : ICommandHandler<CreateQuizCommand, Guid>
     {
         private readonly IQuizRepository _quizRepository;
-        private readonly IUserContext _userContext;
+        private readonly IHttpContextAccessor _httpContextAccessor;
 
-        public CreateQuizCommandHandler(IQuizRepository quizRepository, IUserContext userContext)
+        public CreateQuizCommandHandler(IQuizRepository quizRepository, IHttpContextAccessor httpContextAccessor)
         {
             _quizRepository = quizRepository;
-            _userContext = userContext;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<Guid> Handle(CreateQuizCommand request, CancellationToken cancellationToken)
         {
-            var ownerId = _userContext.UserId;
+            var ownerId = _httpContextAccessor.GetUserId();
 
             var quiz = request.QuizDto.ToEntity(ownerId);
             

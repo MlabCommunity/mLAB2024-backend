@@ -9,7 +9,6 @@ namespace QuizBackend.Infrastructure.Extensions
     {
         public static void AddProfileExtensions(this IServiceCollection services)
         {
-            services.AddScoped<IUserContext, UserContext>();
             services.AddScoped<IProfileService, ProfileService>();
             services.AddHttpContextAccessor();
         }

@@ -3,22 +3,31 @@ using QuizBackend.Application.Interfaces.Users;
 using QuizBackend.Domain.Entities;
 using QuizBackend.Domain.Repositories;
 using QuizBackend.Infrastructure.Data;
+using System.Linq.Expressions;
 
 namespace QuizBackend.Infrastructure.Repositories
 {
     public class QuizRepository : IQuizRepository
     {
         private readonly AppDbContext _dbContext;
-        private readonly IUserContext _userContext;
-        public QuizRepository(AppDbContext dbContext, IUserContext userContext)
+        public QuizRepository(AppDbContext dbContext)
         {
             _dbContext = dbContext;
-            _userContext = userContext;
+        }
+
+        public async Task<Quiz?> GetQuizForUser(Guid quizId, string userId)
+        {
+            return await _dbContext.Quizzes
+                .AsNoTracking()
+                .Include(quiz => quiz.Owner)
+                .Include(quiz => quiz.Questions)
+                .ThenInclude(q => q.Answers)
+                .FirstOrDefaultAsync(x => x.Id == quizId && x.Owner.Id == userId);
         }
 
         public async Task<Quiz?> Get(Guid id, CancellationToken cancellationToken = default)
         {
-            Quiz? quiz = await _dbContext.Quizzes
+            var quiz = await _dbContext.Quizzes
                 .AsNoTracking()
                 .Include(quiz => quiz.Owner)
                 .Include(quiz => quiz.Questions)
@@ -28,10 +37,8 @@ namespace QuizBackend.Infrastructure.Repositories
             return quiz;
         }
 
-        public async Task<(List<Quiz> quizzes, int totalCount)> Get(int pageSize, int pageNumber, CancellationToken cancellationToken = default)
+        public async Task<(List<Quiz> quizzes, int totalCount)> Get(string userId, int pageSize, int pageNumber, CancellationToken cancellationToken = default)
         {
-            var userId = _userContext.UserId;
-
             var baseQuery = _dbContext.Quizzes
                 .AsNoTracking()
                 .Where(q => q.OwnerId == userId);
