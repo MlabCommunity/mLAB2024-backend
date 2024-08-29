@@ -7,16 +7,18 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Queries\GetQuiz\**" />
+    <EmbeddedResource Remove="Queries\GetQuiz\**" />
+    <None Remove="Queries\GetQuiz\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="FluentValidation.AspNetCore" Version="11.3.0" />
     <PackageReference Include="MediatR" Version="12.4.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\QuizBackend.Domain\QuizBackend.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Queries\GetQuiz\" />
   </ItemGroup>
 
 

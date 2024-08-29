@@ -66,6 +66,8 @@ namespace QuizBackend.Api.Controllers
 
             var jwtAuthResult = await _authService.RefreshTokenAsync(refreshTokenRequest.RefreshToken, userId);
             return Ok(jwtAuthResult);
+           var jwtAuthResult = await _authService.RefreshTokenAsync(refreshTokenRequest.RefreshToken);
+           return Ok(jwtAuthResult);
         }
     }
 }

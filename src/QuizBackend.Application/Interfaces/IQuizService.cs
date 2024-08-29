@@ -1,6 +1,5 @@
-﻿using QuizBackend.Application.Commands.GenerateQuiz;
-using QuizBackend.Application.Dtos.CreateQuiz;
-using QuizBackend.Application.Dtos.Quiz;
+﻿using QuizBackend.Application.Commands.Quizzes.GenerateQuiz;
+using QuizBackend.Application.Dtos.Quizzes.GenerateQuiz;
 
 namespace QuizBackend.Application.Interfaces
 {

@@ -9,7 +9,11 @@ namespace QuizBackend.Application.Interfaces.Users
         string GenerateJwtToken(List<Claim> claims);
         Task<string> GenerateRefreshTokenAsync(string userId);
         Task<List<Claim>> GetClaimsAsync(User user);
+        Task<JwtAuthResultDto> RefreshTokenAsync(string refreshToken);
+        void SetAccessTokenCookie(string token);
+        void SetRefreshTokenCookie(string refreshToken);
         Task<JwtAuthResultDto> RefreshTokenAsync(string refreshToken, string userId);
         Task InvalidateRefreshTokenAsync(string userId);
+        Task<string> GenerateOrRetrieveRefreshTokenAsync(string userId);
     }
 }

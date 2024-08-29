@@ -75,6 +75,19 @@ namespace QuizBackend.Infrastructure.Services.Identity
             return claims;
         }
 
+        public async Task<string> GenerateOrRetrieveRefreshTokenAsync(string userId)
+        {
+            var existingToken = await _appDbContext.RefreshTokens
+                .FirstOrDefaultAsync(rt => rt.UserId == userId && rt.Expires > DateTime.UtcNow && !rt.IsRevoked);
+
+            if (existingToken != null)
+            {
+                return existingToken.Token;
+            }
+
+            return await GenerateRefreshTokenAsync(userId);
+        }
+
         public async Task<string> GenerateRefreshTokenAsync(string userId)
         {
             var expire = _configuration.GetValue<int>("Jwt:RefreshTokenExpirationDays");
@@ -94,17 +107,17 @@ namespace QuizBackend.Infrastructure.Services.Identity
             return refreshToken.Token;
         }
 
-        public async Task<JwtAuthResultDto> RefreshTokenAsync(string refreshToken, string userId)
+        public async Task<JwtAuthResultDto> RefreshTokenAsync(string refreshToken)
         {
             var refreshTokenEntity = await _appDbContext.RefreshTokens.FirstOrDefaultAsync(rt => rt.Token == refreshToken);
 
             if (refreshTokenEntity == null || refreshTokenEntity.Expires <= DateTime.UtcNow || refreshTokenEntity.IsRevoked)
             {
+                throw new UnauthorizedException("Invalid or expired refresh token");
                 throw new ApplicationException("Invalid refresh token");
             }
 
-            refreshTokenEntity.IsRevoked = true;
-            refreshTokenEntity.Revoked = DateTime.UtcNow;
+            var userId = refreshTokenEntity.UserId;
             _appDbContext.RefreshTokens.Update(refreshTokenEntity);
             await _appDbContext.SaveChangesAsync();
 
@@ -117,12 +130,11 @@ namespace QuizBackend.Infrastructure.Services.Identity
 
             var claims = await GetClaimsAsync(user);
             var newJwtToken = GenerateJwtToken(claims);
-            var newRefreshToken = await GenerateRefreshTokenAsync(userId);
 
             return new JwtAuthResultDto
             {
                 AccessToken = newJwtToken,
-                RefreshToken = newRefreshToken
+                RefreshToken = refreshToken
             };
         }
         private string GenerateRandomToken()
