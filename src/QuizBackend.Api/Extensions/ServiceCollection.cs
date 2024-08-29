@@ -34,6 +34,9 @@ namespace QuizBackend.Api.Extensions
                 });
                 c.EnableAnnotations();
             });
+
+            services.AddSwaggerGenNewtonsoftSupport();
+
             return services;
         }
     }

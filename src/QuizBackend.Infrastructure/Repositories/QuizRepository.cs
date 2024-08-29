@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using QuizBackend.Application.Interfaces.Users;
 using QuizBackend.Domain.Entities;
 using QuizBackend.Domain.Repositories;
 using QuizBackend.Infrastructure.Data;
@@ -8,10 +9,11 @@ namespace QuizBackend.Infrastructure.Repositories
     public class QuizRepository : IQuizRepository
     {
         private readonly AppDbContext _dbContext;
-
-        public QuizRepository(AppDbContext dbContext)
+        private readonly IUserContext _userContext;
+        public QuizRepository(AppDbContext dbContext, IUserContext userContext)
         {
             _dbContext = dbContext;
+            _userContext = userContext;
         }
 
         public async Task<Quiz?> Get(Guid id, CancellationToken cancellationToken = default)
@@ -25,10 +27,43 @@ namespace QuizBackend.Infrastructure.Repositories
 
             return quiz;
         }
+
+        public async Task<(List<Quiz> quizzes, int totalCount)> Get(int pageSize, int pageNumber, CancellationToken cancellationToken = default)
+        {
+            var userId = _userContext.UserId;
+
+            var baseQuery = _dbContext.Quizzes
+                .AsNoTracking()
+                .Where(q => q.OwnerId == userId);
+
+            var totalCount = await baseQuery.CountAsync(cancellationToken);
+
+            var quizzes = await baseQuery
+                .Include(quiz => quiz.Questions)
+                .OrderByDescending(quiz => quiz.CreatedAtUtc)
+                .Skip(pageSize * (pageNumber - 1))
+                .Take(pageSize)
+                .ToListAsync(cancellationToken);
+
+            return (quizzes, totalCount);
+        }
+
         public async Task AddAsync(Quiz quiz)
         {
             _dbContext.Quizzes.Add(quiz);
             await _dbContext.SaveChangesAsync();
+        }
+
+        public async Task<Quiz?> GetByIdAndOwnerAsync(Guid id, string ownerId, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Quizzes
+                .FirstOrDefaultAsync(q => q.Id == id && q.OwnerId == ownerId, cancellationToken);
+        }
+
+        public async Task UpdateStatusAsync(Quiz quiz, CancellationToken cancellationToken)
+        {
+            _dbContext.Quizzes.Update(quiz);
+            await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }
 }

@@ -36,6 +36,7 @@ namespace QuizBackend.Infrastructure.Extensions
             services.AddAiServiceExtension();
 
             services.AddRepositories();
+            services.AddDateTimeProvider();
 
             return services;
         } 

@@ -13,7 +13,6 @@ namespace QuizBackend.Application.Commands.Quizzes.GenerateQuiz
                 .GreaterThan(0).WithMessage("Number of questions must be greater than 0");
 
             RuleFor(x => x.QuestionType)
-                .NotEmpty().WithMessage("Type of questions is required")
                 .IsInEnum().WithMessage("Invalid question type.")
                 .WithMessage("Type of questions must be either 'multiple choices' or 'true/false'");
         }
