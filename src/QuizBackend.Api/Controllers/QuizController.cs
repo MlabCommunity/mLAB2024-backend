@@ -9,6 +9,9 @@ using QuizBackend.Application.Commands.Quizzes.CreateQuiz;
 using QuizBackend.Application.Commands.Quizzes.GenerateQuiz;
 using QuizBackend.Application.Dtos.Quizzes.GenerateQuiz;
 using Microsoft.AspNetCore.Authorization;
+using QuizBackend.Domain.Enums;
+using QuizBackend.Application.Commands.UpdateStatusQuiz;
+
 
 
 namespace QuizBackend.Api.Controllers
@@ -75,6 +78,22 @@ namespace QuizBackend.Api.Controllers
 
             return Ok(quizId);
 
+        }
+
+        [Authorize]
+        [HttpPatch("{id}/status")]
+        [SwaggerOperation(
+            Summary = "Update the status of a quiz",
+            Description = "Updates the status of a quiz based on its ID. The status can be 'Active' or 'Inactive'."
+         )]
+        [ProducesResponseType(typeof(UpdateQuizStatusResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<UpdateQuizStatusResponse>> UpdateQuizStatus([FromRoute] Guid id, [FromBody] Status status)
+        {
+            var command = new UpdateStatusQuizCommand(id, status);
+            var response = await _mediator.Send(command);
+            return Ok(response);
         }
     }
 }

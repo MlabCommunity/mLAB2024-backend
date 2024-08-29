@@ -53,5 +53,17 @@ namespace QuizBackend.Infrastructure.Repositories
             _dbContext.Quizzes.Add(quiz);
             await _dbContext.SaveChangesAsync();
         }
+
+        public async Task<Quiz?> GetByIdAndOwnerAsync(Guid id, string ownerId, CancellationToken cancellationToken)
+        {
+            return await _dbContext.Quizzes
+                .FirstOrDefaultAsync(q => q.Id == id && q.OwnerId == ownerId, cancellationToken);
+        }
+
+        public async Task UpdateStatusAsync(Quiz quiz, CancellationToken cancellationToken)
+        {
+            _dbContext.Quizzes.Update(quiz);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
     }
 }
