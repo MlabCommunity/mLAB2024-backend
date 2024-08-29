@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Authorization;
 using QuizBackend.Application.Commands.Quizzes.UpdateStatusQuiz;
 using QuizBackend.Domain.Enums;
 using QuizBackend.Application.Commands.UpdateStatusQuiz;
+using QuizBackend.Application.Commands.Quizzes.UpdateAvailability;
 
 
 
@@ -96,6 +97,23 @@ namespace QuizBackend.Api.Controllers
         public async Task<ActionResult<UpdateQuizStatusResponse>> UpdateQuizStatus([FromRoute] Guid id, [FromBody] Status status)
         {
             var command = new UpdateStatusQuizCommand(id, status);
+            var response = await _mediator.Send(command);
+            return Ok(response);
+        }
+
+        [Authorize]
+        [HttpPatch("{id}/availability")]
+        [SwaggerOperation(
+           Summary = "Update the availability of a quiz",
+           Description = "Updates the availability of a quiz based on its ID. The status can be 'Public' or 'Private'."
+        )]
+        [ProducesResponseType(typeof(UpdateAvailabilityResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult<UpdateQuizStatusResponse>> UpdateQuizAvailability([FromRoute] Guid id, [FromBody] Availability availability)
+        {
+            var command = new UpdateAvailabilityCommand(id, availability);
             var response = await _mediator.Send(command);
             return Ok(response);
         }

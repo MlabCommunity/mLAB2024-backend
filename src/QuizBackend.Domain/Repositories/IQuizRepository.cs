@@ -11,7 +11,7 @@ namespace QuizBackend.Domain.Repositories
 
         Task AddAsync(Quiz quiz);
 
-        Task UpdateStatusAsync(Quiz quiz, CancellationToken cancellationToken);
+        Task UpdateAsync(Quiz quiz, CancellationToken cancellationToken);
 
         Task<Quiz?> GetByIdAndOwnerAsync(Guid id, string ownerId, CancellationToken cancellationToken);
 
