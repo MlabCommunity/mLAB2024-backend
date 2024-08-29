@@ -10,6 +10,7 @@ using QuizBackend.Application.Commands.Quizzes.CreateQuiz;
 using QuizBackend.Application.Commands.Quizzes.GenerateQuiz;
 using QuizBackend.Application.Dtos.Quizzes.GenerateQuiz;
 using Microsoft.AspNetCore.Authorization;
+using QuizBackend.Application.Commands.Quizzes.UpdateStatusQuiz;
 using QuizBackend.Domain.Enums;
 using QuizBackend.Application.Commands.UpdateStatusQuiz;
 

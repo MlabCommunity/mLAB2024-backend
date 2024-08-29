@@ -46,12 +46,14 @@ namespace QuizBackend.Api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Logout()
         {
-           var result = await _authService.LogoutAsync();
-           return Ok(result);
+            var result = await _authService.LogoutAsync();
+            return Ok(result);
         }
 
         [HttpPost("refresh-token")]
-        [SwaggerOperation(Summary = "Refresh JWT token", Description = "Refreshes the JWT token using a valid refresh token.")]
+        [SwaggerOperation(
+            Summary = "Refresh JWT token",
+            Description = "Refreshes the JWT token using a valid refresh token.")]
         [ProducesResponseType(typeof(JwtAuthResultDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -64,10 +66,8 @@ namespace QuizBackend.Api.Controllers
                 return Unauthorized();
             }
 
-            var jwtAuthResult = await _authService.RefreshTokenAsync(refreshTokenRequest.RefreshToken, userId);
+            var jwtAuthResult = await _authService.RefreshTokenAsync(refreshTokenRequest.RefreshToken);
             return Ok(jwtAuthResult);
-           var jwtAuthResult = await _authService.RefreshTokenAsync(refreshTokenRequest.RefreshToken);
-           return Ok(jwtAuthResult);
         }
     }
 }

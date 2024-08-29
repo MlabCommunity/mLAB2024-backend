@@ -113,7 +113,6 @@ namespace QuizBackend.Infrastructure.Services.Identity
 
             if (refreshTokenEntity == null || refreshTokenEntity.Expires <= DateTime.UtcNow || refreshTokenEntity.IsRevoked)
             {
-                throw new UnauthorizedException("Invalid or expired refresh token");
                 throw new ApplicationException("Invalid refresh token");
             }
 

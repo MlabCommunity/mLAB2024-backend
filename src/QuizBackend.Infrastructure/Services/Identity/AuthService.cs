@@ -85,11 +85,7 @@ namespace QuizBackend.Infrastructure.Services.Identity
 
         public async Task<JwtAuthResultDto> RefreshTokenAsync(string refreshToken)
         {
-            var jwtAuthResult = await _jwtService.RefreshTokenAsync(refreshToken, userId);
             var jwtAuthResult = await _jwtService.RefreshTokenAsync(refreshToken);
-            _jwtService.SetAccessTokenCookie(jwtAuthResult.AccessToken);
-            _jwtService.SetRefreshTokenCookie(jwtAuthResult.RefreshToken);
-
             return jwtAuthResult;
         }
     }

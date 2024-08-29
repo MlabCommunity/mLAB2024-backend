@@ -10,11 +10,9 @@ namespace QuizBackend.Infrastructure.Repositories
     public class QuizRepository : IQuizRepository
     {
         private readonly AppDbContext _dbContext;
-        private readonly IUserContext _userContext;
-        public QuizRepository(AppDbContext dbContext, IUserContext userContext)
+        public QuizRepository(AppDbContext dbContext)
         {
             _dbContext = dbContext;
-            _userContext = userContext;
         }
 
         public async Task<Quiz?> GetQuizForUser(Guid quizId, string userId)
@@ -39,10 +37,8 @@ namespace QuizBackend.Infrastructure.Repositories
             return quiz;
         }
 
-        public async Task<(List<Quiz> quizzes, int totalCount)> Get(int pageSize, int pageNumber, CancellationToken cancellationToken = default)
+        public async Task<(List<Quiz> quizzes, int totalCount)> Get(string userId, int pageSize, int pageNumber, CancellationToken cancellationToken = default)
         {
-            var userId = _userContext.UserId;
-
             var baseQuery = _dbContext.Quizzes
                 .AsNoTracking()
                 .Where(q => q.OwnerId == userId);
