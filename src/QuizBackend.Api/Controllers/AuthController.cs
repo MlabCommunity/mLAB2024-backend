@@ -59,13 +59,6 @@ namespace QuizBackend.Api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> RefreshToken(RefreshTokenRequestDto refreshTokenRequest)
         {
-            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-
-            if (userId == null)
-            {
-                return Unauthorized();
-            }
-
             var jwtAuthResult = await _authService.RefreshTokenAsync(refreshTokenRequest.RefreshToken);
             return Ok(jwtAuthResult);
         }
