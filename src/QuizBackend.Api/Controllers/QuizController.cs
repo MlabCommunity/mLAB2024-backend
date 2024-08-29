@@ -1,4 +1,5 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuizBackend.Application.Dtos.Paged;
 using QuizBackend.Application.Dtos.Quizzes;
@@ -9,6 +10,7 @@ using QuizBackend.Application.Commands.Quizzes.CreateQuiz;
 using QuizBackend.Application.Commands.Quizzes.GenerateQuiz;
 using QuizBackend.Application.Dtos.Quizzes.GenerateQuiz;
 using Microsoft.AspNetCore.Authorization;
+using QuizBackend.Application.Commands.Quizzes.UpdateStatusQuiz;
 using QuizBackend.Domain.Enums;
 using QuizBackend.Application.Commands.UpdateStatusQuiz;
 
@@ -16,6 +18,7 @@ using QuizBackend.Application.Commands.UpdateStatusQuiz;
 
 namespace QuizBackend.Api.Controllers
 {
+    [Authorize]
     public class QuizController : BaseController
     {
         private readonly IMediator _mediator;
@@ -37,6 +40,7 @@ namespace QuizBackend.Api.Controllers
         }
 
         [Authorize]
+
         [HttpGet("{Id}")]
         [SwaggerOperation(
             Summary = "Retrieves a quiz by its unique Id.",

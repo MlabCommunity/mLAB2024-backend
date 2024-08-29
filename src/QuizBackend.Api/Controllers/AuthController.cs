@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using QuizBackend.Application.Dtos;
 using QuizBackend.Application.Interfaces.Users;
 using Swashbuckle.AspNetCore.Annotations;
@@ -35,30 +36,38 @@ namespace QuizBackend.Api.Controllers
         {
             var response = await _authService.SignUpAsync(request);
             return Ok(response);
-         
+
         }
 
-
+        [Authorize]
         [HttpPost("logout")]
         [SwaggerOperation(Summary = "User logout", Description = "Logs out the current user.")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> Logout()
         {
-           var result = await _authService.LogoutAsync();
-           return Ok(result);
+            var result = await _authService.LogoutAsync();
+            return Ok(result);
         }
 
-
         [HttpPost("refresh-token")]
-        [SwaggerOperation(Summary = "Refresh JWT token", Description = "Refreshes the JWT token using a valid refresh token.")]
+        [SwaggerOperation(
+            Summary = "Refresh JWT token",
+            Description = "Refreshes the JWT token using a valid refresh token.")]
         [ProducesResponseType(typeof(JwtAuthResultDto), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<IActionResult> RefreshToken(RefreshTokenRequestDto refreshTokenRequest)
         {
-           var jwtAuthResult = await _authService.RefreshTokenAsync(refreshTokenRequest.RefreshToken);
-           return Ok(jwtAuthResult);
+            var userId = HttpContext.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (userId == null)
+            {
+                return Unauthorized();
+            }
+
+            var jwtAuthResult = await _authService.RefreshTokenAsync(refreshTokenRequest.RefreshToken);
+            return Ok(jwtAuthResult);
         }
     }
 }

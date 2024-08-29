@@ -5,16 +5,13 @@ namespace QuizBackend.Infrastructure.Extensions
 {
     public static class ExceptionHandlersExtensions
     {
-        public static IServiceCollection AddExceptionHandlers(this IServiceCollection services) 
+        public static IServiceCollection AddExceptionHandlers(this IServiceCollection services)
         {
             services.AddExceptionHandler<ValidationExceptionHandler>();
-            services.AddExceptionHandler<ForbidExceptionHandler>();
-            services.AddExceptionHandler<UnauthorizedExceptionHandler>();
             services.AddExceptionHandler<NotFoundExceptionHandler>();
             services.AddExceptionHandler<BadRequestExceptionHandler>();
             services.AddExceptionHandler<GlobalExceptionHandler>();
-          
-          
+
             services.AddProblemDetails();
 
             return services;

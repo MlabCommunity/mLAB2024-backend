@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using QuizBackend.Application.Dtos.Profile;
 using QuizBackend.Application.Interfaces.Users;
@@ -14,6 +15,7 @@ namespace QuizBackend.Api.Controllers
             _profileService = profileService;
         }
 
+        [Authorize]
         [HttpGet]
         [SwaggerOperation(Summary = "Retrieves the current user's profile.", Description = "Returns the profile of the currently authenticated user.")]
         [ProducesResponseType(typeof(UserProfileDto), StatusCodes.Status200OK)]
@@ -25,6 +27,7 @@ namespace QuizBackend.Api.Controllers
             return Ok(profile);
         }
 
+        [Authorize]
         [HttpPut]
         [SwaggerOperation(Summary = "Updates the current user's profile.", Description = "Updates the profile of the currently authenticated user with the provided data.")]
         [ProducesResponseType(typeof(UserProfileDto), StatusCodes.Status200OK)]
@@ -36,6 +39,6 @@ namespace QuizBackend.Api.Controllers
             var updatedUser = await _profileService.UpdateProfileAsync(request);
             return Ok(updatedUser);
         }
-       
+
     }
 }

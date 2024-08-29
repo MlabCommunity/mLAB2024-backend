@@ -1,7 +1,8 @@
-﻿using QuizBackend.Application.Dtos.Paged;
+﻿using Microsoft.AspNetCore.Http;
+using QuizBackend.Application.Dtos.Paged;
 using QuizBackend.Application.Dtos.Quizzes;
+using QuizBackend.Application.Extensions;
 using QuizBackend.Application.Interfaces.Messaging;
-using QuizBackend.Application.Interfaces.Users;
 using QuizBackend.Domain.Repositories;
 
 namespace QuizBackend.Application.Queries.Quizzes.GetQuizzes
@@ -9,18 +10,21 @@ namespace QuizBackend.Application.Queries.Quizzes.GetQuizzes
     public class GetPagedQuizzesHandler : IQueryHandler<GetPagedQuizzesQuery, PagedDto<QuizDto>>
     {
         private readonly IQuizRepository _quizRepository;
-       
-        public GetPagedQuizzesHandler(IQuizRepository quizRepository, IUserContext userContext)
+        private readonly IHttpContextAccessor _httpContextAccessor;
+
+        public GetPagedQuizzesHandler(IQuizRepository quizRepository, IHttpContextAccessor httpContextAccessor)
         {
             _quizRepository = quizRepository;
+            _httpContextAccessor = httpContextAccessor;
         }
 
         public async Task<PagedDto<QuizDto>> Handle(GetPagedQuizzesQuery request, CancellationToken cancellationToken)
         {
             var page = request.Page ?? 1;
             var pageSize = request.PageSize ?? 10;
+            var userId = _httpContextAccessor.GetUserId();
 
-            var (quizzes, totalCount) = await _quizRepository.Get(pageSize, page);
+            var (quizzes, totalCount) = await _quizRepository.Get(userId, pageSize, page, cancellationToken);
 
             var quizzesDtos = quizzes.Select(quiz => new QuizDto(
                      quiz.Id,
