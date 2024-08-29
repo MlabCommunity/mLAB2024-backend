@@ -1,9 +1,9 @@
 ﻿using FluentValidation;
-using QuizBackend.Application.Dtos.Quizzes.CreateQuiz;
+using QuizBackend.Application.Commands.Questions.CreateQuestion;
 
 namespace QuizBackend.Application.Validators.Quizzes
 {
-    public class CreateAnswerDtoValidator : AbstractValidator<CreateAnswerDto>
+    public class CreateAnswerDtoValidator : AbstractValidator<CreateAnswer>
     {
         public CreateAnswerDtoValidator()
         {

@@ -5,6 +5,6 @@ namespace QuizBackend.Application.Dtos.Quizzes.CreateQuiz
     {
         public required string Title { get; set; }
         public string? Description { get; set; }
-        public List<CreateQuestionDto> CreateQuestionsDto { get; set; }
+        
     }
 }

@@ -1,5 +1,4 @@
 ﻿
-
 namespace QuizBackend.Application.Dtos
 {
     public class RefreshTokenRequestDto

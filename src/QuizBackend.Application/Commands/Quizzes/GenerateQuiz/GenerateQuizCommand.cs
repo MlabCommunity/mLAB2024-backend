@@ -4,9 +4,5 @@ using QuizBackend.Domain.Enums;
 
 namespace QuizBackend.Application.Commands.Quizzes.GenerateQuiz
 {
-    public record GenerateQuizCommand(
-        string Content,
-        int NumberOfQuestions,
-        QuestionType QuestionType
-    ) : ICommand<GenerateQuizDto>;
+    public record GenerateQuizCommand(string Content, int NumberOfQuestions, QuestionType QuestionType) : ICommand<GenerateQuizDto>;
 }
