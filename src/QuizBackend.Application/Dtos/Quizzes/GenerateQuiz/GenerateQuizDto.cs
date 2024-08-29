@@ -2,8 +2,8 @@
 {
     public class GenerateQuizDto
     {
-        public string Title { get; set; }
-        public string Description { get; set; }
-        public List<GenerateQuestionDto> GenerateQuestionsDto { get; set; }
+        public required string Title { get; set; }
+        public required string Description { get; set; }
+        public required List<GenerateQuestionDto> GenerateQuestionsDto { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class GenerateQuestionDto
     {
-        public string Title { get; set; }
-        public List<GenerateAnswerDto> GenerateAnswersDto { get; set; }
+        public required string Title { get; set; }
+        public required List<GenerateAnswerDto> GenerateAnswersDto { get; set; }
     }
 }

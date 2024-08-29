@@ -2,7 +2,7 @@
 {
     public class GenerateAnswerDto
     {
-        public string Content { get; set; }
+        public required string Content { get; set; }
         public bool Iscorrect { get; set; }
     }
 }
