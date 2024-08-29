@@ -9,10 +9,12 @@ using Swashbuckle.AspNetCore.Annotations;
 using QuizBackend.Application.Commands.Quizzes.CreateQuiz;
 using QuizBackend.Application.Commands.Quizzes.GenerateQuiz;
 using QuizBackend.Application.Dtos.Quizzes.GenerateQuiz;
-using Microsoft.AspNetCore.Authorization;
 using QuizBackend.Application.Commands.Quizzes.UpdateStatusQuiz;
 using QuizBackend.Domain.Enums;
 using QuizBackend.Application.Commands.UpdateStatusQuiz;
+using QuizBackend.Application.Commands.Quizzes.DeleteQuiz;
+
+
 
 
 
@@ -99,5 +101,23 @@ namespace QuizBackend.Api.Controllers
             var response = await _mediator.Send(command);
             return Ok(response);
         }
+
+        [Authorize]
+        [HttpDelete("{id}")]
+        [SwaggerOperation(
+            Summary = "Delete a quiz",
+            Description = "Deletes a quiz based on its ID."
+        )]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> DeleteQuiz([FromRoute] Guid id)
+        {
+            var command = new DeleteQuizCommand(id);
+            await _mediator.Send(command);
+            return NoContent();
+        }
+
     }
 }

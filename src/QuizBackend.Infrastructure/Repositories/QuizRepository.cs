@@ -1,9 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using QuizBackend.Application.Interfaces.Users;
 using QuizBackend.Domain.Entities;
 using QuizBackend.Domain.Repositories;
 using QuizBackend.Infrastructure.Data;
-using System.Linq.Expressions;
 
 namespace QuizBackend.Infrastructure.Repositories
 {
@@ -70,6 +68,12 @@ namespace QuizBackend.Infrastructure.Repositories
         public async Task UpdateStatusAsync(Quiz quiz, CancellationToken cancellationToken)
         {
             _dbContext.Quizzes.Update(quiz);
+            await _dbContext.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task RemoveAsync(Quiz quiz, CancellationToken cancellationToken)
+        {
+            _dbContext.Quizzes.Remove(quiz);
             await _dbContext.SaveChangesAsync(cancellationToken);
         }
     }

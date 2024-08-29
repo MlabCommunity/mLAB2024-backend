@@ -16,5 +16,7 @@ namespace QuizBackend.Domain.Repositories
         Task<Quiz?> GetByIdAndOwnerAsync(Guid id, string ownerId, CancellationToken cancellationToken);
 
         Task<Quiz?> GetQuizForUser(Guid quizId, string userId);
+
+        Task RemoveAsync(Quiz quiz, CancellationToken cancellationToken);
     }
 }
