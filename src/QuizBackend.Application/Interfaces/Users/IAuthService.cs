@@ -7,6 +7,6 @@ namespace QuizBackend.Application.Interfaces.Users
         Task<JwtAuthResultDto> LoginAsync(LoginDto loginDto);
         Task<LogoutResponseDto> LogoutAsync();
         Task<SignUpResponseDto> SignUpAsync(RegisterRequestDto request);
-        Task<JwtAuthResultDto> RefreshTokenAsync(string refreshToken, string userId);
+        Task<JwtAuthResultDto> RefreshTokenAsync(string refreshToken);
     }
 }
