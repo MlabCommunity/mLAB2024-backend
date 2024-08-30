@@ -33,7 +33,6 @@ namespace QuizBackend.Api.Controllers
         public async Task<IActionResult> GenerateQuizFromPromptTemplateAsync(GenerateQuizCommand command)
         {
             var result = await _mediator.Send(command);
-
             return Ok(result);
         }
 
@@ -63,7 +62,6 @@ namespace QuizBackend.Api.Controllers
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<PagedDto<QuizDto>>> GetPagedQuizzes([FromQuery] GetPagedQuizzesQuery query, CancellationToken cancellation)
         {
-
             var result = await _mediator.Send(query);
             return Ok(result);
         }
@@ -74,9 +72,7 @@ namespace QuizBackend.Api.Controllers
         public async Task<IActionResult> CreateQuiz(CreateQuizCommand command)
         {
             var quizId = await _mediator.Send(command);
-
             return Ok(quizId);
-
         }
 
         [HttpPatch("{id}/status")]
@@ -94,22 +90,6 @@ namespace QuizBackend.Api.Controllers
             return Ok(response);
         }
 
-        [HttpDelete("{id}")]
-        [SwaggerOperation(
-            Summary = "Delete a quiz",
-            Description = "Deletes a quiz based on its ID."
-        )]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public async Task<ActionResult> DeleteQuiz([FromRoute] Guid id)
-        {
-            var command = new DeleteQuizCommand(id);
-            await _mediator.Send(command);
-            return NoContent();
-        }
-        
         [HttpPatch("{id}/availability")]
         [SwaggerOperation(
            Summary = "Update the availability of a quiz",
@@ -124,7 +104,22 @@ namespace QuizBackend.Api.Controllers
             var command = new UpdateAvailabilityCommand(id, availability);
             var response = await _mediator.Send(command);
             return Ok(response);
+        }
 
+        [HttpDelete("{id}")]
+        [SwaggerOperation(
+           Summary = "Delete a quiz",
+           Description = "Deletes a quiz based on its ID."
+        )]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        public async Task<ActionResult> DeleteQuiz([FromRoute] Guid id)
+        {
+            var command = new DeleteQuizCommand(id);
+            await _mediator.Send(command);
+            return NoContent();
         }
     }
 }
