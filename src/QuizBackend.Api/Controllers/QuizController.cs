@@ -26,7 +26,6 @@ namespace QuizBackend.Api.Controllers
             _mediator = mediator;
         }
 
-      
         [HttpPost("generate-quiz")]
         [SwaggerOperation(Summary = "Generating Quiz with questions and anserws", Description = "QuestionType: MultipleChoices = 0, TrueFalse = 1")]
         [ProducesResponseType(typeof(GenerateQuizDto), StatusCodes.Status200OK)]
@@ -36,8 +35,6 @@ namespace QuizBackend.Api.Controllers
 
             return Ok(result);
         }
-
-        
 
         [HttpGet("{Id}")]
         [SwaggerOperation(
@@ -70,7 +67,6 @@ namespace QuizBackend.Api.Controllers
             return Ok(result);
         }
 
-        
         [HttpPost("create-quiz")]
         [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -82,7 +78,6 @@ namespace QuizBackend.Api.Controllers
 
         }
 
-        
         [HttpPatch("{id}/status")]
         [SwaggerOperation(
             Summary = "Update the status of a quiz",
@@ -98,7 +93,6 @@ namespace QuizBackend.Api.Controllers
             return Ok(response);
         }
 
-       
         [HttpDelete("{id}")]
         [SwaggerOperation(
             Summary = "Delete a quiz",
@@ -114,6 +108,5 @@ namespace QuizBackend.Api.Controllers
             await _mediator.Send(command);
             return NoContent();
         }
-
     }
 }
