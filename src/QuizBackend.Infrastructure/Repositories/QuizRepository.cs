@@ -67,7 +67,7 @@ namespace QuizBackend.Infrastructure.Repositories
                 .FirstOrDefaultAsync(q => q.Id == id && q.OwnerId == ownerId, cancellationToken);
         }
 
-        public async Task UpdateStatusAsync(Quiz quiz, CancellationToken cancellationToken)
+        public async Task UpdateAsync(Quiz quiz, CancellationToken cancellationToken)
         {
             _dbContext.Quizzes.Update(quiz);
             await _dbContext.SaveChangesAsync(cancellationToken);
