@@ -20,7 +20,6 @@ namespace QuizBackend.Application.Commands.Quizzes.DeleteQuiz
         }
         public async Task<Unit> Handle(DeleteQuizCommand request, CancellationToken cancellationToken)
         {
-            
             var userId = _httpContextAccessor.GetUserId();
 
             var quiz = await _quizRepository.GetByIdAndOwnerAsync(request.Id, userId, cancellationToken)
