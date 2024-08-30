@@ -8,26 +8,26 @@ Respond **only** with the JSON object, and **no** additional text or explanation
 {
   "Title": "Sample Quiz Title",
   "Description": "Sample quiz description",
-  "GenerateQuestionsDto": [
+  "CreateQuestionsDto": [
     {
       "Title": "Sample Question 1",
-      "GenerateAnswersDto": [
+      "CreateAnswersDto": [
         {
           "Content": "Answer 1 for Question 1",
-          "Iscorrect": true
+          "IsCorrect": true
         },
         {
           "Content": "Answer 2 for Question 1",
-          "Iscorrect": false
+          "IsCorrect": false
         }
       ]
     },
     {
       "Title": "Sample Question 2",
-      "GenerateAnswersDto": [
+      "CreateAnswersDto": [
         {
           "Content": "Answer 1 for Question 2",
-          "Iscorrect": false
+          "IsCorrect": false
         },
         {
           "Content": "Answer 2 for Question 2",
