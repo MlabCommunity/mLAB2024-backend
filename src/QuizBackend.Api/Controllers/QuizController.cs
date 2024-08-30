@@ -8,12 +8,12 @@ using QuizBackend.Application.Queries.Quizzes.GetQuizzes;
 using Swashbuckle.AspNetCore.Annotations;
 using QuizBackend.Application.Commands.Quizzes.CreateQuiz;
 using QuizBackend.Application.Commands.Quizzes.GenerateQuiz;
-using QuizBackend.Application.Dtos.Quizzes.GenerateQuiz;
 using QuizBackend.Application.Commands.Quizzes.UpdateStatusQuiz;
 using QuizBackend.Domain.Enums;
 using QuizBackend.Application.Commands.UpdateStatusQuiz;
 using QuizBackend.Application.Commands.Quizzes.DeleteQuiz;
 using QuizBackend.Application.Commands.Quizzes.UpdateAvailability;
+using QuizBackend.Application.Dtos.Quizzes.CreateQuiz;
 
 namespace QuizBackend.Api.Controllers
 {
@@ -29,7 +29,7 @@ namespace QuizBackend.Api.Controllers
 
         [HttpPost("generate-quiz")]
         [SwaggerOperation(Summary = "Generating Quiz with questions and anserws", Description = "QuestionType: MultipleChoices = 0, TrueFalse = 1")]
-        [ProducesResponseType(typeof(GenerateQuizDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(CreateQuizDto), StatusCodes.Status200OK)]
         public async Task<IActionResult> GenerateQuizFromPromptTemplateAsync(GenerateQuizCommand command)
         {
             var result = await _mediator.Send(command);
