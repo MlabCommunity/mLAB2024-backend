@@ -32,8 +32,8 @@ TAKE DEEP BREATH AND DO NOT HALLUCINATE
 JSON Structure:
 Respond **only** with the JSON object, and **no** additional text or explanations.
 {
-  "Title": "Sample Quiz Title",
-  "Description": "Sample quiz description",
+  "Title": "Quiz title based on the content",
+  "Description": "Brief description of the quiz content",
   "GenerateQuestionsDto": [
     {
       "Title": "Sample Question 1",
