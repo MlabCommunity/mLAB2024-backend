@@ -14,10 +14,6 @@ using QuizBackend.Domain.Enums;
 using QuizBackend.Application.Commands.UpdateStatusQuiz;
 using QuizBackend.Application.Commands.Quizzes.DeleteQuiz;
 
-
-
-
-
 namespace QuizBackend.Api.Controllers
 {
     [Authorize]
@@ -30,7 +26,7 @@ namespace QuizBackend.Api.Controllers
             _mediator = mediator;
         }
 
-        [Authorize]
+      
         [HttpPost("generate-quiz")]
         [SwaggerOperation(Summary = "Generating Quiz with questions and anserws", Description = "QuestionType: MultipleChoices = 0, TrueFalse = 1")]
         [ProducesResponseType(typeof(GenerateQuizDto), StatusCodes.Status200OK)]
@@ -41,7 +37,7 @@ namespace QuizBackend.Api.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+        
 
         [HttpGet("{Id}")]
         [SwaggerOperation(
@@ -74,7 +70,7 @@ namespace QuizBackend.Api.Controllers
             return Ok(result);
         }
 
-        [Authorize]
+        
         [HttpPost("create-quiz")]
         [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
@@ -86,7 +82,7 @@ namespace QuizBackend.Api.Controllers
 
         }
 
-        [Authorize]
+        
         [HttpPatch("{id}/status")]
         [SwaggerOperation(
             Summary = "Update the status of a quiz",
@@ -102,7 +98,7 @@ namespace QuizBackend.Api.Controllers
             return Ok(response);
         }
 
-        [Authorize]
+       
         [HttpDelete("{id}")]
         [SwaggerOperation(
             Summary = "Delete a quiz",
