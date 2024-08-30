@@ -33,7 +33,6 @@ namespace QuizBackend.Infrastructure.Services.AI
 
             if (string.IsNullOrWhiteSpace(jsonResponse) || quizDto is null)
             {
-
                 _logger.LogWarning("Quiz generation failed: Content: {Content}, NumberOfQuestions: {NumberOfQuestions}, TypeOfQuestions: {TypeOfQuestions}",
                     command.Content, command.NumberOfQuestions, command.QuestionType);
 
@@ -43,5 +42,4 @@ namespace QuizBackend.Infrastructure.Services.AI
             return quizDto;
         }
     }
-
 }
