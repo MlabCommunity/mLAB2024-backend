@@ -1,4 +1,5 @@
 ﻿
+using QuizBackend.Application.Commands.Questions.UpdateQuestion;
 using QuizBackend.Application.Dtos.Quizzes.UpdateQuiz;
 using QuizBackend.Domain.Entities;
 
@@ -6,13 +7,12 @@ namespace QuizBackend.Application.Extensions
 {
     public static class UpdateQuestionsAndAnswersDtoExtension
     {
-        public static Question ToEntity(this UpdateQuestionDto dto)
+        public static Question ToEntity(this UpdateQuestionCommand dto)
         {
             return new Question
             {
                 Title = dto.Title,
-                Description = dto.Description,
-                Answers = dto.UpdateAnswersDto.Select(a => new Answer
+                Answers = dto.UpdateAnswers.Select(a => new Answer
                 {
                     Content = a.Content,
                     IsCorrect = a.IsCorrect,

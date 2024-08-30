@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using QuizBackend.Application.Dtos;
+using QuizBackend.Application.Extensions;
 using QuizBackend.Application.Interfaces.Users;
 using QuizBackend.Domain.Entities;
 using QuizBackend.Domain.Exceptions;
@@ -48,7 +49,7 @@ namespace QuizBackend.Infrastructure.Services.Identity
 
         public async Task<LogoutResponseDto> LogoutAsync()
         {
-            var userId = _httpContextAccessor.HttpContext?.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            var userId = _httpContextAccessor.GetUserId();
 
             if(userId != null)
             {

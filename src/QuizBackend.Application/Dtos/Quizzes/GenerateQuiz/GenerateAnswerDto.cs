@@ -3,6 +3,6 @@
     public class GenerateAnswerDto
     {
         public required string Content { get; set; }
-        public bool Iscorrect { get; set; }
+        public bool IsCorrect { get; set; }
     }
 }
