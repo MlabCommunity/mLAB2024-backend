@@ -3,6 +3,7 @@ using Newtonsoft.Json;
 using QuizBackend.Application.Commands.Quizzes.GenerateQuiz;
 using QuizBackend.Application.Dtos.Quizzes.GenerateQuiz;
 using QuizBackend.Application.Interfaces;
+using QuizBackend.Domain.Exceptions;
 using QuizBackend.Infrastructure.Interfaces;
 
 namespace QuizBackend.Infrastructure.Services.AI
@@ -28,8 +29,10 @@ namespace QuizBackend.Infrastructure.Services.AI
             var jsonResponse = await _kernelService.CreatePluginFromPromptDirectory("GenerateQuiz", kernelArguments);
             var quizDto = JsonConvert.DeserializeObject<GenerateQuizDto>(jsonResponse);
 
+            if (quizDto is null) throw new BadRequestException("Try generate again");
+
             return quizDto;
-            
+    
         }
     }
 }
