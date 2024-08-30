@@ -18,7 +18,6 @@ namespace QuizBackend.Application.Extensions.Mappings.Quizzes
                 {
                     Id = Guid.NewGuid(),
                     Title = q.Title,
-                    Description = q.Description,
                     CreatedAtUtc = DateTime.UtcNow,
                     Answers = q.CreateAnswersDto.Select(a => new Answer
                     {

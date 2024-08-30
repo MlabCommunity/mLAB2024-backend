@@ -1,4 +1,4 @@
-﻿using QuizBackend.Application.Dtos.Quizzes.GenerateQuiz;
+﻿using QuizBackend.Application.Dtos.Quizzes.CreateQuiz;
 using QuizBackend.Application.Interfaces.Messaging;
 using QuizBackend.Domain.Enums;
 
@@ -8,5 +8,5 @@ namespace QuizBackend.Application.Commands.Quizzes.GenerateQuiz
         string Content,
         int NumberOfQuestions,
         QuestionType QuestionType
-    ) : ICommand<GenerateQuizDto>;
+    ) : ICommand<CreateQuizDto>;
 }
