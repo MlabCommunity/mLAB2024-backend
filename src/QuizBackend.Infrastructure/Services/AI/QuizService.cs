@@ -28,12 +28,13 @@ namespace QuizBackend.Infrastructure.Services.AI
 
             var jsonResponse = await _kernelService.CreatePluginFromPromptDirectory("GenerateQuiz", kernelArguments);
 
-            if (string.IsNullOrWhiteSpace(jsonResponse)) throw new BadRequestException("Try generate again");
+            if (string.IsNullOrWhiteSpace(jsonResponse))
+            {
+                throw new BadRequestException("Try generate again");
+            }
 
             var quizDto = JsonConvert.DeserializeObject<GenerateQuizDto>(jsonResponse);
-
             return quizDto;
-    
         }
     }
 }
