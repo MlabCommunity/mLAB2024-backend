@@ -4,6 +4,7 @@ using QuizBackend.Application.Commands.UpdateStatusQuiz;
 using QuizBackend.Application.Extensions;
 using QuizBackend.Application.Interfaces;
 using QuizBackend.Application.Interfaces.Messaging;
+using QuizBackend.Domain.Entities;
 using QuizBackend.Domain.Enums;
 using QuizBackend.Domain.Exceptions;
 using QuizBackend.Domain.Repositories;
@@ -28,7 +29,7 @@ namespace QuizBackend.Application.Commands.Quizzes.UpdateAvailability
         {
             var userId = _httpContextAccessor.GetUserId();
             var quiz = await _quizRepository.GetByIdAndOwnerAsync(request.Id, userId, cancellationToken)
-                ?? throw new BadRequestException($"Quiz with ID {request.Id} not found for the current user.");
+                ?? throw new NotFoundException(nameof(Quiz), request.Id.ToString());
 
             var updatedAtUtc = _dateTimeProvider.UtcNow;
             quiz.Availability = request.Availability;
