@@ -27,12 +27,14 @@ Adhere strictly to the following guidelines:
    - Avoid overly complex or ambiguous phrasing.
    - Ensure that the correct answer is unambiguously right.
 
+Also generate title and brief description for that quiz.
+
 TAKE DEEP BREATH AND DO NOT HALLUCINATE
 
 JSON Structure:
 Respond **only** with the JSON object, and **no** additional text or explanations.
 {
-  "Title": "Quiz title based on the content",
+  "Title": "Sample Quiz Title",
   "Description": "Brief description of the quiz content",
   "GenerateQuestionsDto": [
     {
