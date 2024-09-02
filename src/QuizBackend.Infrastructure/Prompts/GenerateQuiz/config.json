@@ -4,7 +4,7 @@
   "description": "Generate quiz based on the given user topic, number of questions, and type of answers. Respond only with JSON.",
   "execution_settings": {
     "default": {
-      "temperature": 0,
+      "temperature": 0.8,
       "response_format": {
         "type": "json_object"
       }
@@ -14,17 +14,21 @@
     {
       "name": "content",
       "description": "Background information about quiz",
-      "required": true
+      "required": true,
+      "type": "string"
     },
     {
       "name": "numberOfQuestions",
       "description": "number of questions to generate",
-      "required": true
+      "required": true,
+      "type": "integer"
     },
     {
       "name": "typeOfQuestions",
-      "description": "type of questions to generate(multiple choices or true/false or both)",
-      "required": true
+      "description": "Type of questions to generate",
+      "required": true,
+      "type": "string",
+      "enum": [ "MultipleChoice", "TrueFalse" ]
     }
   ]
 }

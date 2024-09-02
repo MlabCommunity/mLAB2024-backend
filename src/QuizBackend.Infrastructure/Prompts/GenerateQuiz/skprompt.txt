@@ -1,13 +1,41 @@
-﻿Generate a quiz in JSON format based on the following content: "{{$content}}". The quiz should contain exactly "{{$numberOfQuestions}}" questions, **all of which must be of the type** "{{$typeOfQuestions}}".
+﻿Generate a quiz in JSON format based on the following content: "{{$content}}". The quiz should contain exactly {{$numberOfQuestions}} questions, all of which must be of the type "{{$typeOfQuestions}}".
+
+Adhere strictly to the following guidelines:
 
 - If the type is "MultipleChoice", each question should have exactly 4 answers, with only one correct answer.
 - If the type is "TrueFalse", each question should have exactly 2 answers: "true" and "false", with one being correct.
 
+1. Content and Diversity:
+   - Use your knowledge about "{{$content}}" to create varied questions and answers.
+   - Ensure that the information is factual and widely accepted in the field.
+   - Focus on key facts and concepts related to the topic.
+   - Cover various aspects and subtopics within the main topic.
+   - Avoid repeating the same concept in multiple questions.
 
+2. Question Types and Formulation:
+   - Use different questioning techniques (e.g., "What is...", "Which of the following...", "How does...", "Explain why...").
+   - Incorporate a mix of fact-based, conceptual, and application questions.
+   - Unobvious facts and trivia
+   - Questions requiring critical thinking
+   - Riddles and puzzles related to the topic
+   - Questions connecting different aspects of the topic
+   - Questions with humorous elements (where appropriate)
+   - Questions referring to practical applications of knowledge
+
+4. Question and Answer Quality:
+   - Questions should be clear, concise, and directly related to the main topic.
+   - Avoid overly complex or ambiguous phrasing.
+   - Ensure that the correct answer is unambiguously right.
+
+Also generate title and brief description for that quiz.
+
+TAKE DEEP BREATH AND DO NOT HALLUCINATE
+
+JSON Structure:
 Respond **only** with the JSON object, and **no** additional text or explanations.
 {
   "Title": "Sample Quiz Title",
-  "Description": "Sample quiz description",
+  "Description": "Brief description of the quiz content",
   "CreateQuestionsDto": [
     {
       "Title": "Sample Question 1",
