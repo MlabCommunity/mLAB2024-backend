@@ -1,41 +1,41 @@
-﻿Generate a quiz in JSON format based on the following content: "{{$content}}". The quiz should contain exactly {{$numberOfQuestions}} questions, all of which must be of the type "{{$typeOfQuestions}}".
+﻿Generate a quiz in JSON format based on the content provided: "{{$content}}". The quiz should contain exactly {{$numberOfQuestions}} questions, which may include a mix of the types specified in "{{$typeOfQuestions}}". Each question should have only one type.
 
-Adhere strictly to the following guidelines:
+CRITICAL: return only JSON doesnt more else.
 
-- If the type is "MultipleChoice", each question should have exactly 4 answers, with only one correct answer.
-- If the type is "TrueFalse", each question should have exactly 2 answers: "true" and "false", with one being correct.
+**Guidelines:**
 
-1. Content and Diversity:
-   - Use your knowledge about "{{$content}}" to create varied questions and answers.
-   - Ensure that the information is factual and widely accepted in the field.
-   - Focus on key facts and concepts related to the topic.
-   - Cover various aspects and subtopics within the main topic.
-   - Avoid repeating the same concept in multiple questions.
+- For "MultipleChoice" questions: Provide exactly 4 answers, with only one being correct.
+- For "TrueFalse" questions: Provide exactly 2 answers: "true" and "false", with one being correct.
 
-2. Question Types and Formulation:
-   - Use different questioning techniques (e.g., "What is...", "Which of the following...", "How does...", "Explain why...").
-   - Incorporate a mix of fact-based, conceptual, and application questions.
-   - Unobvious facts and trivia
-   - Questions requiring critical thinking
-   - Riddles and puzzles related to the topic
-   - Questions connecting different aspects of the topic
-   - Questions with humorous elements (where appropriate)
-   - Questions referring to practical applications of knowledge
+**Content and Diversity:**
 
-4. Question and Answer Quality:
-   - Questions should be clear, concise, and directly related to the main topic.
-   - Avoid overly complex or ambiguous phrasing.
-   - Ensure that the correct answer is unambiguously right.
+- Create varied questions and answers.
+- Ensure accuracy and relevance to the content.
+- Cover different aspects and subtopics of the main content.
+- Avoid repeating the same concept across multiple questions.
 
-Also generate title and brief description for that quiz.
+**Question Types and Formulation:**
+
+- Use various questioning techniques, such as "What is...", "Which of the following...", "How does...", "Explain why...".
+- Include a mix of fact-based, conceptual, and application questions.
+- Incorporate trivia, critical thinking, riddles, puzzles, and connections between different aspects of the topic.
+- Add humor where appropriate and refer to practical applications.
+
+**Question and Answer Quality:**
+
+- Ensure that questions are clear, concise, and directly related to the topic.
+- Avoid overly complex or ambiguous phrasing.
+- Make sure the correct answer is unmistakably correct.
+
+Additionally, generate a title and a brief description for the quiz.
 
 TAKE DEEP BREATH AND DO NOT HALLUCINATE
 
-JSON Structure:
-Respond **only** with the JSON object, and **no** additional text or explanations.
+Respond only with the JSON and no additional text or explanations.
+
 {
-  "Title": "Sample Quiz Title",
-  "Description": "Brief description of the quiz content",
+  "Title": "Super creative Quiz Title",
+  "Description": "Super creative Brief description of the quiz content",
   "CreateQuestionsDto": [
     {
       "Title": "Sample Question 1",
@@ -46,6 +46,14 @@ Respond **only** with the JSON object, and **no** additional text or explanation
         },
         {
           "Content": "Answer 2 for Question 1",
+          "IsCorrect": false
+        },
+        {
+          "Content": "Answer 3 for Question 1",
+          "IsCorrect": false
+        },
+        {
+          "Content": "Answer 4 for Question 1",
           "IsCorrect": false
         }
       ]
@@ -59,7 +67,7 @@ Respond **only** with the JSON object, and **no** additional text or explanation
         },
         {
           "Content": "Answer 2 for Question 2",
-          "Iscorrect": true
+          "IsCorrect": true
         }
       ]
     }

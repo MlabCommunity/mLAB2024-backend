@@ -25,10 +25,13 @@
     },
     {
       "name": "typeOfQuestions",
-      "description": "Type of questions to generate",
+      "description": "Array of question types to include in the quiz. You can specify multiple types (e.g., ['MultipleChoice', 'TrueFalse']).",
       "required": true,
-      "type": "string",
-      "enum": [ "MultipleChoice", "TrueFalse" ]
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [ "MultipleChoice", "TrueFalse" ]
+      }
     }
   ]
 }
