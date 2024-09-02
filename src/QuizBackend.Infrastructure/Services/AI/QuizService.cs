@@ -29,7 +29,7 @@ namespace QuizBackend.Infrastructure.Services.AI
             };
 
             var jsonResponse = await _kernelService.CreatePluginFromPromptDirectory("GenerateQuiz", kernelArguments);
-            Console.WriteLine(jsonResponse);
+      
             var quizDto = JsonConvert.DeserializeObject<CreateQuizDto>(jsonResponse);
 
             if (string.IsNullOrWhiteSpace(jsonResponse) || quizDto is null)
