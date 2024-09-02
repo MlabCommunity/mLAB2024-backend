@@ -1,8 +1,9 @@
-﻿namespace QuizBackend.Domain.Entities
+﻿using QuizBackend.Domain.Common;
+
+namespace QuizBackend.Domain.Entities
 {
-    public class QuizParticipation
+    public class QuizParticipation : BaseEntity
     { 
-        public Guid Id { get; set; } 
         public Guid QuizId { get; set; }
         public Quiz Quiz { get; set; } = null!;
         public string ParticipantId { get; set; } = null!;

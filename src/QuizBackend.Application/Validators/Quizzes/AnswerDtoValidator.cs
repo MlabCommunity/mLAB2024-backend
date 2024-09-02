@@ -1,11 +1,11 @@
 ﻿using FluentValidation;
-using QuizBackend.Application.Commands.Questions.CreateQuestion;
+using QuizBackend.Application.Dtos.Quizzes;
 
 namespace QuizBackend.Application.Validators.Quizzes
 {
-    public class CreateAnswerDtoValidator : AbstractValidator<CreateAnswer>
+    public class AnswerDtoValidator : AbstractValidator<AnswerDto>
     {
-        public CreateAnswerDtoValidator()
+        public AnswerDtoValidator()
         {
             RuleFor(x => x.Content)
                 .NotEmpty().WithMessage("Answer content is required")

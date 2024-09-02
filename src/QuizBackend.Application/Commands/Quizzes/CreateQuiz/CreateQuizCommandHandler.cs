@@ -6,6 +6,7 @@ using QuizBackend.Domain.Repositories;
 
 namespace QuizBackend.Application.Commands.Quizzes.CreateQuiz
 {
+    public record CreateQuizResponse(Guid Id);
     public class CreateQuizCommandHandler : ICommandHandler<CreateQuizCommand, Guid>
     {
         private readonly IQuizRepository _quizRepository;
@@ -21,7 +22,7 @@ namespace QuizBackend.Application.Commands.Quizzes.CreateQuiz
         {
             var ownerId = _httpContextAccessor.GetUserId();
 
-            var quiz = request.QuizDto.ToEntity(ownerId);
+            var quiz = request.ToEntity(ownerId);
 
             await _quizRepository.AddAsync(quiz);
 

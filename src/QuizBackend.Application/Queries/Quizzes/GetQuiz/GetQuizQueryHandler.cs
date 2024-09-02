@@ -2,7 +2,6 @@
 using QuizBackend.Application.Dtos.Quizzes;
 using QuizBackend.Application.Extensions;
 using QuizBackend.Application.Interfaces.Messaging;
-using QuizBackend.Application.Interfaces.Users;
 using QuizBackend.Domain.Entities;
 using QuizBackend.Domain.Exceptions;
 using QuizBackend.Domain.Repositories;
@@ -27,9 +26,9 @@ namespace QuizBackend.Application.Queries.Quizzes.GetQuiz
 
             var questionsDto = quiz.Questions
                 .Select(q => new QuestionDto(
-                     q.Id,
+                    q.Id,
                      q.Title,
-                     q.Description,
+                     q.QuizId,
                      q.Answers.Select(a => new AnswerDto(
                          a.Id,
                          a.Content,

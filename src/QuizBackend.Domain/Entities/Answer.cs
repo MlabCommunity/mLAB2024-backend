@@ -1,8 +1,9 @@
-﻿namespace QuizBackend.Domain.Entities
+﻿using QuizBackend.Domain.Common;
+
+namespace QuizBackend.Domain.Entities
 {
-    public class Answer
+    public class Answer : BaseEntity
     {
-        public Guid Id { get; set; }
         public required string Content { get; set; }
         public bool IsCorrect { get; set; } = false;
         public Guid QuestionId { get; set; }

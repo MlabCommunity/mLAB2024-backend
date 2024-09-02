@@ -3,11 +3,10 @@
 namespace QuizBackend.Application.Dtos.Quizzes
 {
     public record QuizDto(
-        Guid Id, 
+        Guid Id,
         string Title, 
         string? Description,
         Availability Availability,
         Status Status,
-        int TotalQuestions);
-    
+        int TotalQuestions);  
 }
