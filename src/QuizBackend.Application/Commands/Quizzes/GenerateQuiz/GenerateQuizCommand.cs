@@ -6,6 +6,6 @@ namespace QuizBackend.Application.Commands.Quizzes.GenerateQuiz
     public record GenerateQuizCommand(
         string Content,
         int NumberOfQuestions,
-        QuestionType QuestionType
-    ) : ICommand<GenerateQuizResponse>;
+        List<QuestionType> QuestionTypes
+    ) : ICommand<CreateQuizDto>;
 }
