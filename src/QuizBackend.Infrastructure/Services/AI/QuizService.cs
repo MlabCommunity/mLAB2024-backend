@@ -38,7 +38,6 @@ namespace QuizBackend.Infrastructure.Services.AI
 
                 throw new BadRequestException("Try generating again");
             }
-
             return quizDto;
         }
     }

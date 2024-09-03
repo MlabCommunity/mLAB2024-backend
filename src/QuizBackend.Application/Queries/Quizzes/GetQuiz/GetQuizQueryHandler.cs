@@ -46,7 +46,6 @@ namespace QuizBackend.Application.Queries.Quizzes.GetQuiz
                 questionsDto);
 
             return quizDto;
-
         }
     }
 }

@@ -30,4 +30,3 @@ namespace QuizBackend.Application.Extensions.Mappings.Quizzes
         }
     }
 }
-

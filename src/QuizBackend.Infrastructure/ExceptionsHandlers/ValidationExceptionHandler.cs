@@ -27,7 +27,6 @@ namespace QuizBackend.Infrastructure.ExceptionsHandlers
                 validationException,
                 "Validation exception occurred: {Message}",
                 validationException.Message);
-
           
             var errors = validationException.Errors
                 .GroupBy(e => e.PropertyName)
@@ -35,7 +34,6 @@ namespace QuizBackend.Infrastructure.ExceptionsHandlers
                     g => g.Key,
                     g => g.Select(e => e.ErrorMessage).ToArray()
                 );
-
           
             var validationProblemDetails = new ValidationProblemDetails(errors)
             {

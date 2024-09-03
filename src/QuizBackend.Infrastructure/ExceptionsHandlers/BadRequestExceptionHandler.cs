@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using QuizBackend.Domain.Exceptions;
 
-
 namespace QuizBackend.Infrastructure.ExceptionsHandlers
 {
     internal sealed class BadRequestExceptionHandler : IExceptionHandler

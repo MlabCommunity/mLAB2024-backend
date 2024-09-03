@@ -129,7 +129,5 @@ namespace QuizBackend.Api.Controllers
             var result = await _mediator.Send(command);
             return Ok(result);
         }
-
-
     }
 }

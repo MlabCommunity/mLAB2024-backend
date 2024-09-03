@@ -1,7 +1,6 @@
 ﻿using QuizBackend.Application.Interfaces.Messaging;
 using QuizBackend.Domain.Repositories;
 
-
 namespace QuizBackend.Application.Commands.QuestionsAndAnswers.DeleteQuestionAndAnswers
 {
     public class DeleteQuestionAndAnswersCommandHandler : ICommandHandler<DeleteQuestionAndAnswersCommand, Guid>

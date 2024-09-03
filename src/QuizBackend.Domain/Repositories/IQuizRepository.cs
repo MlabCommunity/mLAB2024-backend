@@ -1,5 +1,4 @@
 ﻿using QuizBackend.Domain.Entities;
-using System.Linq.Expressions;
 
 namespace QuizBackend.Domain.Repositories
 {

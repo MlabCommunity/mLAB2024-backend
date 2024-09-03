@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using QuizBackend.Application.Dtos.Auth;
 using QuizBackend.Application.Interfaces.Users;
 using Swashbuckle.AspNetCore.Annotations;
-using System.Security.Claims;
 
 namespace QuizBackend.Api.Controllers
 {
@@ -27,7 +26,6 @@ namespace QuizBackend.Api.Controllers
             return Ok(jwtAuthResult);
         }
 
-
         [HttpPost("signup")]
         [SwaggerOperation(Summary = "User sign-up", Description = "Registers a new user with the provided details.")]
         [ProducesResponseType(typeof(SignUpResponseDto), StatusCodes.Status200OK)]
@@ -36,7 +34,6 @@ namespace QuizBackend.Api.Controllers
         {
             var response = await _authService.SignUpAsync(request);
             return Ok(response);
-
         }
 
         [Authorize]

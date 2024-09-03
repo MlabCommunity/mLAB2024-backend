@@ -1,5 +1,4 @@
 ﻿using Microsoft.SemanticKernel;
-using Newtonsoft.Json.Linq;
 
 namespace QuizBackend.Infrastructure.Interfaces
 {

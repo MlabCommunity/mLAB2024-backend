@@ -6,7 +6,6 @@ namespace QuizBackend.Application.Commands.QuestionsAndAnswers.UpdateQuestionAnd
         Guid Id,
         string Title,
         List<UpdateQuestionAnswer> UpdateQuestionAnswers) : ICommand<Guid>;
-
     public record UpdateQuestionAnswer(
         Guid Id,
         string Content,

@@ -16,6 +16,5 @@
             ItemsFrom = pageSize * (pageNumber - 1) + 1;
             ItemsTo = ItemsFrom + pageSize - 1;
         }
-
     }
 }

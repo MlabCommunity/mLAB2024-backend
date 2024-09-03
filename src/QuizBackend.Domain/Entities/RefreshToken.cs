@@ -1,6 +1,4 @@
 ﻿
-using QuizBackend.Domain.Common;
-
 namespace QuizBackend.Domain.Entities
 {
     public class RefreshToken

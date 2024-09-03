@@ -10,6 +10,5 @@ namespace QuizBackend.Application.Commands.Quizzes.UpdateAvailability
                .NotEmpty().WithMessage("Status is required.")
                .IsInEnum().WithMessage("Invalid status value. Allowed values are: 'Public', 'Private'.");
         }
-        
     }
 }

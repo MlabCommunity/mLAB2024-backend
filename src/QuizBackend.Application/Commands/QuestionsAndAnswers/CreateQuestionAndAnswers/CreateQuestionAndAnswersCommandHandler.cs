@@ -16,7 +16,6 @@ namespace QuizBackend.Application.Commands.QuestionsAndAnswers.CreateQuestionAnd
         public async Task<Guid> Handle(CreateQuestionAndAnswersCommand request, CancellationToken cancellationToken)
         {
             var question = request.ToEntity();
-
             await _questionAndAnswersRepository.Add(question);
 
             return question.Id;

@@ -1,6 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using QuizBackend.Application.Commands.Quizzes.UpdateStatusQuiz;
-using QuizBackend.Application.Commands.UpdateStatusQuiz;
 using QuizBackend.Application.Extensions;
 using QuizBackend.Application.Interfaces;
 using QuizBackend.Application.Interfaces.Messaging;
