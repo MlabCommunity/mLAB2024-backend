@@ -9,4 +9,4 @@ namespace QuizBackend.Domain.Entities
         public Guid QuestionId { get; set; }
         public Question Question { get; set; } = null!;
     }
-}
+}   

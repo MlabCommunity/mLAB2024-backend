@@ -13,22 +13,22 @@ namespace QuizBackend.Application.Commands.Quizzes.CreateQuiz
             RuleFor(x => x.Description)
                 .MaximumLength(500).WithMessage("Description must be at most 500 characters");
 
-            RuleFor(x => x.CreateQuestions)
+            RuleFor(x => x.CreateQuizQuestions)
                 .NotEmpty().WithMessage("At least one question is required")
                 .Must(q => q.Count <= 15).WithMessage("Quiz cannot have more than 15 questions");
 
-            RuleForEach(x => x.CreateQuestions).ChildRules(questions =>
+            RuleForEach(x => x.CreateQuizQuestions).ChildRules(questions =>
             {
                 questions.RuleFor(q => q.Title)
                     .NotEmpty().WithMessage("Question title is required")
                     .MaximumLength(100).WithMessage("Question title must be at most 100 characters");
 
-                questions.RuleFor(q => q.CreateAnswers)
+                questions.RuleFor(q => q.CreateQuizAnswers)
                     .NotEmpty().WithMessage("At least one answer is required")
                     .Must(a => a.Count >= 2).WithMessage("Each question must have at least 2 answers")
                     .Must(a => a.Count <= 4).WithMessage("Each question can have a maximum of 4 answers");
 
-                questions.RuleForEach(q => q.CreateAnswers).ChildRules(answers =>
+                questions.RuleForEach(q => q.CreateQuizAnswers).ChildRules(answers =>
                 {
                     answers.RuleFor(a => a.Content)
                         .NotEmpty().WithMessage("Answer content is required")

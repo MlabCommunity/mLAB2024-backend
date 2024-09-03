@@ -6,7 +6,6 @@ using QuizBackend.Domain.Repositories;
 
 namespace QuizBackend.Application.Commands.Quizzes.CreateQuiz
 {
-    public record CreateQuizResponse(Guid Id);
     public class CreateQuizCommandHandler : ICommandHandler<CreateQuizCommand, Guid>
     {
         private readonly IQuizRepository _quizRepository;

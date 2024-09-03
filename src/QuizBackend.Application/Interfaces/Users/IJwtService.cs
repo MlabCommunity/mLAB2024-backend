@@ -1,4 +1,4 @@
-﻿using QuizBackend.Application.Dtos;
+﻿using QuizBackend.Application.Dtos.Auth;
 using QuizBackend.Domain.Entities;
 using System.Security.Claims;
 

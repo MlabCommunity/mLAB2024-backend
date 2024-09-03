@@ -14,12 +14,12 @@ namespace QuizBackend.Application.Extensions.Mappings.Quizzes
                 Title = command.Title,
                 OwnerId = ownerId,
                 CreatedAtUtc = DateTime.UtcNow,
-                Questions = command.CreateQuestions.Select(q => new Question
+                Questions = command.CreateQuizQuestions.Select(q => new Question
                 {
                     Id = Guid.NewGuid(),
                     Title = q.Title,
                     CreatedAtUtc = DateTime.UtcNow,
-                    Answers = q.CreateAnswers.Select(a => new Answer
+                    Answers = q.CreateQuizAnswers.Select(a => new Answer
                     {
                         Id = Guid.NewGuid(),
                         Content = a.Content,

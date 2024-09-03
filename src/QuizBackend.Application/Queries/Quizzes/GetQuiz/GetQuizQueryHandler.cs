@@ -28,7 +28,7 @@ namespace QuizBackend.Application.Queries.Quizzes.GetQuiz
                 .Select(q => new QuestionDto(
                     q.Id,
                      q.Title,
-                     q.QuizId,
+                     q.QuizId.ToString(),
                      q.Answers.Select(a => new AnswerDto(
                          a.Id,
                          a.Content,

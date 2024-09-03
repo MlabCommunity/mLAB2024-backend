@@ -7,13 +7,13 @@ namespace QuizBackend.Application.Commands.Quizzes.CreateQuiz
         string Title,
         string Description,
         QuestionType QuestionType,
-        List<CreateQuestion> CreateQuestions
+        List<CreateQuizQuestion> CreateQuizQuestions
         ) : ICommand<Guid>;
     
-    public record CreateQuestion(
+    public record CreateQuizQuestion(
         string Title,
-        List<CreateAnswer> CreateAnswers);
-    public record CreateAnswer(
+        List<CreateQuizAnswer> CreateQuizAnswers);
+    public record CreateQuizAnswer(
         string Content,
         bool IsCorrect);
 }

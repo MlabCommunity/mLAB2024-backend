@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using QuizBackend.Application.Dtos;
+using QuizBackend.Application.Dtos.Auth;
 using QuizBackend.Application.Extensions;
 using QuizBackend.Application.Interfaces.Users;
 using QuizBackend.Domain.Entities;

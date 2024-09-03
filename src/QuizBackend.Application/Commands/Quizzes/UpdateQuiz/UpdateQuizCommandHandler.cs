@@ -8,7 +8,6 @@ using QuizBackend.Domain.Repositories;
 
 namespace QuizBackend.Application.Commands.Quizzes.UpdateQuiz
 {
-    public record UpdateQuizResponse(Guid Id);
     public class UpdateQuizCommandHandler : ICommandHandler<UpdateQuizCommand, Guid>
     {
         private readonly IQuizRepository _quizRepository;

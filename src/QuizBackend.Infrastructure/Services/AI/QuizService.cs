@@ -18,7 +18,7 @@ namespace QuizBackend.Infrastructure.Services.AI
             _kernelService = kernelService;
             _logger = logger;
         }
-        public async Task<CreateQuizDto> GenerateQuizFromPromptTemplateAsync(GenerateQuizCommand command)
+        public async Task<GenerateQuizResponse> GenerateQuizFromPromptTemplateAsync(GenerateQuizCommand command)
         {
             var kernelArguments = new KernelArguments
             {
@@ -29,7 +29,7 @@ namespace QuizBackend.Infrastructure.Services.AI
 
             var jsonResponse = await _kernelService.CreatePluginFromPromptDirectory("GenerateQuiz", kernelArguments);
       
-            var quizDto = JsonConvert.DeserializeObject<CreateQuizDto>(jsonResponse);
+            var quizDto = JsonConvert.DeserializeObject<GenerateQuizResponse>(jsonResponse);
 
             if (string.IsNullOrWhiteSpace(jsonResponse) || quizDto is null)
             {

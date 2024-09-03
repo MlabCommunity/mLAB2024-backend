@@ -9,6 +9,7 @@ namespace QuizBackend.Infrastructure.Extensions
         public static void AddRepositories(this IServiceCollection services)
         {
             services.AddScoped<IQuizRepository, QuizRepository>();
+            services.AddScoped<IQuestionAndAnswersRepository, QuestionAndAnswersRepository>();
         }
     }
 }

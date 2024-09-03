@@ -13,6 +13,7 @@ using QuizBackend.Domain.Enums;
 using QuizBackend.Application.Commands.UpdateStatusQuiz;
 using QuizBackend.Application.Commands.Quizzes.DeleteQuiz;
 using QuizBackend.Application.Commands.Quizzes.UpdateAvailability;
+using QuizBackend.Application.Commands.Quizzes.UpdateQuiz;
 
 namespace QuizBackend.Api.Controllers
 {
@@ -120,5 +121,15 @@ namespace QuizBackend.Api.Controllers
             await _mediator.Send(command);
             return NoContent();
         }
+
+        [HttpPut]
+        [SwaggerOperation(Summary = "Update quiz title and description. In future this function will be update status and availability")]
+        public async Task<IActionResult> UpdateQuiz(UpdateQuizCommand command)
+        {
+            var result = await _mediator.Send(command);
+            return Ok(result);
+        }
+
+
     }
 }
