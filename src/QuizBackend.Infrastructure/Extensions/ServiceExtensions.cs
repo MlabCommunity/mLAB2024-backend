@@ -38,6 +38,8 @@ namespace QuizBackend.Infrastructure.Extensions
             services.AddRepositories();
             services.AddDateTimeProvider();
 
+            services.AddProcessors();
+
             return services;
         } 
     }

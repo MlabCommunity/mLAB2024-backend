@@ -25,14 +25,16 @@ namespace QuizBackend.Infrastructure.Services.AI
             {
                 {"content", command.Content },
                 {"numberOfQuestions", command.NumberOfQuestions},
-                {"typeOfQuestions", command.QuestionTypes}
+                {"typeOfQuestions", command.QuestionTypes},
             };
 
             var jsonResponse = await _kernelService.CreatePluginFromPromptDirectory("GenerateQuiz", kernelArguments);
-      
-            var quizDto = JsonConvert.DeserializeObject<CreateQuizDto>(jsonResponse);
 
-            if (string.IsNullOrWhiteSpace(jsonResponse) || quizDto is null)
+            var jsonStartIndex = jsonResponse.IndexOf('{');
+            var jsonEndIndex = jsonResponse.LastIndexOf('}') + 1;
+            var validJson = jsonResponse.Substring(jsonStartIndex, jsonEndIndex - jsonStartIndex);
+
+            if (string.IsNullOrWhiteSpace(validJson) || validJson is null)
             {
                 _logger.LogWarning("Quiz generation failed: Content: {content}, NumberOfQuestions: {numberOfQuestions}, TypeOfQuestions: {typeOfQuestions}",
                     command.Content, command.NumberOfQuestions, command.QuestionTypes);
@@ -40,6 +42,7 @@ namespace QuizBackend.Infrastructure.Services.AI
                 throw new BadRequestException("Try generating again");
             }
 
+            var quizDto = JsonConvert.DeserializeObject<CreateQuizDto>(validJson);
             return quizDto;
         }
     }
