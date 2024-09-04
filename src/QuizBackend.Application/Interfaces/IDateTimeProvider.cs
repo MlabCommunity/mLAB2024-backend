@@ -1,7 +1,6 @@
-﻿namespace QuizBackend.Application.Interfaces
+﻿namespace QuizBackend.Application.Interfaces;
+
+public interface IDateTimeProvider
 {
-    public interface IDateTimeProvider
-    {
-        public DateTime UtcNow { get; }
-    }
+    public DateTime UtcNow { get; }
 }

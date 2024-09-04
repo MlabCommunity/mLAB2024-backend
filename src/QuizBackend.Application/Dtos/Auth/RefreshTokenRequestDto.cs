@@ -1,7 +1,6 @@
-﻿namespace QuizBackend.Application.Dtos.Auth
+﻿namespace QuizBackend.Application.Dtos.Auth;
+
+public class RefreshTokenRequestDto
 {
-    public class RefreshTokenRequestDto
-    {
-        public required string RefreshToken { get; set; }
-    }
+    public required string RefreshToken { get; set; }
 }

@@ -1,10 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 
-namespace QuizBackend.Api.Controllers
+namespace QuizBackend.Api.Controllers;
+
+[ApiController]
+[Route("api/[controller]")]
+public class BaseController : ControllerBase
 {
-    [ApiController]
-    [Route("api/[controller]")]
-    public class BaseController : ControllerBase
-    {
-    }
 }

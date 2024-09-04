@@ -1,9 +1,8 @@
 ﻿using QuizBackend.Application.Interfaces;
 
-namespace QuizBackend.Infrastructure.Time
+namespace QuizBackend.Infrastructure.Time;
+
+internal sealed class DateTimeProvider : IDateTimeProvider
 {
-    internal sealed class DateTimeProvider : IDateTimeProvider
-    {
-        public DateTime UtcNow => DateTime.UtcNow;  
-    }
+    public DateTime UtcNow => DateTime.UtcNow;
 }

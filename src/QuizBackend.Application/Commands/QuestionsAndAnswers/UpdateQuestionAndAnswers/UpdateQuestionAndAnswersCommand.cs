@@ -1,13 +1,13 @@
-﻿using QuizBackend.Application.Interfaces.Messaging;
+﻿using MediatR;
+using QuizBackend.Application.Interfaces.Messaging;
 
-namespace QuizBackend.Application.Commands.QuestionsAndAnswers.UpdateQuestionAndAnswers
-{
-    public record UpdateQuestionAndAnswersCommand(
-        Guid Id,
-        string Title,
-        List<UpdateQuestionAnswer> UpdateQuestionAnswers) : ICommand<Guid>;
-    public record UpdateQuestionAnswer(
-        Guid Id,
-        string Content,
-        bool IsCorrect);
-}
+namespace QuizBackend.Application.Commands.QuestionsAndAnswers.UpdateQuestionAndAnswers;
+
+public record UpdateQuestionAndAnswersCommand(
+    Guid Id,
+    string Title,
+    List<UpdateAnswer> UpdateAnswers) : ICommand<Unit>;
+public record UpdateAnswer(
+    Guid Id,
+    string Content,
+    bool IsCorrect);

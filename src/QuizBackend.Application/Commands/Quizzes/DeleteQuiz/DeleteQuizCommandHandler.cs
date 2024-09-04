@@ -6,28 +6,27 @@ using QuizBackend.Domain.Entities;
 using QuizBackend.Domain.Exceptions;
 using QuizBackend.Domain.Repositories;
 
-namespace QuizBackend.Application.Commands.Quizzes.DeleteQuiz
+namespace QuizBackend.Application.Commands.Quizzes.DeleteQuiz;
+
+public class DeleteQuizCommandHandler : ICommandHandler<DeleteQuizCommand, Unit>
 {
-    public class DeleteQuizCommandHandler : ICommandHandler<DeleteQuizCommand, Unit>
+    private readonly IQuizRepository _quizRepository;
+    private readonly IHttpContextAccessor _httpContextAccessor;
+
+    public DeleteQuizCommandHandler(IQuizRepository quizRepository, IHttpContextAccessor httpContextAccessor)
     {
-        private readonly IQuizRepository _quizRepository;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        _quizRepository = quizRepository;
+        _httpContextAccessor = httpContextAccessor;
+    }
+    public async Task<Unit> Handle(DeleteQuizCommand request, CancellationToken cancellationToken)
+    {
+        var userId = _httpContextAccessor.GetUserId();
 
-        public DeleteQuizCommandHandler(IQuizRepository quizRepository, IHttpContextAccessor httpContextAccessor)
-        {
-            _quizRepository = quizRepository;
-            _httpContextAccessor = httpContextAccessor;
-        }
-        public async Task<Unit> Handle(DeleteQuizCommand request, CancellationToken cancellationToken)
-        {
-            var userId = _httpContextAccessor.GetUserId();
+        var quiz = await _quizRepository.GetByIdAndOwnerAsync(request.Id, userId, cancellationToken)
+                     ?? throw new NotFoundException(nameof(Quiz), request.Id.ToString());
 
-            var quiz = await _quizRepository.GetByIdAndOwnerAsync(request.Id, userId, cancellationToken)
-                         ?? throw new NotFoundException(nameof(Quiz), request.Id.ToString());
+        await _quizRepository.RemoveAsync(quiz, cancellationToken);
 
-            await _quizRepository.RemoveAsync(quiz, cancellationToken);
-
-            return Unit.Value;
-        }
+        return Unit.Value;
     }
 }

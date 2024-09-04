@@ -1,36 +1,45 @@
 ﻿using FluentValidation;
 
-namespace QuizBackend.Application.Commands.QuestionsAndAnswers.CreateQuestionAndAnswers
+namespace QuizBackend.Application.Commands.QuestionsAndAnswers.CreateQuestionAndAnswers;
+
+public class CreateQuestionAndAnswersCommandValidator : AbstractValidator<CreateQuestionAndAnswersCommand>
 {
-    public class CreateQuestionAndAnswersCommandValidator : AbstractValidator<CreateQuestionAndAnswersCommand>
+    public CreateQuestionAndAnswersCommandValidator()
     {
-        public CreateQuestionAndAnswersCommandValidator()
-        {
-            RuleFor(x => x.Title)
-                .NotEmpty().WithMessage("Title is required.")
-                .MaximumLength(100).WithMessage("Title must be at most 100 characters.");
+        RuleFor(x => x.Title)
+            .NotEmpty().WithMessage("Title is required.")
+            .MaximumLength(100).WithMessage("Title must be at most 100 characters.");
 
-            RuleFor(x => x.CreateQuestionAnswers)
-                .NotEmpty().WithMessage("At least one question and answer pair is required.")
-                .Must(qa => qa.Count >= 2).WithMessage("You must provide at least 2 question-answer pairs.");
+        RuleFor(x => x.CreateAnswers)
+            .NotEmpty().WithMessage("At least one question and answer pair is required.")
+            .Must(a => a.Count >= 2).WithMessage("You must provide at least 2 question-answer pairs.");
 
-            RuleForEach(x => x.CreateQuestionAnswers).SetValidator(new CreateQuestionAnswerValidator());
+        RuleFor(x => x.CreateAnswers)
+           .Must(HaveAtLeastOneCorrectAnswer)
+           .WithMessage("At least one answer must be marked as correct.");
 
-            RuleFor(x => x.QuizId)
-                .NotEmpty().WithMessage("QuizId is required.");
-        }
+        RuleForEach(x => x.CreateAnswers).SetValidator(new CreateAnswerValidator());
+
+        RuleFor(x => x.QuizId)
+            .NotEmpty().WithMessage("QuizId is required.");
+
+
     }
-
-    public class CreateQuestionAnswerValidator : AbstractValidator<CreateQuestionAnswer>
+    private bool HaveAtLeastOneCorrectAnswer(List<CreateAnswer> createAnswers)
     {
-        public CreateQuestionAnswerValidator()
-        {
-            RuleFor(x => x.Content)
-                .NotEmpty().WithMessage("Content is required.")
-                .MaximumLength(250).WithMessage("Content must be at most 250 characters.");
+        return createAnswers.Any(a => a.IsCorrect);
+    }
+}
 
-            RuleFor(x => x.IsCorrect)
-                .NotNull().WithMessage("IsCorrect must be specified.");
-        }
+public class CreateAnswerValidator : AbstractValidator<CreateAnswer>
+{
+    public CreateAnswerValidator()
+    {
+        RuleFor(x => x.Content)
+            .NotEmpty().WithMessage("Content is required.")
+            .MaximumLength(250).WithMessage("Content must be at most 250 characters.");
+
+        RuleFor(x => x.IsCorrect)
+            .NotNull().WithMessage("IsCorrect must be specified.");
     }
 }

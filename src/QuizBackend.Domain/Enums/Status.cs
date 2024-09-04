@@ -1,8 +1,7 @@
-﻿namespace QuizBackend.Domain.Enums
+﻿namespace QuizBackend.Domain.Enums;
+
+public enum Status
 {
-    public enum Status
-    {
-        Active = 0,
-        Inactive = 1,
-    }
+    Active = 0,
+    Inactive = 1,
 }

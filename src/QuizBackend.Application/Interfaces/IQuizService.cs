@@ -1,9 +1,8 @@
 ﻿using QuizBackend.Application.Commands.Quizzes.GenerateQuiz;
 
-namespace QuizBackend.Application.Interfaces
+namespace QuizBackend.Application.Interfaces;
+
+public interface IQuizService
 {
-    public interface IQuizService
-    {
-        Task<GenerateQuizResponse> GenerateQuizFromPromptTemplateAsync(GenerateQuizCommand command);
-    }
+    Task<GenerateQuizResponse> GenerateQuizFromPromptTemplateAsync(GenerateQuizCommand command);
 }

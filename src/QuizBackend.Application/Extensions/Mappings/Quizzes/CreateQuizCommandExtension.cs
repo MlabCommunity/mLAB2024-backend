@@ -1,32 +1,31 @@
 ﻿using QuizBackend.Application.Commands.Quizzes.CreateQuiz;
 using QuizBackend.Domain.Entities;
 
-namespace QuizBackend.Application.Extensions.Mappings.Quizzes
+namespace QuizBackend.Application.Extensions.Mappings.Quizzes;
+
+public static class CreateQuizCommandExtension
 {
-    public static class CreateQuizCommandExtension
+    public static Quiz ToEntity(this CreateQuizCommand command, string ownerId)
     {
-        public static Quiz ToEntity(this CreateQuizCommand command, string ownerId)
+        return new Quiz
         {
-            return new Quiz
+            Id = Guid.NewGuid(),
+            Description = command.Description,
+            Title = command.Title,
+            OwnerId = ownerId,
+            CreatedAtUtc = DateTime.UtcNow,
+            Questions = command.CreateQuizQuestions.Select(q => new Question
             {
                 Id = Guid.NewGuid(),
-                Description = command.Description,
-                Title = command.Title,
-                OwnerId = ownerId,
+                Title = q.Title,
                 CreatedAtUtc = DateTime.UtcNow,
-                Questions = command.CreateQuizQuestions.Select(q => new Question
+                Answers = q.CreateQuizAnswers.Select(a => new Answer
                 {
                     Id = Guid.NewGuid(),
-                    Title = q.Title,
-                    CreatedAtUtc = DateTime.UtcNow,
-                    Answers = q.CreateQuizAnswers.Select(a => new Answer
-                    {
-                        Id = Guid.NewGuid(),
-                        Content = a.Content,
-                        IsCorrect = a.IsCorrect
-                    }).ToList()
+                    Content = a.Content,
+                    IsCorrect = a.IsCorrect
                 }).ToList()
-            };
-        }
+            }).ToList()
+        };
     }
 }

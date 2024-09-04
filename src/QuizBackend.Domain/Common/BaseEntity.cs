@@ -1,10 +1,8 @@
-﻿
-namespace QuizBackend.Domain.Common
+﻿namespace QuizBackend.Domain.Common;
+
+public abstract class BaseEntity
 {
-    public abstract class BaseEntity
-    {
-        public Guid Id { get; set; }
-        public DateTime CreatedAtUtc { get; set; }
-        public DateTime? UpdatedAtUtc { get; set; }
-    }
+    public Guid Id { get; set; }
+    public DateTime CreatedAtUtc { get; set; }
+    public DateTime? UpdatedAtUtc { get; set; }
 }

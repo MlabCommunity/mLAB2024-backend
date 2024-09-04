@@ -1,10 +1,9 @@
 ﻿using Microsoft.SemanticKernel;
 
-namespace QuizBackend.Infrastructure.Interfaces
+namespace QuizBackend.Infrastructure.Interfaces;
+
+public interface IKernelService
 {
-    public interface IKernelService
-    {
-        Task<string> InvokePromptAsync(string prompt);
-        Task<string> CreatePluginFromPromptDirectory(string promptKey, KernelArguments kernelArguments);
-    }
+    Task<string> InvokePromptAsync(string prompt);
+    Task<string> CreatePluginFromPromptDirectory(string promptKey, KernelArguments kernelArguments);
 }

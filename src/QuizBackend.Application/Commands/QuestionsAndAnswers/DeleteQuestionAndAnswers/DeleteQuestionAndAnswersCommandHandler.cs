@@ -1,22 +1,22 @@
-﻿using QuizBackend.Application.Interfaces.Messaging;
+﻿using MediatR;
+using QuizBackend.Application.Interfaces.Messaging;
 using QuizBackend.Domain.Repositories;
 
-namespace QuizBackend.Application.Commands.QuestionsAndAnswers.DeleteQuestionAndAnswers
+namespace QuizBackend.Application.Commands.QuestionsAndAnswers.DeleteQuestionAndAnswers;
+
+public class DeleteQuestionAndAnswersCommandHandler : ICommandHandler<DeleteQuestionAndAnswersCommand, Unit>
 {
-    public class DeleteQuestionAndAnswersCommandHandler : ICommandHandler<DeleteQuestionAndAnswersCommand, Guid>
+    private readonly IQuestionAndAnswersRepository _questionAndAnswersRepository;
+
+    public DeleteQuestionAndAnswersCommandHandler(IQuestionAndAnswersRepository questionAndAnswersRepository)
     {
-        private readonly IQuestionAndAnswersRepository _questionAndAnswersRepository;
+        _questionAndAnswersRepository = questionAndAnswersRepository;
+    }
 
-        public DeleteQuestionAndAnswersCommandHandler(IQuestionAndAnswersRepository questionAndAnswersRepository)
-        {
-            _questionAndAnswersRepository = questionAndAnswersRepository;
-        }
+    public async Task<Unit> Handle(DeleteQuestionAndAnswersCommand request, CancellationToken cancellation)
+    {
+        await _questionAndAnswersRepository.Delete(request.Id);
 
-        public async Task<Guid> Handle(DeleteQuestionAndAnswersCommand request, CancellationToken cancellation)
-        {
-            await _questionAndAnswersRepository.Delete(request.Id);
-
-            return request.Id;
-        }
+        return Unit.Value;
     }
 }

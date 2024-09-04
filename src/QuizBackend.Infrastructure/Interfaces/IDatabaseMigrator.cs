@@ -1,7 +1,6 @@
-﻿namespace QuizBackend.Infrastructure.Interfaces
+﻿namespace QuizBackend.Infrastructure.Interfaces;
+
+public interface IDatabaseMigrator
 {
-    public interface IDatabaseMigrator
-    {
-        Task EnsureMigrationAsync();
-    }
+    Task EnsureMigrationAsync();
 }

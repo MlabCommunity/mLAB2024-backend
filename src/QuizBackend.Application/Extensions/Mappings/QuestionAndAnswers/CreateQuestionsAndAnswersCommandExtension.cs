@@ -1,26 +1,26 @@
 ﻿using QuizBackend.Application.Commands.QuestionsAndAnswers.CreateQuestionAndAnswers;
+using QuizBackend.Application.Interfaces;
 using QuizBackend.Domain.Entities;
 
-namespace QuizBackend.Application.Extensions.Mappings.QuestionAndAnswers
+namespace QuizBackend.Application.Extensions.Mappings.QuestionAndAnswers;
+
+public static class CreateQuestionsAndAnswersCommandExtension
 {
-    public static class CreateQuestionsAndAnswersCommandExtension
+    public static Question ToEntity(this CreateQuestionAndAnswersCommand command, IDateTimeProvider dateTimeProvider)
     {
-        public static Question ToEntity(this CreateQuestionAndAnswersCommand command)
+        return new Question
         {
-            return new Question
+            Id = Guid.NewGuid(),
+            Title = command.Title,
+            QuizId = command.QuizId,
+            CreatedAtUtc = dateTimeProvider.UtcNow,
+            Answers = command.CreateAnswers.Select(a => new Answer
             {
                 Id = Guid.NewGuid(),
-                Title = command.Title,
-                QuizId = command.QuizId,
-                CreatedAtUtc = DateTime.UtcNow,
-                Answers = command.CreateQuestionAnswers.Select(a => new Answer
-                {
-                    Id = Guid.NewGuid(),
-                    Content = a.Content,
-                    IsCorrect = a.IsCorrect,
-                    CreatedAtUtc = DateTime.UtcNow
-                }).ToList()
-            };
-        }
+                Content = a.Content,
+                IsCorrect = a.IsCorrect,
+                CreatedAtUtc = DateTime.UtcNow
+            }).ToList()
+        };
     }
 }

@@ -1,7 +1,6 @@
-﻿namespace QuizBackend.Application.Dtos.Auth
+﻿namespace QuizBackend.Application.Dtos.Auth;
+
+public class LogoutResponseDto
 {
-    public class LogoutResponseDto
-    {
-        public required string Message { get; set; }
-    }
+    public required string Message { get; set; }
 }
