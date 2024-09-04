@@ -4,7 +4,6 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuizBackend.Domain.Entities;
 using QuizBackend.Domain.Enums;
 
-
 namespace QuizBackend.Infrastructure.Data.Configurations;
 
 public class QuestionConfiguration : IEntityTypeConfiguration<Question>

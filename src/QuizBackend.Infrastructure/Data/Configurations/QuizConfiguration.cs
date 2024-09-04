@@ -28,7 +28,6 @@ public class QuizConfiguration : IEntityTypeConfiguration<Quiz>
             .WithMany(u => u.ParticipatedQuizzes)
             .UsingEntity<QuizParticipation>();
 
-
         builder
             .Property(q => q.Status)
             .HasConversion(new EnumToStringConverter<Status>());
