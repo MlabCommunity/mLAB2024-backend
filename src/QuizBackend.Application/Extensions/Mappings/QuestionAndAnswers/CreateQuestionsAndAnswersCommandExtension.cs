@@ -19,7 +19,7 @@ public static class CreateQuestionsAndAnswersCommandExtension
                 Id = Guid.NewGuid(),
                 Content = a.Content,
                 IsCorrect = a.IsCorrect,
-                CreatedAtUtc = DateTime.UtcNow
+                CreatedAtUtc = dateTimeProvider.UtcNow
             }).ToList()
         };
     }
