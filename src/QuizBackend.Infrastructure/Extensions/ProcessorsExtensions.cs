@@ -8,7 +8,7 @@ namespace QuizBackend.Infrastructure.Extensions
     {
         public static void AddProcessors(this IServiceCollection services)
         {
-            services.AddScoped<IAttachmentProcessor, AttachmentProcessor>();
+            services.AddSingleton<IAttachmentProcessor, AttachmentProcessor>();
         }
     }
 }

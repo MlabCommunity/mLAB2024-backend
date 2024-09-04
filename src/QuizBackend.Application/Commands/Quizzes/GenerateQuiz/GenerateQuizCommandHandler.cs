@@ -15,19 +15,14 @@ namespace QuizBackend.Application.Commands.Quizzes.GenerateQuiz
             _quizService = quizService;
             _attachmentProcessor = attachmentProcessor;
         }
-
         public async Task<CreateQuizDto> Handle(GenerateQuizCommand command, CancellationToken cancellationToken)
         {
             string content = command.Content;
 
-            if (command.Attachments != null && command.Attachments.Count > 0)
-            {
-                var processedAttachments = await _attachmentProcessor.ProccessAttachments(command.Attachments);
-                var attachmentContents = processedAttachments.Select(pa => pa.Content).ToList();
+            var processedAttachments = await _attachmentProcessor.ProcessAttachments(command.Attachments!);
 
-                content = $"{content}\n\n{string.Join("\n\n", attachmentContents)}";
-            }
-
+            content = $"{content}\n\n{string.Join("\n\n", processedAttachments)}";
+            
             if (content.Length > MaxContentLength)
             {
                 content = content.Substring(0, MaxContentLength);
