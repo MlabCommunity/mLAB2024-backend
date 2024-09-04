@@ -28,7 +28,6 @@ public class GetQuizQueryHandler : IQueryHandler<GetQuizQuery, QuizDetailsDto>
             .Select(q => new QuestionDto(
                 q.Id,
                  q.Title,
-                 q.QuizId.ToString(),
                  q.Answers.Select(a => new AnswerDto(
                      a.Id,
                      a.Content,
