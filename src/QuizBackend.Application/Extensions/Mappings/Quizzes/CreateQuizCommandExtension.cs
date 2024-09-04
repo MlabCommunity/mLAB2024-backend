@@ -1,11 +1,12 @@
 ﻿using QuizBackend.Application.Commands.Quizzes.CreateQuiz;
+using QuizBackend.Application.Interfaces;
 using QuizBackend.Domain.Entities;
 
 namespace QuizBackend.Application.Extensions.Mappings.Quizzes;
 
 public static class CreateQuizCommandExtension
 {
-    public static Quiz ToEntity(this CreateQuizCommand command, string ownerId)
+    public static Quiz ToEntity(this CreateQuizCommand command, string ownerId, IDateTimeProvider dateTimeProvider)
     {
         return new Quiz
         {
@@ -13,12 +14,12 @@ public static class CreateQuizCommandExtension
             Description = command.Description,
             Title = command.Title,
             OwnerId = ownerId,
-            CreatedAtUtc = DateTime.UtcNow,
+            CreatedAtUtc = dateTimeProvider.UtcNow,
             Questions = command.CreateQuizQuestions.Select(q => new Question
             {
                 Id = Guid.NewGuid(),
                 Title = q.Title,
-                CreatedAtUtc = DateTime.UtcNow,
+                CreatedAtUtc = dateTimeProvider.UtcNow,
                 Answers = q.CreateQuizAnswers.Select(a => new Answer
                 {
                     Id = Guid.NewGuid(),

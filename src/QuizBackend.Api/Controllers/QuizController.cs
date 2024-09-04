@@ -126,7 +126,7 @@ public class QuizController : BaseController
     [SwaggerOperation(Summary = "Update quiz title and description. In future this function will be update status and availability")]
     public async Task<IActionResult> UpdateQuiz(UpdateQuizCommand command)
     {
-        var result = await _mediator.Send(command);
-        return Ok(result);
+        await _mediator.Send(command);
+        return NoContent();
     }
 }

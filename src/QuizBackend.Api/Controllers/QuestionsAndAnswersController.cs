@@ -27,19 +27,19 @@ public class QuestionsAndAnswersController : BaseController
     }
 
     [HttpPut("update-question")]
-    [SwaggerOperation(Summary = "Update Questions with Answers. Returned result is Question Id")]
+    [SwaggerOperation(Summary = "Update Questions with Answers")]
     public async Task<IActionResult> UpdateQuestionAndAnswers(UpdateQuestionAndAnswersCommand command)
     {
-        var result = await _mediator.Send(command);
-        return Ok(result);
+        await _mediator.Send(command);
+        return NoContent();
     }
 
     [HttpDelete("{id}")]
     [SwaggerOperation(Summary = "Delete Question with Answers by Id.")]
-    public async Task<IActionResult> DeleteQuestionAndAnswers(Guid id)
+    public async Task<IActionResult> DeleteQuestionAndAnswers([FromRoute] Guid id)
     {
         var command = new DeleteQuestionAndAnswersCommand(id);
-        var result = await _mediator.Send(command);
-        return Ok(result);
+        await _mediator.Send(command);
+        return NoContent();
     }
 }
