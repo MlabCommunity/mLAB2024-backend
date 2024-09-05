@@ -22,15 +22,19 @@ public class GenerateQuizCommandHandler : ICommandHandler<GenerateQuizCommand, G
     {
         string content = command.Content;
         var processedAttachments = await _attachmentProcessor.ProcessAttachments(command.Attachments!);
-        content = $"{content}\n\n{string.Join("\n\n", processedAttachments)}";
-        
+
+        if (processedAttachments.Count != 0)
+        {
+            content = $"{content}\n\nInfo from Attachments:\n{string.Join("\n\n", processedAttachments)}";
+        }
+
         if (content.Length > MaxContentLength)
         {
             content = content.Substring(0, MaxContentLength);
         }
-
+      
         var updatedCommand = command with { Content = content };
-        var quizDto = await _quizService.GenerateQuizFromPromptTemplateAsync(command);
+        var quizDto = await _quizService.GenerateQuizFromPromptTemplateAsync(updatedCommand);
         return quizDto;
     }
 }

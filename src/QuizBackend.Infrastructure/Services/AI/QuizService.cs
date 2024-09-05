@@ -18,7 +18,6 @@ public class QuizService : IQuizService
         _kernelService = kernelService;
         _logger = logger;
     }
-      
     public async Task<GenerateQuizResponse> GenerateQuizFromPromptTemplateAsync(GenerateQuizCommand command)
     {
         var kernelArguments = new KernelArguments
@@ -33,15 +32,16 @@ public class QuizService : IQuizService
         var jsonEndIndex = jsonResponse.LastIndexOf('}') + 1;
         var validJson = jsonResponse.Substring(jsonStartIndex, jsonEndIndex - jsonStartIndex);
 
-        if (string.IsNullOrWhiteSpace(validJson) || validJson is null)
+        var quizDto = JsonConvert.DeserializeObject<GenerateQuizResponse>(validJson);
+
+        if (string.IsNullOrWhiteSpace(validJson) || quizDto is null)
         {
             _logger.LogWarning("Quiz generation failed: Content: {content}, NumberOfQuestions: {numberOfQuestions}, TypeOfQuestions: {typeOfQuestions}",
-            command.Content, command.NumberOfQuestions, command.QuestionTypes);
+                command.Content, command.NumberOfQuestions, command.QuestionTypes);
 
             throw new BadRequestException("Try generating again");
         }
 
-        var quizDto = JsonConvert.DeserializeObject<GenerateQuizResponse>(jsonResponse);
         return quizDto;
     }
 }

@@ -8,6 +8,6 @@ public record GenerateQuizCommand(
     string Content,
     int NumberOfQuestions,
     List<QuestionType> QuestionTypes,
-     List<IFormFile>? Attachments
+    List<IFormFile>? Attachments
 ) : ICommand<GenerateQuizResponse>;
 
