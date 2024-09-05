@@ -1,9 +1,8 @@
-﻿namespace QuizBackend.Domain.Enums
+﻿namespace QuizBackend.Domain.Enums;
+
+public enum QuestionType
 {
-    public enum QuestionType
-    {
-        MultipleChoice = 0,
-        TrueFalse = 1,
-        ShortAnswer = 2
-    }
+    MultipleChoice = 0,
+    TrueFalse = 1,
+    ShortAnswer = 2
 }

@@ -1,6 +1,3 @@
-namespace QuizBackend.Application.Dtos.Profile
-{
-    public record UpdateUserProfileRequest(string UserName)
-    {
-    }
-}
+namespace QuizBackend.Application.Dtos.Profile;
+
+public record UpdateUserProfileRequest(string UserName);

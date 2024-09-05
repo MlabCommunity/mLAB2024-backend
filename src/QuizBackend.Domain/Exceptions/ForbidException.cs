@@ -1,9 +1,8 @@
-﻿namespace QuizBackend.Domain.Exceptions
+﻿namespace QuizBackend.Domain.Exceptions;
+
+public class ForbidException : Exception
 {
-    public class ForbidException : Exception
+    public ForbidException()
     {
-        public ForbidException() 
-        {
-        }
     }
 }
