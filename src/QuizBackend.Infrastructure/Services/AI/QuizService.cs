@@ -28,16 +28,20 @@ public class QuizService : IQuizService
         };
 
         var jsonResponse = await _kernelService.CreatePluginFromPromptDirectory("GenerateQuiz", kernelArguments);
+        var jsonStartIndex = jsonResponse.IndexOf('{');
+        var jsonEndIndex = jsonResponse.LastIndexOf('}') + 1;
+        var validJson = jsonResponse.Substring(jsonStartIndex, jsonEndIndex - jsonStartIndex);
 
-        var quizDto = JsonConvert.DeserializeObject<GenerateQuizResponse>(jsonResponse);
+        var quizDto = JsonConvert.DeserializeObject<GenerateQuizResponse>(validJson);
 
-        if (string.IsNullOrWhiteSpace(jsonResponse) || quizDto is null)
+        if (string.IsNullOrWhiteSpace(validJson) || quizDto is null)
         {
             _logger.LogWarning("Quiz generation failed: Content: {content}, NumberOfQuestions: {numberOfQuestions}, TypeOfQuestions: {typeOfQuestions}",
                 command.Content, command.NumberOfQuestions, command.QuestionTypes);
 
             throw new BadRequestException("Try generating again");
         }
+
         return quizDto;
     }
 }

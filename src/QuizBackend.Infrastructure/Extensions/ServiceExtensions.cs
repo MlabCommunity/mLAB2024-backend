@@ -37,7 +37,8 @@ public static class ServiceExtensions
 
         services.AddRepositories();
         services.AddDateTimeProvider();
+        services.AddProcessors();
 
         return services;
-    }
+    } 
 }
