@@ -1,9 +1,7 @@
-﻿
-namespace QuizBackend.Domain.Exceptions
+﻿namespace QuizBackend.Domain.Exceptions;
+
+public class AiClientNotSupportedException : NotSupportedException
 {
-    public class AiClientNotSupportedException : NotSupportedException
-    {
-        public AiClientNotSupportedException() { }
-        public AiClientNotSupportedException(string message) : base(message) { }
-    }
+    public AiClientNotSupportedException() { }
+    public AiClientNotSupportedException(string message) : base(message) { }
 }

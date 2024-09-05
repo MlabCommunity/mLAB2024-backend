@@ -1,8 +1,7 @@
-﻿namespace QuizBackend.Domain.Enums
+﻿namespace QuizBackend.Domain.Enums;
+
+public enum Availability
 {
-    public enum Availability
-    {
-        Public = 0,
-        Private = 1,
-    }
+    Public = 0,
+    Private = 1,
 }

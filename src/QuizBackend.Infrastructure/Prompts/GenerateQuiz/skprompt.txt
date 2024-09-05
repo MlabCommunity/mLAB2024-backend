@@ -42,7 +42,7 @@ Respond only with the JSON structured below and no additional text or explanatio
   "CreateQuestionsDto": [
     {
       "Title": "Sample Question 1",
-      "CreateAnswersDto": [
+      "GenerateAnswers": [
         {
           "Content": "Answer 1 for Question 1",
           "IsCorrect": true
@@ -63,7 +63,7 @@ Respond only with the JSON structured below and no additional text or explanatio
     },
     {
       "Title": "Sample Question 2",
-      "CreateAnswersDto": [
+      "GenerateAnswers": [
         {
           "Content": "Answer 1 for Question 2",
           "IsCorrect": false

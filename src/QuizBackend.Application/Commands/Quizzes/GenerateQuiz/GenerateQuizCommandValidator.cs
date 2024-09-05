@@ -1,13 +1,14 @@
 ﻿using FluentValidation;
 using Microsoft.AspNetCore.Http;
 using QuizBackend.Domain.Enums;
-
 namespace QuizBackend.Application.Commands.Quizzes.GenerateQuiz;
+
 public class GenerateQuizCommandValidator : AbstractValidator<GenerateQuizCommand>
 {
     private const int MaxFileSize = 5 * 1024 * 1024; // 5 MB
     private const int MaxFilesCount = 3;
     private static readonly string[] AllowedExtensions = [".pdf", ".docx", ".xlsx", ".txt"];
+
     public GenerateQuizCommandValidator()
     {
         RuleFor(x => x.Content)

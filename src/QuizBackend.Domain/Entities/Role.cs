@@ -1,8 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity;
 
-namespace QuizBackend.Domain.Entities
+namespace QuizBackend.Domain.Entities;
+
+public class Role : IdentityRole
 {
-    public class Role : IdentityRole
-    {
-    }
 }

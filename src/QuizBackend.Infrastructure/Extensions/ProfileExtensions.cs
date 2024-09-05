@@ -1,16 +1,14 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using QuizBackend.Application.Interfaces.Users;
-using QuizBackend.Infrastructure.ExceptionsHandlers;
 using QuizBackend.Infrastructure.Services.Identity;
 
-namespace QuizBackend.Infrastructure.Extensions
+namespace QuizBackend.Infrastructure.Extensions;
+
+public static class ProfileExtensions
 {
-    public static class ProfileExtensions
+    public static void AddProfileExtensions(this IServiceCollection services)
     {
-        public static void AddProfileExtensions(this IServiceCollection services)
-        {
-            services.AddScoped<IProfileService, ProfileService>();
-            services.AddHttpContextAccessor();
-        }
+        services.AddScoped<IProfileService, ProfileService>();
+        services.AddHttpContextAccessor();
     }
 }

@@ -1,20 +1,18 @@
-﻿using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
 using QuizBackend.Infrastructure.Interfaces;
 using QuizBackend.Infrastructure.Services.AI;
 
-namespace QuizBackend.Infrastructure.Extensions
+namespace QuizBackend.Infrastructure.Extensions;
+
+public static class KernelExtension
 {
-    public static class KernelExtension
+    public static void AddKernelExtension(this IServiceCollection services)
     {
-        public static void AddKernelExtension(this IServiceCollection services)
+        services.AddScoped<IKernelService, KernelService>(sp =>
         {
-            services.AddScoped<IKernelService, KernelService>(sp =>
-            {
-                var factory = sp.GetRequiredService<IAiClientFactory>();
-                var aiClient = factory.CreateAiClient();
-                return new KernelService(aiClient);
-            });
-        }
+            var factory = sp.GetRequiredService<IAiClientFactory>();
+            var aiClient = factory.CreateAiClient();
+            return new KernelService(aiClient);
+        });
     }
 }
