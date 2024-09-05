@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Protocols.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using QuizBackend.Application.Dtos.Auth;
+using QuizBackend.Application.Interfaces;
 using QuizBackend.Application.Interfaces.Users;
 using QuizBackend.Domain.Entities;
 using QuizBackend.Domain.Exceptions;
@@ -22,13 +23,15 @@ public class JwtService : IJwtService
     private readonly AppDbContext _appDbContext;
     private readonly UserManager<User> _userManager;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IDateTimeProvider _dateTimeProvider;
 
-    public JwtService(IConfiguration configuration, AppDbContext appDbContext, UserManager<User> userManager, IHttpContextAccessor httpContextAccessor)
+    public JwtService(IConfiguration configuration, AppDbContext appDbContext, UserManager<User> userManager, IHttpContextAccessor httpContextAccessor, IDateTimeProvider dateTimeProvider)
     {
         _configuration = configuration;
         _appDbContext = appDbContext;
         _userManager = userManager;
         _httpContextAccessor = httpContextAccessor;
+        _dateTimeProvider = dateTimeProvider;
     }
 
     public string GenerateJwtToken(List<Claim> claims)
@@ -46,7 +49,7 @@ public class JwtService : IJwtService
             issuer: _configuration["Jwt:Issuer"],
             audience: _configuration["Jwt:Audience"],
             claims: claims,
-            expires: DateTime.UtcNow.AddMinutes(expire),
+            expires: _dateTimeProvider.UtcNow.AddMinutes(expire),
             signingCredentials: creds);
 
         return new JwtSecurityTokenHandler().WriteToken(token);
@@ -78,7 +81,7 @@ public class JwtService : IJwtService
     public async Task<string> GenerateOrRetrieveRefreshTokenAsync(string userId)
     {
         var existingToken = await _appDbContext.RefreshTokens
-            .FirstOrDefaultAsync(rt => rt.UserId == userId && rt.Expires > DateTime.UtcNow && !rt.IsRevoked);
+            .FirstOrDefaultAsync(rt => rt.UserId == userId && rt.Expires > _dateTimeProvider.UtcNow && !rt.IsRevoked);
 
         if (existingToken != null)
         {
@@ -97,8 +100,8 @@ public class JwtService : IJwtService
             Id = Guid.NewGuid(),
             Token = GenerateRandomToken(),
             UserId = userId,
-            Expires = DateTime.UtcNow.AddDays(expire),
-            Created = DateTime.UtcNow
+            Expires = _dateTimeProvider.UtcNow.AddDays(expire),
+            Created = _dateTimeProvider.UtcNow
         };
 
         _appDbContext.RefreshTokens.Add(refreshToken);
@@ -111,7 +114,7 @@ public class JwtService : IJwtService
     {
         var refreshTokenEntity = await _appDbContext.RefreshTokens.FirstOrDefaultAsync(rt => rt.Token == refreshToken);
 
-        if (refreshTokenEntity == null || refreshTokenEntity.Expires <= DateTime.UtcNow || refreshTokenEntity.IsRevoked)
+        if (refreshTokenEntity == null || refreshTokenEntity.Expires <= _dateTimeProvider.UtcNow || refreshTokenEntity.IsRevoked)
         {
             throw new ApplicationException("Invalid refresh token");
         }
@@ -150,7 +153,7 @@ public class JwtService : IJwtService
         foreach (var token in refreshTokens)
         {
             token.IsRevoked = true;
-            token.Revoked = DateTime.UtcNow;
+            token.Revoked = _dateTimeProvider.UtcNow;
         }
 
         _appDbContext.RefreshTokens.UpdateRange(refreshTokens);
