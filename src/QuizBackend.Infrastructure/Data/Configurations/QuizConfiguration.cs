@@ -24,7 +24,8 @@ public class QuizConfiguration : IEntityTypeConfiguration<Quiz>
             .HasForeignKey(q => q.OwnerId)
             .OnDelete(DeleteBehavior.NoAction);
 
-        builder.HasMany(q => q.Participants)
+        builder
+            .HasMany(q => q.Participants)
             .WithMany(u => u.ParticipatedQuizzes)
             .UsingEntity<QuizParticipation>();
 

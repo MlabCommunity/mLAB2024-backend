@@ -41,7 +41,6 @@ public class QuizService : IQuizService
 
             throw new BadRequestException("Try generating again");
         }
-
         return quizDto;
     }
 }

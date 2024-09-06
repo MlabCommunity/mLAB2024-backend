@@ -8,4 +8,5 @@ public class Answer : BaseEntity
     public bool IsCorrect { get; set; } = false;
     public Guid QuestionId { get; set; }
     public Question Question { get; set; } = null!;
+    public ICollection<UserAnswer> UserAnswers { get; set; } = [];
 }
