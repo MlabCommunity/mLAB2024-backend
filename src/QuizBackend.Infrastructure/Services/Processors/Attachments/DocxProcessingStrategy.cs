@@ -5,6 +5,7 @@ using QuizBackend.Infrastructure.Interfaces;
 using System.Text;
 
 namespace QuizBackend.Infrastructure.Services.Processors.Attachments;
+
 public class DocxProcessingStrategy : IAttachmentProcessingStrategy
 {
     public async Task<string> ProcessFile(IFormFile file)

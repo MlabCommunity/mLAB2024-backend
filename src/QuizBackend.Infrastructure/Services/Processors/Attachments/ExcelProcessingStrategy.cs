@@ -5,6 +5,7 @@ using QuizBackend.Infrastructure.Interfaces;
 using System.Text;
 
 namespace QuizBackend.Infrastructure.Services.Processors.Attachments;
+
 public class ExcelProcessingStrategy : IAttachmentProcessingStrategy
 {
     public async Task<string> ProcessFile(IFormFile file)
@@ -52,6 +53,6 @@ public class ExcelProcessingStrategy : IAttachmentProcessingStrategy
             return sharedStringTable.ChildElements[index].InnerText;
         }
 
-        return "";
+        return string.Empty;
     }
 }
