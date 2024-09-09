@@ -1,4 +1,5 @@
-﻿using QuizBackend.Domain.Entities;
+﻿using QuizBackend.Domain.Common;
+using QuizBackend.Domain.Entities;
 
 namespace QuizBackend.Domain.Repositories;
 
@@ -19,4 +20,6 @@ public interface IQuizRepository
     Task RemoveAsync(Quiz quiz, CancellationToken cancellationToken);
 
     Task<bool> IsJoinCodeTaken(string code);
+
+    Task<Quiz?> GetQuizByJoinCode(string code);
 }

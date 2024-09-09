@@ -1,4 +1,5 @@
-﻿using QuizBackend.Domain.Entities;
+﻿using QuizBackend.Domain.Common;
+using QuizBackend.Domain.Entities;
 
 namespace QuizBackend.Domain.Repositories
 {
@@ -8,5 +9,6 @@ namespace QuizBackend.Domain.Repositories
         Task Delete(Guid Id);
         Task<Question?> GetById(Guid Id);
         Task Update(Question question);
+        Task<PagedEntity<Question>> GetPagedQuestionsForQuiz(Guid quizId, int pageNumber, int pageSize);
     }
 }

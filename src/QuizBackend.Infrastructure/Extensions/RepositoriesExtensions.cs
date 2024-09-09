@@ -10,5 +10,6 @@ public static class RepositoriesExtensions
     {
         services.AddScoped<IQuizRepository, QuizRepository>();
         services.AddScoped<IQuestionAndAnswersRepository, QuestionAndAnswersRepository>();
+        services.AddScoped<IQuizParticipationRepository, QuizParticipationRepository>();
     }
 }

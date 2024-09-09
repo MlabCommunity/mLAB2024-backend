@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using QuizBackend.Domain.Common;
 using QuizBackend.Domain.Entities;
 using QuizBackend.Domain.Repositories;
 using QuizBackend.Infrastructure.Data;
@@ -81,5 +82,14 @@ public class QuizRepository : IQuizRepository
     {
         return await _dbContext.Quizzes
             .AnyAsync(q => q.JoinCode == code);
+    }
+
+    public async Task<Quiz?> GetQuizByJoinCode(string code)
+    {
+        return await _dbContext.Quizzes
+            .AsNoTracking()
+            .Include(q => q.Questions)
+            .ThenInclude(quest => quest.Answers)
+            .SingleOrDefaultAsync(q => q.JoinCode.Equals(code));
     }
 }
