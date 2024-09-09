@@ -5,7 +5,7 @@ using QuizBackend.Domain.Enums;
 namespace QuizBackend.Application.Commands.Quizzes.GenerateQuiz;
 
 public record GenerateQuizCommand(
-    string Content,
+    string? Content,
     int NumberOfQuestions,
     List<QuestionType> QuestionTypes,
     List<IFormFile>? Attachments
