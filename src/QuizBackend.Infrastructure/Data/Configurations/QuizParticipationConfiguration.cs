@@ -15,15 +15,13 @@ public class QuizParticipationConfiguration : IEntityTypeConfiguration<QuizParti
 
         builder
             .HasOne(qp => qp.Quiz)
-            .WithMany()
+            .WithMany(q => q.Participants)
             .HasForeignKey(qp => qp.QuizId)
             .OnDelete(DeleteBehavior.NoAction);
 
-        builder
-            .HasOne(qp => qp.Participant)
-            .WithMany()
-            .HasForeignKey(qp => qp.ParticipantId)
-            .OnDelete(DeleteBehavior.NoAction);
+        builder.HasMany(qp => qp.UserAnswers)
+               .WithOne()
+               .HasForeignKey(ua => ua.QuizParticipationId);
 
         builder
             .Property(qp => qp.Status)
@@ -33,5 +31,10 @@ public class QuizParticipationConfiguration : IEntityTypeConfiguration<QuizParti
         builder
             .Property(qp => qp.CompletionTime)
             .IsRequired(false);
+
+        builder
+            .HasDiscriminator<string>("ParticipationType")
+            .HasValue<RegisteredUserParticipation>("RegisteredUser")
+            .HasValue<GuestUserParticipation>("GuestUser");
     }
 }
