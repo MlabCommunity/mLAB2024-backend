@@ -14,24 +14,17 @@
     {
       "name": "content",
       "description": "Information from attachments provided by user",
-      "required": true,
-      "type": "string"
+      "required": true
     },
     {
       "name": "numberOfQuestions",
       "description": "number of questions to generate",
-      "required": true,
-      "type": "integer"
+      "required": true
     },
     {
       "name": "typeOfQuestions",
-      "description": "Array of question types to include in the quiz.",
-      "required": true,
-      "type": "array",
-      "items": {
-        "type": "string",
-        "enum": [ "MultipleChoice", "TrueFalse" ]
-      }
+      "description": "The quiz should generate questions corresponding to the types specified in this array will determine the structure and format of the questions created.",
+      "required": true
     }
   ]
 }
