@@ -5,7 +5,6 @@ using QuizBackend.Domain.Entities;
 using QuizBackend.Domain.Enums;
 
 namespace QuizBackend.Infrastructure.Data.Configurations;
-
 public class QuizConfiguration : IEntityTypeConfiguration<Quiz>
 {
     public void Configure(EntityTypeBuilder<Quiz> builder)
@@ -24,9 +23,11 @@ public class QuizConfiguration : IEntityTypeConfiguration<Quiz>
             .HasForeignKey(q => q.OwnerId)
             .OnDelete(DeleteBehavior.NoAction);
 
-        builder.HasMany(q => q.Participants)
+        builder
+            .HasMany(q => q.Participants)
                .WithOne(qp => qp.Quiz)
-               .HasForeignKey(qp => qp.QuizId);
+               .HasForeignKey(qp => qp.QuizId)
+               .OnDelete(DeleteBehavior.NoAction);
 
         builder
             .Property(q => q.Status)

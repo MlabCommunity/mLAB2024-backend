@@ -14,6 +14,6 @@ public class QuizResultConfiguration : IEntityTypeConfiguration<QuizResult>
             .HasOne(qr => qr.QuizParticipation)
             .WithOne(qr => qr.QuizResult)
             .HasForeignKey<QuizResult>(qr => qr.QuizParticipationId)
-            .OnDelete(DeleteBehavior.Cascade);
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }

@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using QuizBackend.Domain.Entities;
 
 namespace QuizBackend.Infrastructure.Data;
-
 public class AppDbContext : IdentityDbContext<User, Role, string>
 {
     public DbSet<RefreshToken> RefreshTokens { get; set; }

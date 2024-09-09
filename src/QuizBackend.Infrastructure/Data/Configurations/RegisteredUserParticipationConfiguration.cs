@@ -9,9 +9,10 @@ public class RegisteredUserParticipationConfiguration : IEntityTypeConfiguration
     {
         builder.HasBaseType<QuizParticipation>();
 
-        builder.HasOne(rup => rup.Participant)
-               .WithMany()
-               .HasForeignKey(rup => rup.ParticipantId)
-               .OnDelete(DeleteBehavior.Restrict);
+        builder
+            .HasOne(rup => rup.Participant)
+            .WithMany(u => u.ParticipatedQuizzes)
+            .HasForeignKey(rup => rup.ParticipantId)
+            .OnDelete(DeleteBehavior.NoAction);
     }
 }
