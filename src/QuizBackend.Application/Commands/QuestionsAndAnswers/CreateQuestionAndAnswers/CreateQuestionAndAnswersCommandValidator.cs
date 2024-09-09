@@ -22,8 +22,6 @@ public class CreateQuestionAndAnswersCommandValidator : AbstractValidator<Create
 
         RuleFor(x => x.QuizId)
             .NotEmpty().WithMessage("QuizId is required.");
-
-
     }
     private bool HaveAtLeastOneCorrectAnswer(List<CreateAnswer> createAnswers)
     {

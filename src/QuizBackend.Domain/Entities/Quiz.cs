@@ -12,5 +12,5 @@ public class Quiz : BaseEntity
     public string OwnerId { get; set; } = null!;
     public User Owner { get; set; } = null!;
     public ICollection<Question> Questions { get; set; } = [];
-    public ICollection<User> Participants { get; set; } = [];
+    public ICollection<QuizParticipation> Participants { get; set; } = [];
 }

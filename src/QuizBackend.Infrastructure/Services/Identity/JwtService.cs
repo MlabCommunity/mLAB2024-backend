@@ -60,7 +60,6 @@ public class JwtService : IJwtService
         var userName = user.UserName ?? throw new ArgumentNullException(nameof(user.UserName), "UserName cannot be null when creating claims.");
         var email = user.Email ?? throw new ArgumentNullException(nameof(user.Email), "Email cannot be null when creating claims.");
 
-
         var claims = new List<Claim>
         {
             new Claim(JwtRegisteredClaimNames.Sub, user.Id),

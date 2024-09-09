@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuizBackend.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using QuizBackend.Infrastructure.Data;
 namespace QuizBackend.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240906085435_QuizResultEntities")]
+    partial class QuizResultEntities
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -154,7 +157,7 @@ namespace QuizBackend.Infrastructure.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Answers", (string)null);
+                    b.ToTable("Answers");
                 });
 
             modelBuilder.Entity("QuizBackend.Domain.Entities.Question", b =>
@@ -184,7 +187,7 @@ namespace QuizBackend.Infrastructure.Migrations
 
                     b.HasIndex("QuizId");
 
-                    b.ToTable("Questions", (string)null);
+                    b.ToTable("Questions");
                 });
 
             modelBuilder.Entity("QuizBackend.Domain.Entities.Quiz", b =>
@@ -222,7 +225,7 @@ namespace QuizBackend.Infrastructure.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Quizzes", (string)null);
+                    b.ToTable("Quizzes");
                 });
 
             modelBuilder.Entity("QuizBackend.Domain.Entities.QuizParticipation", b =>
@@ -295,7 +298,7 @@ namespace QuizBackend.Infrastructure.Migrations
                     b.HasIndex("QuizParticipationId")
                         .IsUnique();
 
-                    b.ToTable("QuizResults", (string)null);
+                    b.ToTable("QuizResults");
                 });
 
             modelBuilder.Entity("QuizBackend.Domain.Entities.RefreshToken", b =>
@@ -326,7 +329,7 @@ namespace QuizBackend.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RefreshTokens", (string)null);
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("QuizBackend.Domain.Entities.Role", b =>
@@ -450,7 +453,7 @@ namespace QuizBackend.Infrastructure.Migrations
 
                     b.HasIndex("QuizParticipationId");
 
-                    b.ToTable("UserAnswers", (string)null);
+                    b.ToTable("UserAnswers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

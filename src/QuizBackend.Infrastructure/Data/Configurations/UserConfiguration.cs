@@ -13,16 +13,21 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .HasForeignKey(q => q.OwnerId)
             .OnDelete(DeleteBehavior.NoAction);
 
-        builder.HasMany(u => u.ParticipatedQuizzes)
-            .WithMany(q => q.Participants)
-            .UsingEntity<QuizParticipation>(
-                j => j.HasOne(qp => qp.Quiz).WithMany().HasForeignKey(qp => qp.QuizId),
-                j => j.HasOne(qp => qp.Participant).WithMany().HasForeignKey(qp => qp.ParticipantId),
-                j =>
-                {
-                    j.ToTable("QuizzesParticipations");
-                    j.HasKey(qp => qp.Id);
-                    j.Property(qp => qp.ParticipationDateUtc).IsRequired();
-                });
+        builder
+             .HasMany(u => u.ParticipatedQuizzes)
+             .WithMany(q => q.Participants)
+             .UsingEntity<RegisteredUserParticipation>(
+                 j => j.HasOne(qp => qp.Quiz)
+                       .WithMany()
+                       .HasForeignKey(qp => qp.QuizId),
+                 j => j.HasOne(qp => qp.Participant)
+                       .WithMany()
+                       .HasForeignKey(qp => qp.ParticipantId),
+                 j =>
+                 {
+                     j.ToTable("QuizzesParticipations");
+                     j.HasKey(qp => qp.Id);
+                     j.Property(qp => qp.ParticipationDateUtc).IsRequired();
+                 });
     }
 }
