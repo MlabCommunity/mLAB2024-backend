@@ -20,21 +20,22 @@ public class GenerateQuizCommandHandler : ICommandHandler<GenerateQuizCommand, G
 
     public async Task<GenerateQuizResponse> Handle(GenerateQuizCommand command, CancellationToken cancellationToken)
     {
-        string content = command.Content;
-        var processedAttachments = await _attachmentProcessor.ProcessAttachments(command.Attachments!);
-
-        if (processedAttachments.Count != 0)
+        string content = command.Content!;
+      
+        if (command.Attachments is not null)
         {
-            content = $"{content}\n\nInfo from Attachments:\n{string.Join("\n\n", processedAttachments)}";
+            var processedAttachments = await _attachmentProcessor.ProcessAttachments(command.Attachments!);
+            content = $"{content}{string.Join("\n\n", processedAttachments)}";
         }
 
         if (content.Length > MaxContentLength)
         {
             content = content.Substring(0, MaxContentLength);
         }
-      
+    
         var updatedCommand = command with { Content = content };
         var quizDto = await _quizService.GenerateQuizFromPromptTemplateAsync(updatedCommand);
+       
         return quizDto;
     }
 }
