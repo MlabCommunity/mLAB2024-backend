@@ -7,7 +7,7 @@ public class GenerateQuizCommandValidator : AbstractValidator<GenerateQuizComman
 {
     private const int MaxFileSize = 5 * 1024 * 1024; // 5 MB
     private const int MaxFilesCount = 3;
-    private static readonly string[] AllowedExtensions = [".pdf", ".docx", ".xlsx", ".txt"];
+    private static readonly string[] AllowedExtensions = [".pdf", ".docx", ".xlsx", ".txt", ".pptx"];
 
     public GenerateQuizCommandValidator()
     {
