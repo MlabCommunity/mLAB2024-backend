@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using QuizBackend.Application.Dtos.Quizzes;
 using QuizBackend.Application.Queries.Quizzes.JoinQuiz;
 using Swashbuckle.AspNetCore.Annotations;
 
