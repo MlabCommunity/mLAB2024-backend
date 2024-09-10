@@ -7,12 +7,21 @@ public class GenerateQuizCommandValidator : AbstractValidator<GenerateQuizComman
 {
     private const int MaxFileSize = 5 * 1024 * 1024; // 5 MB
     private const int MaxFilesCount = 3;
-    private static readonly string[] AllowedExtensions = [".pdf", ".docx", ".xlsx", ".txt"];
+    private static readonly string[] AllowedExtensions = [".pdf", ".docx", ".xlsx", ".txt", ".pptx"];
 
     public GenerateQuizCommandValidator()
     {
+        RuleFor(x => x)
+            .Custom((command, context) =>
+            {
+                if (string.IsNullOrEmpty(command.Content) && (command.Attachments == null || command.Attachments.Count == 0))
+                {
+                    context.AddFailure("Content", "Either Content or Attachments must be provided.");
+                }
+            });
+
         RuleFor(x => x.Content)
-            .NotEmpty().WithMessage("Content is required");
+            .NotEmpty().When(x => x.Content != null).WithMessage("Content cannot be empty if provided.");
 
         RuleFor(x => x.NumberOfQuestions)
             .GreaterThan(0).WithMessage("Number of questions must be greater than 0");
