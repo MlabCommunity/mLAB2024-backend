@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using QuizBackend.Infrastructure.Data;
 
@@ -11,9 +12,11 @@ using QuizBackend.Infrastructure.Data;
 namespace QuizBackend.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240909171507_AddedDiscriminator")]
+    partial class AddedDiscriminator
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -298,7 +301,7 @@ namespace QuizBackend.Infrastructure.Migrations
                     b.HasIndex("QuizParticipationId")
                         .IsUnique();
 
-                    b.ToTable("QuizResult");
+                    b.ToTable("QuizResults");
                 });
 
             modelBuilder.Entity("QuizBackend.Domain.Entities.RefreshToken", b =>
@@ -371,17 +374,11 @@ namespace QuizBackend.Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("DisplayName")
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
-                        .HasColumnType("bit");
-
-                    b.Property<bool>("IsGuest")
                         .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
@@ -455,7 +452,7 @@ namespace QuizBackend.Infrastructure.Migrations
 
                     b.HasIndex("QuizParticipationId");
 
-                    b.ToTable("UserAnswer");
+                    b.ToTable("UserAnswers");
                 });
 
             modelBuilder.Entity("QuizBackend.Domain.Entities.GuestUserParticipation", b =>
@@ -597,6 +594,17 @@ namespace QuizBackend.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("QuizParticipation");
+                });
+
+            modelBuilder.Entity("QuizBackend.Domain.Entities.RegisteredUserParticipation", b =>
+                {
+                    b.HasOne("QuizBackend.Domain.Entities.User", "Participant")
+                        .WithMany("ParticipatedQuizzes")
+                        .HasForeignKey("ParticipantId")
+                        .OnDelete(DeleteBehavior.NoAction)
+                        .IsRequired();
+
+                    b.Navigation("Participant");
                 });
 
             modelBuilder.Entity("QuizBackend.Domain.Entities.Question", b =>
