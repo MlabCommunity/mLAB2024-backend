@@ -11,6 +11,8 @@ public class AppDbContext : IdentityDbContext<User, Role, string>
     public DbSet<Question> Questions { get; set; }
     public DbSet<Answer> Answers { get; set; }
     public DbSet<QuizParticipation> QuizParticipations { get; set; }
+    public DbSet<UserAnswer> UserAnswers { get; set; }
+    public DbSet<QuizResult> QuizResults { get; set; }
     public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
     protected override void OnModelCreating(ModelBuilder builder)
