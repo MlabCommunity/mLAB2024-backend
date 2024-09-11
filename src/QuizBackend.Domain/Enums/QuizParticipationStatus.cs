@@ -1,4 +1,5 @@
 ﻿namespace QuizBackend.Domain.Enums;
+
 public enum QuizParticipationStatus
 {
     Started = 0,
