@@ -8,12 +8,14 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
 {
     public void Configure(EntityTypeBuilder<User> builder)
     {
-        builder.HasMany(u => u.OwnedQuizzes)
+        builder
+            .HasMany(u => u.OwnedQuizzes)
             .WithOne(q => q.Owner)
             .HasForeignKey(q => q.OwnerId)
             .OnDelete(DeleteBehavior.NoAction);
 
-        builder.HasMany(u => u.ParticipatedQuizzes)
+        builder
+            .HasMany(u => u.ParticipatedQuizzes)
             .WithMany(q => q.Participants)
             .UsingEntity<QuizParticipation>(
                 j => j.HasOne(qp => qp.Quiz).WithMany().HasForeignKey(qp => qp.QuizId),

@@ -3,13 +3,18 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.10.35013.160
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizBackend.Api", "src\QuizBackend.Api\QuizBackend.Api.csproj", "{6CD117ED-CD77-460C-AA39-7A7A63669855}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizBackend.Api", "src\QuizBackend.Api\QuizBackend.Api.csproj", "{6CD117ED-CD77-460C-AA39-7A7A63669855}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizBackend.Application", "src\QuizBackend.Application\QuizBackend.Application.csproj", "{35AFD04B-7503-4514-83D6-916F909CE403}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizBackend.Application", "src\QuizBackend.Application\QuizBackend.Application.csproj", "{35AFD04B-7503-4514-83D6-916F909CE403}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizBackend.Domain", "src\QuizBackend.Domain\QuizBackend.Domain.csproj", "{A3C809FE-DADB-4E7F-AA6F-A64FFC0CACA7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizBackend.Domain", "src\QuizBackend.Domain\QuizBackend.Domain.csproj", "{A3C809FE-DADB-4E7F-AA6F-A64FFC0CACA7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuizBackend.Infrastructure", "src\QuizBackend.Infrastructure\QuizBackend.Infrastructure.csproj", "{6355E652-39F2-4EBE-BB2C-2DFBF9E5A5F3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "QuizBackend.Infrastructure", "src\QuizBackend.Infrastructure\QuizBackend.Infrastructure.csproj", "{6355E652-39F2-4EBE-BB2C-2DFBF9E5A5F3}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementy rozwiązania", "Elementy rozwiązania", "{AF135B39-3BD4-492A-8AFD-FB42E4867036}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
