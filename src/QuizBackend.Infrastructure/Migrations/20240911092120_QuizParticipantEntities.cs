@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace QuizBackend.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class QuizResultEntities : Migration
+    public partial class QuizParticipantEntities : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -24,8 +24,21 @@ namespace QuizBackend.Infrastructure.Migrations
                 nullable: false,
                 defaultValue: "");
 
+            migrationBuilder.AddColumn<string>(
+                name: "DisplayName",
+                table: "AspNetUsers",
+                type: "nvarchar(max)",
+                nullable: true);
+
+            migrationBuilder.AddColumn<bool>(
+                name: "IsGuest",
+                table: "AspNetUsers",
+                type: "bit",
+                nullable: false,
+                defaultValue: false);
+
             migrationBuilder.CreateTable(
-                name: "QuizResults",
+                name: "QuizResult",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -39,17 +52,16 @@ namespace QuizBackend.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_QuizResults", x => x.Id);
+                    table.PrimaryKey("PK_QuizResult", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_QuizResults_QuizzesParticipations_QuizParticipationId",
+                        name: "FK_QuizResult_QuizzesParticipations_QuizParticipationId",
                         column: x => x.QuizParticipationId,
                         principalTable: "QuizzesParticipations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserAnswers",
+                name: "UserAnswer",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
@@ -61,44 +73,23 @@ namespace QuizBackend.Infrastructure.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserAnswers", x => x.Id);
+                    table.PrimaryKey("PK_UserAnswer", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserAnswers_Answers_AnswerId",
-                        column: x => x.AnswerId,
-                        principalTable: "Answers",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_UserAnswers_Questions_QuestionId",
-                        column: x => x.QuestionId,
-                        principalTable: "Questions",
-                        principalColumn: "Id");
-                    table.ForeignKey(
-                        name: "FK_UserAnswers_QuizzesParticipations_QuizParticipationId",
+                        name: "FK_UserAnswer_QuizzesParticipations_QuizParticipationId",
                         column: x => x.QuizParticipationId,
                         principalTable: "QuizzesParticipations",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_QuizResults_QuizParticipationId",
-                table: "QuizResults",
+                name: "IX_QuizResult_QuizParticipationId",
+                table: "QuizResult",
                 column: "QuizParticipationId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserAnswers_AnswerId",
-                table: "UserAnswers",
-                column: "AnswerId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserAnswers_QuestionId",
-                table: "UserAnswers",
-                column: "QuestionId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_UserAnswers_QuizParticipationId",
-                table: "UserAnswers",
+                name: "IX_UserAnswer_QuizParticipationId",
+                table: "UserAnswer",
                 column: "QuizParticipationId");
         }
 
@@ -106,10 +97,10 @@ namespace QuizBackend.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "QuizResults");
+                name: "QuizResult");
 
             migrationBuilder.DropTable(
-                name: "UserAnswers");
+                name: "UserAnswer");
 
             migrationBuilder.DropColumn(
                 name: "CompletionTime",
@@ -118,6 +109,14 @@ namespace QuizBackend.Infrastructure.Migrations
             migrationBuilder.DropColumn(
                 name: "Status",
                 table: "QuizzesParticipations");
+
+            migrationBuilder.DropColumn(
+                name: "DisplayName",
+                table: "AspNetUsers");
+
+            migrationBuilder.DropColumn(
+                name: "IsGuest",
+                table: "AspNetUsers");
         }
     }
 }

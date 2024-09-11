@@ -26,6 +26,11 @@ public class QuizParticipationConfiguration : IEntityTypeConfiguration<QuizParti
             .OnDelete(DeleteBehavior.NoAction);
 
         builder
+            .HasMany(qp => qp.UserAnswers)
+            .WithOne(ua => ua.QuizParticipation)
+            .HasForeignKey(ua => ua.QuizParticipationId);
+
+        builder
             .Property(qp => qp.Status)
             .HasConversion(new EnumToStringConverter<QuizParticipationStatus>())
             .IsRequired();

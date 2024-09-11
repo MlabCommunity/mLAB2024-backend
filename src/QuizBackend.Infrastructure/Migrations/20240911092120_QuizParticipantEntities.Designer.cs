@@ -12,8 +12,8 @@ using QuizBackend.Infrastructure.Data;
 namespace QuizBackend.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240906085435_QuizResultEntities")]
-    partial class QuizResultEntities
+    [Migration("20240911092120_QuizParticipantEntities")]
+    partial class QuizParticipantEntities
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -298,7 +298,7 @@ namespace QuizBackend.Infrastructure.Migrations
                     b.HasIndex("QuizParticipationId")
                         .IsUnique();
 
-                    b.ToTable("QuizResults");
+                    b.ToTable("QuizResult");
                 });
 
             modelBuilder.Entity("QuizBackend.Domain.Entities.RefreshToken", b =>
@@ -371,11 +371,17 @@ namespace QuizBackend.Infrastructure.Migrations
                         .IsConcurrencyToken()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("DisplayName")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("Email")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
 
                     b.Property<bool>("EmailConfirmed")
+                        .HasColumnType("bit");
+
+                    b.Property<bool>("IsGuest")
                         .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
@@ -447,13 +453,9 @@ namespace QuizBackend.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AnswerId");
-
-                    b.HasIndex("QuestionId");
-
                     b.HasIndex("QuizParticipationId");
 
-                    b.ToTable("UserAnswers");
+                    b.ToTable("UserAnswer");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -564,7 +566,7 @@ namespace QuizBackend.Infrastructure.Migrations
                     b.HasOne("QuizBackend.Domain.Entities.QuizParticipation", "QuizParticipation")
                         .WithOne("QuizResult")
                         .HasForeignKey("QuizBackend.Domain.Entities.QuizResult", "QuizParticipationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
                     b.Navigation("QuizParticipation");
@@ -572,41 +574,18 @@ namespace QuizBackend.Infrastructure.Migrations
 
             modelBuilder.Entity("QuizBackend.Domain.Entities.UserAnswer", b =>
                 {
-                    b.HasOne("QuizBackend.Domain.Entities.Answer", "Answer")
-                        .WithMany("UserAnswers")
-                        .HasForeignKey("AnswerId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.HasOne("QuizBackend.Domain.Entities.Question", "Question")
-                        .WithMany("UserAnswers")
-                        .HasForeignKey("QuestionId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
                     b.HasOne("QuizBackend.Domain.Entities.QuizParticipation", "QuizParticipation")
                         .WithMany("UserAnswers")
                         .HasForeignKey("QuizParticipationId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
-                    b.Navigation("Answer");
-
-                    b.Navigation("Question");
-
                     b.Navigation("QuizParticipation");
-                });
-
-            modelBuilder.Entity("QuizBackend.Domain.Entities.Answer", b =>
-                {
-                    b.Navigation("UserAnswers");
                 });
 
             modelBuilder.Entity("QuizBackend.Domain.Entities.Question", b =>
                 {
                     b.Navigation("Answers");
-
-                    b.Navigation("UserAnswers");
                 });
 
             modelBuilder.Entity("QuizBackend.Domain.Entities.Quiz", b =>
