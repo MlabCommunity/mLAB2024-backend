@@ -295,7 +295,7 @@ namespace QuizBackend.Infrastructure.Migrations
                     b.HasIndex("QuizParticipationId")
                         .IsUnique();
 
-                    b.ToTable("QuizResult");
+                    b.ToTable("QuizResults");
                 });
 
             modelBuilder.Entity("QuizBackend.Domain.Entities.RefreshToken", b =>
@@ -452,7 +452,7 @@ namespace QuizBackend.Infrastructure.Migrations
 
                     b.HasIndex("QuizParticipationId");
 
-                    b.ToTable("UserAnswer");
+                    b.ToTable("UserAnswers");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -563,17 +563,6 @@ namespace QuizBackend.Infrastructure.Migrations
                     b.HasOne("QuizBackend.Domain.Entities.QuizParticipation", "QuizParticipation")
                         .WithOne("QuizResult")
                         .HasForeignKey("QuizBackend.Domain.Entities.QuizResult", "QuizParticipationId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("QuizParticipation");
-                });
-
-            modelBuilder.Entity("QuizBackend.Domain.Entities.QuizResult", b =>
-                {
-                    b.HasOne("QuizBackend.Domain.Entities.QuizParticipation", "QuizParticipation")
-                        .WithOne("QuizResult")
-                        .HasForeignKey("QuizBackend.Domain.Entities.QuizResult", "QuizParticipationId")
                         .OnDelete(DeleteBehavior.NoAction)
                         .IsRequired();
 
@@ -594,8 +583,6 @@ namespace QuizBackend.Infrastructure.Migrations
             modelBuilder.Entity("QuizBackend.Domain.Entities.Question", b =>
                 {
                     b.Navigation("Answers");
-
-                    b.Navigation("UserAnswers");
                 });
 
             modelBuilder.Entity("QuizBackend.Domain.Entities.Quiz", b =>

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace QuizBackend.Application.Queries.QuizzesParticipations.GetUserAnswer;
+
 internal class GetUserAnswerQuery
 {
 }

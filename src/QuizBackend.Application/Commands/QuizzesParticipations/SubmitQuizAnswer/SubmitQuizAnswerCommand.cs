@@ -5,5 +5,5 @@ namespace QuizBackend.Application.Commands.QuizzesParticipations.SubmitQuizAnswe
 
 public record SubmitQuizAnswerCommand(
     Guid QuizParticipationId,
-    Guid QuestionId,
-    Guid AnswerId) : ICommand<Unit>;
+    List<Guid> QuestionsId,
+    List<Guid> AnswersId) : ICommand<Unit>;

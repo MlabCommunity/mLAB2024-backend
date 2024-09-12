@@ -30,4 +30,10 @@ public class UserAnswerRepository : IUserAnswerRepository
             .Where(ua => ua.QuizParticipationId == quizParticipationId)
             .ToListAsync();
     }
+
+    public async Task AddRange(List<UserAnswer> userAnswers)
+    {
+        _dbContext.UserAnswers.AddRange(userAnswers);
+        await _dbContext.SaveChangesAsync();
+    }
 }
