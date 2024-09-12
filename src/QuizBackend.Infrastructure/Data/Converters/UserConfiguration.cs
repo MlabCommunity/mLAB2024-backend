@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using QuizBackend.Domain.Entities;
 
-namespace QuizBackend.Infrastructure.Data.Configurations;
+namespace QuizBackend.Infrastructure.Data.Converters;
 
 public class UserConfiguration : IEntityTypeConfiguration<User>
 {

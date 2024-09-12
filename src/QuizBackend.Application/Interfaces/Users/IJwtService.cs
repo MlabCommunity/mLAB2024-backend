@@ -11,4 +11,6 @@ public interface IJwtService
     Task<JwtAuthResultDto> RefreshTokenAsync(string refreshToken);
     Task InvalidateRefreshTokenAsync(string userId);
     Task<string> GenerateOrRetrieveRefreshTokenAsync(string userId);
+    Task<List<Claim>> GetClaimsForGuest(User user);
+    Task<string> GenerateRefreshTokenAsync(string userId);
 }

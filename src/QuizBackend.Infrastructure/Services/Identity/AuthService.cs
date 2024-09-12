@@ -88,4 +88,36 @@ public class AuthService : IAuthService
         var jwtAuthResult = await _jwtService.RefreshTokenAsync(refreshToken);
         return jwtAuthResult;
     }
+
+    public async Task<User> CreateGuestUser(string DisplayName)
+    {
+        var guest = new User
+        {
+            Email = $"guest{Guid.NewGuid().ToString("N").Substring(0, 8)}@guest.com",
+            UserName = $"guest{Guid.NewGuid().ToString("N").Substring(0, 8)}",
+            DisplayName = DisplayName,
+            IsGuest = true
+        };
+
+        var result = await _userManager.CreateAsync(guest);
+        if (!result.Succeeded)
+        {
+            throw new BadRequestException($"Unable to create guest user: {string.Join(", ", result.Errors.Select(e => e.Description))}");
+        }
+
+        return guest;
+    }
+
+    public async Task<JwtAuthResultDto> LoginGuest(User guestUser)
+    {
+        var claims = await _jwtService.GetClaimsForGuest(guestUser);
+        var accessToken = _jwtService.GenerateJwtToken(claims);
+        var refreshToken = await _jwtService.GenerateOrRetrieveRefreshTokenAsync(guestUser.Id);
+
+        return new JwtAuthResultDto
+        {
+            AccessToken = accessToken,
+            RefreshToken = refreshToken
+        };
+    }
 }

@@ -77,6 +77,26 @@ public class JwtService : IJwtService
         return claims;
     }
 
+    public async Task<List<Claim>> GetClaimsForGuest(User user)
+    {
+        ArgumentNullException.ThrowIfNull(user);
+
+        var claims = new List<Claim>
+        {
+            new(JwtRegisteredClaimNames.Sub, user.Id),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new(ClaimTypes.Name, user.DisplayName!),
+        };
+
+        var roles = await _userManager.GetRolesAsync(user);
+        foreach (var role in roles)
+        {
+            claims.Add(new Claim(ClaimTypes.Role, role));
+        }
+
+        return claims;
+    }
+
     public async Task<string> GenerateOrRetrieveRefreshTokenAsync(string userId)
     {
         var existingToken = await _appDbContext.RefreshTokens
