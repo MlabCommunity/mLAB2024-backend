@@ -50,9 +50,9 @@ public class JoinQuizHandler : ICommandHandler<JoinQuizCommand, JoinQuizResponse
         if (_httpContextAccessor.HttpContext?.User?.Identity?.IsAuthenticated == true)
         {
             var userId = _httpContextAccessor.GetUserId();
-            var token = await _jwtService.GenerateOrRetrieveRefreshTokenAsync(userId);
+           var token = await _jwtService.GenerateRefreshTokenAsync(userId);
 
-            return new UserAuthResponse(_httpContextAccessor.GetUserId(), token, token);
+            return new UserAuthResponse(_httpContextAccessor.GetUserId(), token, null);
         }
 
         var guest = await _authService.CreateGuestUser(displayName!);
