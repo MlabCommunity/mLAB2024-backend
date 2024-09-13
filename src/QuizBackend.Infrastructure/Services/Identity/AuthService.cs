@@ -95,7 +95,7 @@ public class AuthService : IAuthService
         {
             Email = $"guest{Guid.NewGuid().ToString("N").Substring(0, 8)}@guest.com",
             UserName = $"guest{Guid.NewGuid().ToString("N").Substring(0, 8)}",
-            DisplayName = DisplayName,
+            DisplayName = DisplayName.Trim(),
             IsGuest = true
         };
 

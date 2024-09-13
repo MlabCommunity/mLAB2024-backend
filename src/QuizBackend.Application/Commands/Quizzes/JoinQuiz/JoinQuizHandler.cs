@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Http;
-using QuizBackend.Application.Dtos.Auth;
 using QuizBackend.Application.Interfaces.Messaging;
 using QuizBackend.Application.Interfaces.Users;
 using QuizBackend.Application.Interfaces;
@@ -10,7 +9,10 @@ using QuizBackend.Application.Extensions;
 
 namespace QuizBackend.Application.Commands.Quizzes.JoinQuiz;
 
-public record JoinQuizResponse(Guid Id, string RefreshToken, string? AccessToken);
+public record QuizResponse(Guid Id, string Title, string? Description, List<QuizQuestionsResponse> Questions);
+public record QuizAnswersResponse(Guid Id, string Content);
+public record QuizQuestionsResponse(Guid Id, string Title, List<QuizAnswersResponse> Answers);
+public record JoinQuizResponse(Guid Id, QuizResponse Quiz, string RefreshToken, string? AccessToken);
 public record UserAuthResponse(string UserId, string RefreshToken, string? AccessToken);
 
 public class JoinQuizHandler : ICommandHandler<JoinQuizCommand, JoinQuizResponse>
@@ -42,7 +44,17 @@ public class JoinQuizHandler : ICommandHandler<JoinQuizCommand, JoinQuizResponse
         var quizParticipation = CreateQuizParticipation(quiz.Id, userAuth.UserId);
         await _participationRepository.Add(quizParticipation);
 
-        return new JoinQuizResponse(quizParticipation.Id, userAuth.RefreshToken, userAuth.AccessToken);
+        var questions = quiz.Questions.Select(question => new QuizQuestionsResponse(
+          question.Id,
+          question.Title,
+          question.Answers.Select(answer => new QuizAnswersResponse(
+              answer.Id,
+              answer.Content
+          )).ToList())).ToList();
+
+        var quizResponse = new QuizResponse(quiz.Id, quiz.Title, quiz.Description, questions);
+
+        return new JoinQuizResponse(quizParticipation.Id, quizResponse, userAuth.RefreshToken, userAuth.AccessToken);
     }
 
     private async Task<UserAuthResponse> GetCurrentUserOrCreateGuest(string? displayName)

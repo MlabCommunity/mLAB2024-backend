@@ -10,14 +10,16 @@ public class JoinQuizValidator : AbstractValidator<JoinQuizCommand>
     {
         _httpContextAccessor = httpContextAccessor;
 
-        RuleFor(x => x.JoinCode)
-            .NotEmpty().WithMessage("Quiz code is required.")
-            .MaximumLength(8).WithMessage("Quiz code cannot be longer than 8 characters.");
-
         RuleFor(x => x.UserName)
-           .NotEmpty().When(x => !IsUserLoggedIn()).WithMessage("Display name is required if not logged in.")
+           .Custom((username, context) =>
+           {
+               if (!IsUserLoggedIn() && string.IsNullOrWhiteSpace(username))
+               {
+                   context.AddFailure("Display name is required if not logged in.");
+               }
+           })
            .MaximumLength(50).WithMessage("Display name cannot be longer than 50 characters.")
-           .Must(x => !string.IsNullOrWhiteSpace(x)).WithMessage("Display name cannot be empty or whitespace.");
+           .Matches("^[a-zA-Z0-9]*$").WithMessage("Display name can only contain letters and digits.");
     }
 
     private bool IsUserLoggedIn()
