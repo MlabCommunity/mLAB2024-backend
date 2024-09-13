@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using QuizBackend.Application.Commands.QuizzesParticipations.StopQuiz;
 using QuizBackend.Application.Commands.QuizzesParticipations.SubmitQuizAnswer;
 using QuizBackend.Application.Queries.QuizzesParticipations.GetQuizResult;
+using QuizBackend.Application.Queries.QuizzesParticipations.GetUserAnswer;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace QuizBackend.Api.Controllers;
@@ -41,5 +42,12 @@ public class ParticipationsController : BaseController
         await _mediator.Send(command);
 
         return NoContent();
+    }
+
+    [HttpGet("{participantId}/history")]
+    public async Task<IActionResult> GetUserQuizHistory(string participantId)
+    {
+        var result = await _mediator.Send(new GetUserQuizHistoryQuery(participantId));
+        return Ok(result);
     }
 }

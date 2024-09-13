@@ -30,4 +30,14 @@ public class QuizParticipationRepository : IQuizParticipationRepository
         _dbContext.QuizParticipations.Update(quizParticipation);
         await _dbContext.SaveChangesAsync();
     }
+
+    public async Task<List<QuizParticipation>> GetByParticipantId(string participantId)
+    {
+        return await _dbContext.QuizParticipations
+            .Include(q => q.Quiz)
+            .Include(q => q.UserAnswers)
+            .Include(q => q.QuizResult)
+            .Where(q => q.ParticipantId == participantId)
+            .ToListAsync();
+    }
 }

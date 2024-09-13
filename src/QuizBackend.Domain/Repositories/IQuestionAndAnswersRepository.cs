@@ -10,4 +10,5 @@ public interface IQuestionAndAnswersRepository
     Task Update(Question question);
     Task<Answer> GetCorrectAnswerByQuestionId(Guid questionId);
     Task<List<Answer>> GetAnswersByQuestionId(Guid questionId);
+    Task<List<Question>> GetQuestionsByQuizId(Guid quizId);
 }
