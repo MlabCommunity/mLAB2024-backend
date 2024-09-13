@@ -28,9 +28,14 @@ public class SubmitQuizAnswerCommandHandler : ICommandHandler<SubmitQuizAnswerCo
 
     public async Task<Unit> Handle(SubmitQuizAnswerCommand request, CancellationToken cancellationToken)
     {
-        await AddUserAnswers(request);
-
         var quizParticipation = await GetQuizParticipationById(request.QuizParticipationId);
+
+        if (quizParticipation.Status == QuizParticipationStatus.Stopped)
+        {
+            return Unit.Value;
+        }
+
+        await AddUserAnswers(request);
 
         var quizResultData = await CalculateQuizResultData(quizParticipation);
 
