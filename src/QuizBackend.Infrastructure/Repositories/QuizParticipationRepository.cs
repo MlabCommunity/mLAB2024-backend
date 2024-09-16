@@ -1,7 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QuizBackend.Domain.Entities;
-using QuizBackend.Domain.Enums;
-using QuizBackend.Domain.Exceptions;
 using QuizBackend.Domain.Repositories;
 using QuizBackend.Infrastructure.Data;
 

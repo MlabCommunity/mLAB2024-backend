@@ -5,7 +5,6 @@ using QuizBackend.Domain.Entities;
 using QuizBackend.Domain.Exceptions;
 using QuizBackend.Domain.Repositories;
 using QuizBackend.Application.Extensions.Mappings.QuizParticipation;
-
 namespace QuizBackend.Application.Queries.QuizzesParticipations.GetQuizResult;
 
 public record QuizResultResponse(
