@@ -54,4 +54,12 @@ public class QuestionAndAnswersRepository : IQuestionAndAnswersRepository
             .Where(a => a.QuestionId == questionId)
             .ToListAsync();
     }
+
+    public async Task<List<Question>> GetQuestionsByQuizId(Guid quizId)
+    {
+        return await _dbContext.Questions
+            .Include(q => q.Answers)
+            .Where(q => q.QuizId == quizId)
+            .ToListAsync();
+    }
 }
