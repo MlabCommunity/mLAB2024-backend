@@ -11,5 +11,7 @@ public static class RepositoriesExtensions
         services.AddScoped<IQuizRepository, QuizRepository>();
         services.AddScoped<IQuestionAndAnswersRepository, QuestionAndAnswersRepository>();
         services.AddScoped<IQuizParticipationRepository, QuizParticipationRepository>();
+        services.AddScoped<IUserAnswerRepository, UserAnswerRepository>();
+        services.AddScoped<IQuizResultRepository, QuizResultRepository>();
     }
 }

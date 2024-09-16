@@ -111,9 +111,14 @@ public class JwtService : IJwtService
     {
         var refreshTokenEntity = await _appDbContext.RefreshTokens.FirstOrDefaultAsync(rt => rt.Token == refreshToken);
 
-        if (refreshTokenEntity == null || refreshTokenEntity.Expires <= _dateTimeProvider.UtcNow || refreshTokenEntity.IsRevoked)
+        if (refreshTokenEntity == null)
         {
-            throw new ApplicationException("Invalid refresh token");
+            throw new BadRequestException("Invalid refresh token");
+        }
+        else if(refreshTokenEntity.Expires <= _dateTimeProvider.UtcNow || refreshTokenEntity.IsRevoked)
+        {
+            throw new UnauthorizedAccessException("Refresh token has expired or has been revoked");
+            //TODO in future make UnauthorizedException in Domain Exceptions
         }
 
         var userId = refreshTokenEntity.UserId;

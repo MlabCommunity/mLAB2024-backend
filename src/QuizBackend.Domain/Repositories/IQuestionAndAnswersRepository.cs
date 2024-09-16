@@ -8,4 +8,6 @@ public interface IQuestionAndAnswersRepository
     Task Delete(Guid Id);
     Task<Question?> GetById(Guid Id);
     Task Update(Question question);
+    Task<Answer> GetCorrectAnswerByQuestionId(Guid questionId);
+    Task<List<Answer>> GetAnswersByQuestionId(Guid questionId);
 }
