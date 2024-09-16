@@ -77,7 +77,7 @@ public class QuizRepository : IQuizRepository
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
 
-    public async Task<bool> IsJoinCodeTaken(string code)
+    public async Task<bool> IsExistsWithCode(string code)
     {
         return await _dbContext.Quizzes.AnyAsync(q => q.JoinCode == code);
     }
@@ -88,6 +88,6 @@ public class QuizRepository : IQuizRepository
             .AsNoTracking()
             .Include(q => q.Questions)
             .ThenInclude(quest => quest.Answers)
-            .SingleOrDefaultAsync(q => q.JoinCode == code);
+            .FirstOrDefaultAsync(q => q.JoinCode == code);
     }
 }

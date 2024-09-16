@@ -1,4 +1,5 @@
-﻿using QuizBackend.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using QuizBackend.Domain.Entities;
 using QuizBackend.Domain.Repositories;
 using QuizBackend.Infrastructure.Data;
 
@@ -16,5 +17,16 @@ public class QuizParticipationRepository : IQuizParticipationRepository
     {
        _dbContext.Add(quizParticipation);
        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<QuizParticipation?> GetQuizParticipation(Guid id)
+    {
+        return await _dbContext
+           .QuizParticipations
+           .AsNoTracking()
+           .Include(q => q.Quiz)
+           .ThenInclude(q => q.Questions)
+           .ThenInclude(q => q.Answers)
+           .FirstOrDefaultAsync(q => q.Id == id);
     }
 }

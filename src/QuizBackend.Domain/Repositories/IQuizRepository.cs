@@ -18,7 +18,7 @@ public interface IQuizRepository
 
     Task RemoveAsync(Quiz quiz, CancellationToken cancellationToken);
 
-    Task<bool> IsJoinCodeTaken(string code);
+    Task<bool> IsExistsWithCode(string code);
 
     Task<Quiz?> GetQuizByJoinCode(string code);
 }

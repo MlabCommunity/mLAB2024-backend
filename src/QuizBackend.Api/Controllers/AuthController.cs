@@ -59,4 +59,16 @@ public class AuthController : BaseController
         var jwtAuthResult = await _authService.RefreshTokenAsync(refreshTokenRequest.RefreshToken);
         return Ok(jwtAuthResult);
     }
+
+    [HttpPost("guests")]
+    [SwaggerOperation(
+        Summary = "Create guest user and generate tokens",
+        Description = "Creates a guest user with a given display name and generates JWT tokens for the guest.")]
+    [ProducesResponseType(typeof(JwtAuthResultDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<ActionResult> CreateGuestUser(CreateGuestRequest request)
+    {
+        var guestUser = await _authService.CreateAndAuthenticateGuest(request.DisplayName);
+        return Ok(guestUser);
+    }
 }
