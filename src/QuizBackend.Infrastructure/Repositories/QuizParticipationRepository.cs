@@ -6,6 +6,7 @@ using QuizBackend.Domain.Repositories;
 using QuizBackend.Infrastructure.Data;
 
 namespace QuizBackend.Infrastructure.Repositories;
+
 public class QuizParticipationRepository : IQuizParticipationRepository
 {
     private readonly AppDbContext _dbContext;

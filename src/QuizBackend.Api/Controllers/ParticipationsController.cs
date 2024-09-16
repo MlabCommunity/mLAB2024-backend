@@ -7,6 +7,7 @@ using QuizBackend.Application.Queries.QuizzesParticipations.GetQuizResult;
 using QuizBackend.Application.Commands.QuizzesParticipations.JoinQuiz;
 using QuizBackend.Application.Queries.Quizzes.GetQuizParticipation;
 using Swashbuckle.AspNetCore.Annotations;
+using QuizBackend.Application.Queries.QuizzesParticipations.GetUserAnswer;
 
 namespace QuizBackend.Api.Controllers;
 
@@ -64,7 +65,7 @@ public class ParticipationsController : BaseController
         return NoContent();
     }
 
-    [HttpGet("/result/{quizParticipationId}")]
+    [HttpGet("{quizParticipationId}/result")]
     [SwaggerOperation(Summary = "Get Quiz result from quizParticipationId")]
     [ProducesResponseType(typeof(QuizResultResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetQuizResult(Guid quizParticipationId)
@@ -81,5 +82,12 @@ public class ParticipationsController : BaseController
         await _mediator.Send(command);
 
         return NoContent();
+    }
+
+    [HttpGet("{participantId}/history")]
+    public async Task<IActionResult> GetUserQuizHistory(string participantId)
+    {
+        var result = await _mediator.Send(new GetUserQuizHistoryQuery(participantId));
+        return Ok(result);
     }
 }
