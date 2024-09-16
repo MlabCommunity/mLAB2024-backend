@@ -8,6 +8,7 @@ namespace QuizBackend.Infrastructure.Data.Configurations;
 
 public class QuizConfiguration : IEntityTypeConfiguration<Quiz>
 {
+    private const int MaxCodeLength = 8;
     public void Configure(EntityTypeBuilder<Quiz> builder)
     {
         builder.HasKey(x => x.Id);
@@ -36,5 +37,13 @@ public class QuizConfiguration : IEntityTypeConfiguration<Quiz>
         builder
             .Property(q => q.Availability)
             .HasConversion(new EnumToStringConverter<Availability>());
+
+        builder
+            .Property(q => q.JoinCode)
+            .HasMaxLength(MaxCodeLength);
+
+        builder
+            .HasIndex(q => q.JoinCode)
+            .IsUnique();
     }
 }

@@ -6,13 +6,14 @@ namespace QuizBackend.Application.Extensions.Mappings.Quizzes;
 
 public static class CreateQuizCommandExtension
 {
-    public static Quiz ToEntity(this CreateQuizCommand command, string ownerId, IDateTimeProvider dateTimeProvider)
+    public static Quiz ToEntity(this CreateQuizCommand command, string ownerId, string joinCode, IDateTimeProvider dateTimeProvider)
     {
         return new Quiz
         {
             Id = Guid.NewGuid(),
-            Description = command.Description,
             Title = command.Title,
+            Description = command.Description,
+            JoinCode = joinCode,
             OwnerId = ownerId,
             CreatedAtUtc = dateTimeProvider.UtcNow,
             Questions = command.CreateQuizQuestions.Select(q => new Question

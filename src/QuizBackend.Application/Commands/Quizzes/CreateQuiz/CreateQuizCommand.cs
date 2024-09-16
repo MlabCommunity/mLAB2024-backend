@@ -8,7 +8,7 @@ public record CreateQuizCommand(
     string Description,
     QuestionType QuestionType,
     List<CreateQuizQuestion> CreateQuizQuestions
-    ) : ICommand<Guid>;
+    ) : ICommand<CreateQuizResponse>;
 
 public record CreateQuizQuestion(
     string Title,

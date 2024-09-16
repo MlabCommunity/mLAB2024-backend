@@ -57,22 +57,20 @@ public class JwtService : IJwtService
 
     public async Task<List<Claim>> GetClaimsAsync(User user)
     {
-        var userName = user.UserName ?? throw new ArgumentNullException(nameof(user.UserName), "UserName cannot be null when creating claims.");
-        var email = user.Email ?? throw new ArgumentNullException(nameof(user.Email), "Email cannot be null when creating claims.");
+        ArgumentNullException.ThrowIfNull(user);
+
+        bool isGuest = user.IsGuest;
 
         var claims = new List<Claim>
         {
-            new Claim(JwtRegisteredClaimNames.Sub, user.Id),
-            new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            new Claim(ClaimTypes.Name, userName),
-            new Claim(ClaimTypes.Email, email)
+            new(JwtRegisteredClaimNames.Sub, user.Id),
+            new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
+            new(ClaimTypes.Name,  user.UserName!),
+            new(ClaimTypes.Email, user.Email!)
         };
 
         var roles = await _userManager.GetRolesAsync(user);
-        foreach (var role in roles)
-        {
-            claims.Add(new Claim(ClaimTypes.Role, role));
-        }
+        claims.AddRange(roles.Select(role => new Claim(ClaimTypes.Role, role)));
 
         return claims;
     }

@@ -13,6 +13,7 @@ builder.Services.AddControllers()
     {
         options.SerializerSettings.Converters.Add(new StringEnumConverter());
         options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+        options.SerializerSettings.NullValueHandling = NullValueHandling.Ignore;
     });
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerDocumentation();
