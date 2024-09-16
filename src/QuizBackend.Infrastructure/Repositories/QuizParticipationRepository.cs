@@ -1,5 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QuizBackend.Domain.Entities;
+using QuizBackend.Domain.Enums;
+using QuizBackend.Domain.Exceptions;
 using QuizBackend.Domain.Repositories;
 using QuizBackend.Infrastructure.Data;
 
@@ -14,15 +16,22 @@ public class QuizParticipationRepository : IQuizParticipationRepository
         _dbContext = dbContext;
     }
 
-    public async Task<QuizParticipation> GetById(Guid quizParticipationId)
+    public async Task Add(QuizParticipation quizParticipation)
     {
-        return await _dbContext.QuizParticipations
-            .Include(qp => qp.Quiz)
-            .ThenInclude(q => q.Questions)
-            .Include(qp => qp.UserAnswers)
-            .FirstOrDefaultAsync(qp => qp.Id == quizParticipationId);
+        _dbContext.Add(quizParticipation);
+        await _dbContext.SaveChangesAsync();
     }
 
+    public async Task<QuizParticipation?> GetQuizParticipation(Guid id)
+    {
+        return await _dbContext
+           .QuizParticipations
+           .AsNoTracking()
+           .Include(q => q.Quiz)
+           .ThenInclude(q => q.Questions)
+           .ThenInclude(q => q.Answers)
+           .FirstOrDefaultAsync(q => q.Id == id);
+    }
     public async Task Update(QuizParticipation quizParticipation)
     {
         _dbContext.QuizParticipations.Update(quizParticipation);

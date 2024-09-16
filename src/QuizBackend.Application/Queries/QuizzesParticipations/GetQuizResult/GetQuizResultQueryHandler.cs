@@ -5,6 +5,7 @@ using QuizBackend.Domain.Entities;
 using QuizBackend.Domain.Exceptions;
 using QuizBackend.Domain.Repositories;
 using QuizBackend.Application.Extensions.Mappings.QuizParticipation;
+
 namespace QuizBackend.Application.Queries.QuizzesParticipations.GetQuizResult;
 
 public record QuizResultResponse(
@@ -31,7 +32,7 @@ public class GetQuizResultQueryHandler : IQueryHandler<GetQuizResultQuery, QuizR
 
     public async Task<QuizResultResponse> Handle(GetQuizResultQuery request, CancellationToken cancellationToken)
     {
-        var quizParticipation = await _quizParticipationRepository.GetById(request.QuizParticipationId);
+        var quizParticipation = await _quizParticipationRepository.GetQuizParticipation(request.QuizParticipationId);
 
         if (quizParticipation == null)
         {

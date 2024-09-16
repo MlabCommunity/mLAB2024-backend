@@ -51,7 +51,7 @@ public class SubmitQuizAnswerCommandHandler : ICommandHandler<SubmitQuizAnswerCo
 
     private async Task<QuizParticipation> GetQuizParticipationById(Guid quizParticipationId)
     {
-        return await _quizParticipationRepository.GetById(quizParticipationId)
+        return await _quizParticipationRepository.GetQuizParticipation(quizParticipationId)
             ?? throw new NotFoundException(nameof(QuizParticipation), quizParticipationId.ToString());
     }
 

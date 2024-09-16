@@ -76,4 +76,18 @@ public class QuizRepository : IQuizRepository
         _dbContext.Quizzes.Remove(quiz);
         await _dbContext.SaveChangesAsync(cancellationToken);
     }
+
+    public async Task<bool> IsExistsWithCode(string code)
+    {
+        return await _dbContext.Quizzes.AnyAsync(q => q.JoinCode == code);
+    }
+
+    public async Task<Quiz?> GetQuizByJoinCode(string code)
+    {
+        return await _dbContext.Quizzes
+            .AsNoTracking()
+            .Include(q => q.Questions)
+            .ThenInclude(quest => quest.Answers)
+            .FirstOrDefaultAsync(q => q.JoinCode == code);
+    }
 }

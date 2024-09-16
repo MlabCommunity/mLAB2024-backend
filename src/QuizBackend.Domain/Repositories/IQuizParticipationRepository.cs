@@ -4,7 +4,8 @@ namespace QuizBackend.Domain.Repositories;
 
 public interface IQuizParticipationRepository
 {
-    Task<QuizParticipation> GetById(Guid quizParticipationId);
-    Task Update(QuizParticipation quizParticipation);
+    Task Add(QuizParticipation quizParticipation);
+    Task<QuizParticipation?> GetQuizParticipation(Guid id);
     Task<List<QuizParticipation>> GetByParticipantId(string participantId);
+    Task Update(QuizParticipation quizParticipation);
 }

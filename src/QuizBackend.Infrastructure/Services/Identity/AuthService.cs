@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using QuizBackend.Application.Commands.QuizzesParticipations.JoinQuiz;
 using QuizBackend.Application.Dtos.Auth;
 using QuizBackend.Application.Extensions;
 using QuizBackend.Application.Interfaces.Users;
@@ -33,17 +34,9 @@ public class AuthService : IAuthService
         if (!result.Succeeded)
             throw new BadRequestException("Email or Password is incorrect");
 
-        var claims = await _jwtService.GetClaimsAsync(user);
         await _signInManager.SignInAsync(user, isPersistent: false);
 
-        var accessToken = _jwtService.GenerateJwtToken(claims);
-        var refreshToken = await _jwtService.GenerateOrRetrieveRefreshTokenAsync(user.Id);
-
-        return new JwtAuthResultDto
-        {
-            AccessToken = accessToken,
-            RefreshToken = refreshToken
-        };
+        return await GenerateJwtAuthResultAsync(user);
     }
 
     public async Task<LogoutResponseDto> LogoutAsync()
@@ -87,5 +80,43 @@ public class AuthService : IAuthService
     {
         var jwtAuthResult = await _jwtService.RefreshTokenAsync(refreshToken);
         return jwtAuthResult;
+    }
+
+    public async Task<JwtAuthResultDto> CreateAndAuthenticateGuest(string displayName)
+    {
+        var guest = new User
+        {
+            Email = $"guest{Guid.NewGuid().ToString("N").Substring(0, 8)}@guest.com",
+            UserName = $"guest{Guid.NewGuid().ToString("N").Substring(0, 8)}",
+            DisplayName = displayName.Trim(),
+            IsGuest = true
+        };
+
+        var result = await _userManager.CreateAsync(guest);
+        if (!result.Succeeded)
+        {
+            throw new BadRequestException($"Unable to create guest user: {string.Join(", "
+                ,result.Errors.Select(e => e.Description))}");
+        }
+
+        var tokens = await GenerateJwtAuthResultAsync(guest);
+        return new JwtAuthResultDto
+        {
+            AccessToken = tokens.AccessToken,
+            RefreshToken = tokens.RefreshToken
+        };
+    }
+
+    private async Task<JwtAuthResultDto> GenerateJwtAuthResultAsync(User user)
+    {
+        var claims = await _jwtService.GetClaimsAsync(user);
+        var accessToken = _jwtService.GenerateJwtToken(claims);
+        var refreshToken = await _jwtService.GenerateOrRetrieveRefreshTokenAsync(user.Id);
+
+        return new JwtAuthResultDto
+        {
+            AccessToken = accessToken,
+            RefreshToken = refreshToken
+        };
     }
 }

@@ -1,4 +1,5 @@
-﻿using QuizBackend.Application.Dtos.Auth;
+﻿using QuizBackend.Application.Commands.QuizzesParticipations.JoinQuiz;
+using QuizBackend.Application.Dtos.Auth;
 
 namespace QuizBackend.Application.Interfaces.Users;
 
@@ -8,4 +9,5 @@ public interface IAuthService
     Task<LogoutResponseDto> LogoutAsync();
     Task<SignUpResponseDto> SignUpAsync(RegisterRequestDto request);
     Task<JwtAuthResultDto> RefreshTokenAsync(string refreshToken);
+    Task<JwtAuthResultDto> CreateAndAuthenticateGuest(string displayName);
 }
