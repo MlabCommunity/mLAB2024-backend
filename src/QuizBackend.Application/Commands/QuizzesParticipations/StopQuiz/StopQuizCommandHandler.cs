@@ -21,7 +21,7 @@ public class StopQuizCommandHandler : ICommandHandler<StopQuizCommand, Unit>
 
     public async Task<Unit> Handle(StopQuizCommand request, CancellationToken cancellationToken)
     {
-        var quizParticipation = await _quizParticipationRepository.GetById(request.QuizParticipationId)
+        var quizParticipation = await _quizParticipationRepository.GetQuizParticipation(request.QuizParticipationId)
             ?? throw new NotFoundException(nameof(QuizParticipation), request.QuizParticipationId.ToString());
 
         if (quizParticipation.Status == QuizParticipationStatus.Stopped)

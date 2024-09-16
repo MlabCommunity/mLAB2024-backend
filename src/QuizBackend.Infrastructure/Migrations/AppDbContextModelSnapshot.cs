@@ -559,15 +559,14 @@ namespace QuizBackend.Infrastructure.Migrations
                 });
 
             modelBuilder.Entity("QuizBackend.Domain.Entities.QuizResult", b =>
-                {
-                    b.HasOne("QuizBackend.Domain.Entities.QuizParticipation", "QuizParticipation")
-                        .WithOne("QuizResult")
-                        .HasForeignKey("QuizBackend.Domain.Entities.QuizResult", "QuizParticipationId")
-                        .OnDelete(DeleteBehavior.NoAction)
-                        .IsRequired();
-
-                    b.Navigation("QuizParticipation");
-                });
+            {
+                b.HasOne("QuizBackend.Domain.Entities.QuizParticipation", "QuizParticipation")
+                    .WithOne("QuizResult")
+                    .HasForeignKey("QuizBackend.Domain.Entities.QuizResult", "QuizParticipationId")
+                    .OnDelete(DeleteBehavior.Cascade)
+                    .IsRequired();
+                b.Navigation("QuizParticipation");
+            });
 
             modelBuilder.Entity("QuizBackend.Domain.Entities.UserAnswer", b =>
                 {

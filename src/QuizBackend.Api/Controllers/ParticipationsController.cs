@@ -64,7 +64,7 @@ public class ParticipationsController : BaseController
         return NoContent();
     }
 
-    [HttpGet("{quizParticipationId}")]
+    [HttpGet("/result/{quizParticipationId}")]
     [SwaggerOperation(Summary = "Get Quiz result from quizParticipationId")]
     [ProducesResponseType(typeof(QuizResultResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetQuizResult(Guid quizParticipationId)

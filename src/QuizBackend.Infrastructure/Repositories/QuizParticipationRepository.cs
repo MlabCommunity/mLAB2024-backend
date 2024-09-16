@@ -6,7 +6,6 @@ using QuizBackend.Domain.Repositories;
 using QuizBackend.Infrastructure.Data;
 
 namespace QuizBackend.Infrastructure.Repositories;
-
 public class QuizParticipationRepository : IQuizParticipationRepository
 {
     private readonly AppDbContext _dbContext;
@@ -16,23 +15,14 @@ public class QuizParticipationRepository : IQuizParticipationRepository
         _dbContext = dbContext;
     }
 
-    public async Task<QuizParticipation> GetById(Guid quizParticipationId)
     public async Task Add(QuizParticipation quizParticipation)
     {
-        return await _dbContext.QuizParticipations
-            .Include(qp => qp.Quiz)
-            .ThenInclude(q => q.Questions)
-            .Include(qp => qp.UserAnswers)
-            .FirstOrDefaultAsync(qp => qp.Id == quizParticipationId);
-       _dbContext.Add(quizParticipation);
-       await _dbContext.SaveChangesAsync();
+        _dbContext.Add(quizParticipation);
+        await _dbContext.SaveChangesAsync();
     }
 
-    public async Task Update(QuizParticipation quizParticipation)
     public async Task<QuizParticipation?> GetQuizParticipation(Guid id)
     {
-        _dbContext.QuizParticipations.Update(quizParticipation);
-        await _dbContext.SaveChangesAsync();
         return await _dbContext
            .QuizParticipations
            .AsNoTracking()
@@ -40,5 +30,20 @@ public class QuizParticipationRepository : IQuizParticipationRepository
            .ThenInclude(q => q.Questions)
            .ThenInclude(q => q.Answers)
            .FirstOrDefaultAsync(q => q.Id == id);
+    }
+    public async Task Update(QuizParticipation quizParticipation)
+    {
+        _dbContext.QuizParticipations.Update(quizParticipation);
+        await _dbContext.SaveChangesAsync();
+    }
+
+    public async Task<List<QuizParticipation>> GetByParticipantId(string participantId)
+    {
+        return await _dbContext.QuizParticipations
+            .Include(q => q.Quiz)
+            .Include(q => q.UserAnswers)
+            .Include(q => q.QuizResult)
+            .Where(q => q.ParticipantId == participantId)
+            .ToListAsync();
     }
 }
