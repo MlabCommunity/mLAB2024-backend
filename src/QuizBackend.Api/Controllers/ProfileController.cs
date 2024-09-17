@@ -42,7 +42,7 @@ public class ProfileController : BaseController
 
     [HttpPut("convert-guest")]
     [SwaggerOperation(Summary = "Converts the guest to user", Description = "Updates the guest account to user account with the provided data")]
-    [ProducesResponseType(typeof(UserProfileDto), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
