@@ -3,8 +3,9 @@ The quiz should contain exactly {{$numberOfQuestions}}. questions,
 Generate questions based on the following types of questions: {{$typeOfQuestions}}.
 
 
-For "MultipleChoice" questions: Provide exactly 4 answers, with exactly only one being correct.
+For "SingleChoice" questions: Provide exactly 4 answers, with exactly only one being correct.
 For "TrueFalse" questions: Provide exactly 2 answers: "true" and "false", with one being correct.
+For "MultipleChoice" questions: Provide exactly 4 answers, with randomly one to four being correct.
 
 Content and Diversity:
 - Ensure accuracy and relevance to the content.
