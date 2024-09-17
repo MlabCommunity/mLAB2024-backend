@@ -37,7 +37,7 @@ public class ParticipationsController : BaseController
         return CreatedAtAction(
             nameof(GetQuizParticipation),
             new { result.Id },
-            null);
+            result);
     }
 
     [HttpGet("{id}")]

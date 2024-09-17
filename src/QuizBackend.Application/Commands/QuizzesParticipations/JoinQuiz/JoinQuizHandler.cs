@@ -10,7 +10,6 @@ using QuizBackend.Domain.Enums;
 
 namespace QuizBackend.Application.Commands.QuizzesParticipations.JoinQuiz;
 
-public record JoinCodeRequest(string JoinCode);
 public record JoinQuizResponse(Guid Id);
 
 public class JoinQuizHandler : ICommandHandler<JoinQuizCommand, JoinQuizResponse>
