@@ -1,6 +1,5 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
-using QuizBackend.Application.Commands.QuizzesParticipations.JoinQuiz;
 using QuizBackend.Application.Dtos.Auth;
 using QuizBackend.Application.Extensions;
 using QuizBackend.Application.Interfaces.Users;
@@ -58,9 +57,16 @@ public class AuthService : IAuthService
 
     public async Task<SignUpResponseDto> SignUpAsync(RegisterRequestDto request)
     {
-        var user = new User { UserName = request.Email, Email = request.Email };
-        var result = await _userManager.CreateAsync(user, request.Password);
+        var displayName = ExtractDisplayNameFromEmail(request.Email);
+        var userName = GenerateUniqueUserName();
+        var user = new User
+        {
+            UserName = userName,
+            Email = request.Email,
+            DisplayName = displayName
+        };
 
+        var result = await _userManager.CreateAsync(user, request.Password);
         if (!result.Succeeded)
         {
             var errors = result.Errors
@@ -93,6 +99,7 @@ public class AuthService : IAuthService
         };
 
         var result = await _userManager.CreateAsync(guest);
+       
         if (!result.Succeeded)
         {
             throw new BadRequestException($"Unable to create guest user: {string.Join(", "
@@ -118,5 +125,15 @@ public class AuthService : IAuthService
             AccessToken = accessToken,
             RefreshToken = refreshToken
         };
+    }
+
+    private string ExtractDisplayNameFromEmail(string email)
+    {
+        var atIndex = email.IndexOf('@');
+        return atIndex > 0 ? email.Substring(0, atIndex) : email;
+    }
+    private string GenerateUniqueUserName()
+    {
+        return $"user-{Guid.NewGuid().ToString().Substring(0, 10)}";
     }
 }
