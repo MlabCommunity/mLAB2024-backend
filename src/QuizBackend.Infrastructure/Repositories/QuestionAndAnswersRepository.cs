@@ -41,4 +41,25 @@ public class QuestionAndAnswersRepository : IQuestionAndAnswersRepository
             await _dbContext.SaveChangesAsync();
         }
     }
+
+    public async Task<Answer> GetCorrectAnswerByQuestionId(Guid questionId)
+    {
+        return await _dbContext.Answers
+            .FirstOrDefaultAsync(a => a.QuestionId == questionId && a.IsCorrect);
+    }
+
+    public async Task<List<Answer>> GetAnswersByQuestionId(Guid questionId)
+    {
+        return await _dbContext.Answers
+            .Where(a => a.QuestionId == questionId)
+            .ToListAsync();
+    }
+
+    public async Task<List<Question>> GetQuestionsByQuizId(Guid quizId)
+    {
+        return await _dbContext.Questions
+            .Include(q => q.Answers)
+            .Where(q => q.QuizId == quizId)
+            .ToListAsync();
+    }
 }
