@@ -12,11 +12,13 @@ public class QuizService : IQuizService
 {
     private readonly IKernelService _kernelService;
     private readonly ILogger<QuizService> _logger;
+    private readonly IChatHistoryService _chatHistoryService;
 
-    public QuizService(IKernelService kernelService, ILogger<QuizService> logger)
+    public QuizService(IKernelService kernelService, ILogger<QuizService> logger, IChatHistoryService chatHistoryService)
     {
         _kernelService = kernelService;
         _logger = logger;
+        _chatHistoryService = chatHistoryService;
     }
     public async Task<GenerateQuizResponse> GenerateQuizFromPromptTemplateAsync(GenerateQuizCommand command)
     {
@@ -41,6 +43,13 @@ public class QuizService : IQuizService
 
             throw new BadRequestException("Try generating again");
         }
+
+        //_chatHistoryService.AddQuizGenerationDetails(
+        //    command.Content,
+        //    command.NumberOfQuestions,
+        //    command.QuestionTypes,
+        //    validJson);
+
         return quizDto;
     }
 }

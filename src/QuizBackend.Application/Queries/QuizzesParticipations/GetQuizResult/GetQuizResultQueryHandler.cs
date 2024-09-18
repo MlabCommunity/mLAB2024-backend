@@ -8,9 +8,10 @@ using QuizBackend.Application.Extensions.Mappings.QuizParticipation;
 
 namespace QuizBackend.Application.Queries.QuizzesParticipations.GetQuizResult;
 
+public record QuizDetails(Guid Id, string Title, string? Description, List<QuestionDto> Questions);
 public record QuizResultResponse(
     Guid QuizParticipationId,
-    QuizDetailsDto QuizDetails,
+    QuizDetails QuizDetails,
     List<UserAnswerDto> UserAnswers,
     int TotalQuestions,
     int CorrectAnswers,

@@ -1,8 +1,8 @@
 ﻿namespace QuizBackend.Domain.Enums;
 
+[Flags]
 public enum QuestionType
 {
-    MultipleChoice = 0,
-    TrueFalse = 1,
-    SingleChoice = 2
+    SingleChoice = 0,
+    TrueFalse = 1
 }

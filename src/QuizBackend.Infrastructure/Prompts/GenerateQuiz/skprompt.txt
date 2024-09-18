@@ -1,11 +1,8 @@
-﻿Generate a quiz convert to JSON format based on the content provided and your knowlegde: {{$content}}. 
-The quiz should contain exactly {{$numberOfQuestions}}. questions, 
-Generate questions based on the following types of questions: {{$typeOfQuestions}}.
+﻿Generate a quiz in JSON format based on the following content: "{{$content}}".
+The quiz should contain exactly "{{$numberOfQuestions}}" questions, **all of which must be of the type** "{{$typeOfQuestions}}".
 
-
-For "SingleChoice" questions: Provide exactly 4 answers, with exactly only one being correct.
-For "TrueFalse" questions: Provide exactly 2 answers: "true" and "false", with one being correct.
-For "MultipleChoice" questions: Provide exactly 4 answers, with randomly one to four being correct.
+- If "{{$typeOfQuestions}}" is "SingleChoice", each question should have exactly 4 answers, with only one correct answer.
+- If "{{$typeOfQuestions}}" is "TrueFalse", each question should have exactly 2 answers: "true" and "false", with one being correct.
 
 Content and Diversity:
 - Ensure accuracy and relevance to the content.
@@ -13,23 +10,24 @@ Content and Diversity:
 - Avoid repeating the same concept across multiple questions.
 
 Question Types and Formulation:
-
 - Use various questioning techniques, such as "What is...", "Which of the following...", "How does...", "Explain why...".
 - Include a mix of fact-based, conceptual, and application questions.
 - Incorporate trivia, critical thinking, riddles, puzzles, and connections between different aspects of the topic.
 - Add humor where appropriate and refer to practical applications.
 
 Question and Answer Quality:
-
 - Ensure that questions are clear, concise, and directly related to the topic.
 - Avoid overly complex or ambiguous phrasing.
 - Make sure the correct answer is unmistakably correct.
 
+**IMPORTANT**: If "{{$typeOfQuestions}}" specifies a single type (e.g., "SingleChoice" or "TrueFalse"), ensure that **all** questions in the quiz are of this type. Do not mix question types. 
+**IMPORTANT**: If "{{$typeOfQuestions}}" specifies "SingleChoice+TrueFalse", generate a mix of both types of questions.
 Additionally, generate a title and a brief description for the quiz.
 
 TAKE DEEP BREATH AND DO NOT HALLUCINATE
 
-Respond only with the JSON structured and no additional text or explanations or fields.
+Respond only with the JSON structured and **no** additional text or explanations or fields.
+Here is example JSON format.
 {
   "Title": "Super creative Quiz Title",
   "Description": "Super creative Brief description of the quiz content",
@@ -44,27 +42,6 @@ Respond only with the JSON structured and no additional text or explanations or 
         {
           "Content": "Answer 2 for Question 1",
           "IsCorrect": false
-        },
-        {
-          "Content": "Answer 3 for Question 1",
-          "IsCorrect": false
-        },
-        {
-          "Content": "Answer 4 for Question 1",
-          "IsCorrect": false
-        }
-      ]
-    },
-    {
-      "Title": "Sample Question 2",
-      "GenerateAnswers": [
-        {
-          "Content": "Answer 1 for Question 2",
-          "IsCorrect": false
-        },
-        {
-          "Content": "Answer 2 for Question 2",
-          "IsCorrect": true
         }
       ]
     }

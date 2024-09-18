@@ -7,7 +7,6 @@ namespace QuizBackend.Application.Commands.Quizzes.GenerateQuiz;
 public record GenerateQuizCommand(
     string? Content,
     int NumberOfQuestions,
-    List<QuestionType> QuestionTypes,
+    QuestionType QuestionTypes,
     List<IFormFile>? Attachments
 ) : ICommand<GenerateQuizResponse>;
-
