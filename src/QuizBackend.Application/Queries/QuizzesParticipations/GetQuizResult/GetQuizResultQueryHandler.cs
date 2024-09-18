@@ -8,9 +8,10 @@ using QuizBackend.Application.Extensions.Mappings.QuizParticipation;
 
 namespace QuizBackend.Application.Queries.QuizzesParticipations.GetQuizResult;
 
+public record QuizDetails(Guid Id, string Title, string? Description, List<QuestionDto> Questions);
 public record QuizResultResponse(
     Guid QuizParticipationId,
-    QuizDetailsDto QuizDetails,
+    QuizDetails QuizDetails,
     List<UserAnswerDto> UserAnswers,
     int TotalQuestions,
     int CorrectAnswers,
@@ -32,7 +33,7 @@ public class GetQuizResultQueryHandler : IQueryHandler<GetQuizResultQuery, QuizR
 
     public async Task<QuizResultResponse> Handle(GetQuizResultQuery request, CancellationToken cancellationToken)
     {
-        var quizParticipation = await _quizParticipationRepository.GetQuizParticipation(request.QuizParticipationId);
+        var quizParticipation = await _quizParticipationRepository.GetByIdWithUserAnswers(request.QuizParticipationId);
 
         if (quizParticipation == null)
         {
