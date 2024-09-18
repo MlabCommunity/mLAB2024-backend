@@ -28,14 +28,9 @@ public class SubmitQuizAnswerCommandHandler : ICommandHandler<SubmitQuizAnswerCo
 
     public async Task<Unit> Handle(SubmitQuizAnswerCommand request, CancellationToken cancellationToken)
     {
-        var quizParticipation = await GetQuizParticipationById(request.QuizParticipationId);
-
-        if (quizParticipation.Status == QuizParticipationStatus.Stopped)
-        {
-            return Unit.Value;
-        }
-
         await AddUserAnswers(request);
+
+        var quizParticipation = await GetQuizParticipationById(request.QuizParticipationId);
 
         var quizResultData = await CalculateQuizResultData(quizParticipation);
 
@@ -51,7 +46,7 @@ public class SubmitQuizAnswerCommandHandler : ICommandHandler<SubmitQuizAnswerCo
 
     private async Task<QuizParticipation> GetQuizParticipationById(Guid quizParticipationId)
     {
-        return await _quizParticipationRepository.GetQuizParticipation(quizParticipationId)
+        return await _quizParticipationRepository.GetByIdWithUserAnswers(quizParticipationId)
             ?? throw new NotFoundException(nameof(QuizParticipation), quizParticipationId.ToString());
     }
 
