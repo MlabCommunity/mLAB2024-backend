@@ -1,0 +1,1 @@
+{  "applinks": {    "apps": [],    "details": [      {        "appIDs": [          "LCHTS6R3RV.net.mobitouch.QuizzAPP"        ],        "paths": [          "*"        ],        "components": [          {            "/": "/*"          }        ]      }    ]  },  "webcredentials": {    "apps": [      "LCHTS6R3RV.net.mobitouch.QuizzAPP"    ]  }}

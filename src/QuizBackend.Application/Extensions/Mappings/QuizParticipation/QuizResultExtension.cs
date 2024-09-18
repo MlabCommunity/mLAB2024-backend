@@ -19,6 +19,7 @@ public static class QuizResultExtension
                 quizParticipation.Quiz.Id,
                 quizParticipation.Quiz.Title,
                 quizParticipation.Quiz.Description,
+                quizParticipation.Quiz.JoinCode,
                 quizParticipation.Quiz.Availability,
                 quizParticipation.Quiz.Status,
                 questionsDto
