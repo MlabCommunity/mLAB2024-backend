@@ -16,13 +16,7 @@ Important rules based on "{{$typeOfQuestions}}":
    - You can use a variety of question formulations like: "Is [statement] true?", "Is [statement] false?", "[Statement] is true/false.", "True or false: [statement]?".
    - Ensure the statements are **unambiguous** and easy to classify as either true or false, particularly for specialized content.
 
-3.**If "{{$typeOfQuestions}}" is "SingleChoice+TrueFalse"**:  
-   - Split the quiz evenly between **SingleChoice** and **TrueFalse** questions.
-   - If the number of questions is odd, assign one more question to SingleChoice.
-   - For **SingleChoice** questions, each question must have 4 unique answers, with one correct answer.
-   - For **TrueFalse** questions, each question must have exactly 2 answers: "true" and "false", with only one correct answer.
-
-4. **Do not mix question types** unless "{{$typeOfQuestions}}" explicitly specifies "SingleChoice+TrueFalse".  
+3. **Do not mix question types** unless "{{$typeOfQuestions}}" explicitly specifies "SingleChoice+TrueFalse".  
    - If "SingleChoice" is selected, **all** questions must have 4 answers.
    - If "TrueFalse" is selected, **all** questions must have 2 answers (true/false).
    - If "SingleChoice+TrueFalse" is specified, generate a mix of both formats, but **keep each question strictly within its format**.
