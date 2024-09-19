@@ -33,7 +33,7 @@ public class GetQuizResultQueryHandler : IQueryHandler<GetQuizResultQuery, QuizR
 
     public async Task<QuizResultResponse> Handle(GetQuizResultQuery request, CancellationToken cancellationToken)
     {
-        var quizParticipation = await _quizParticipationRepository.GetQuizParticipation(request.QuizParticipationId);
+        var quizParticipation = await _quizParticipationRepository.GetByIdWithUserAnswers(request.QuizParticipationId);
 
         if (quizParticipation == null)
         {

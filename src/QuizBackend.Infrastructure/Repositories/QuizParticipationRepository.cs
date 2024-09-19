@@ -32,6 +32,15 @@ public class QuizParticipationRepository : IQuizParticipationRepository
            .ThenInclude(q => q.Answers)
            .FirstOrDefaultAsync(q => q.Id == id);
     }
+
+    public async Task<QuizParticipation> GetByIdWithUserAnswers(Guid quizParticipationId)
+    {
+        return await _dbContext.QuizParticipations
+            .Include(qp => qp.Quiz)
+            .ThenInclude(q => q.Questions)
+            .Include(qp => qp.UserAnswers)
+            .FirstOrDefaultAsync(qp => qp.Id == quizParticipationId);
+    }
     public async Task Update(QuizParticipation quizParticipation)
     {
         _dbContext.QuizParticipations.Update(quizParticipation);

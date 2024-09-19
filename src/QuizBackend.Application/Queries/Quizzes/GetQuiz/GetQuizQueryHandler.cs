@@ -36,10 +36,14 @@ public class GetQuizQueryHandler : IQueryHandler<GetQuizQuery, QuizDetailsDto>
              ))
              .ToList();
 
+        var httpRequest = _httpContextAccessor.HttpContext?.Request;
+        var shareLink = $"{httpRequest!.Scheme}://{httpRequest.Host}/{quiz.JoinCode}";
+
         var quizDto = new QuizDetailsDto(
             quiz.Id,
             quiz.Title,
             quiz.Description,
+            shareLink,
             quiz.Availability,
             quiz.Status,
             questionsDto);
