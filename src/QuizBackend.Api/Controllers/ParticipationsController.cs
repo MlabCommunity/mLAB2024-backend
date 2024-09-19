@@ -85,6 +85,8 @@ public class ParticipationsController : BaseController
     }
 
     [HttpGet("{participantId}/history")]
+    [SwaggerOperation(Summary = "Get User particpation history by user Id")]
+    [ProducesResponseType(typeof(QuizParticipationHistoryResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GetUserQuizHistory(string participantId)
     {
         var result = await _mediator.Send(new GetUserQuizHistoryQuery(participantId));

@@ -2,6 +2,7 @@
 using Microsoft.SemanticKernel;
 using Newtonsoft.Json;
 using QuizBackend.Application.Commands.Quizzes.GenerateQuiz;
+using QuizBackend.Application.Extensions;
 using QuizBackend.Application.Interfaces;
 using QuizBackend.Domain.Exceptions;
 using QuizBackend.Infrastructure.Interfaces;
@@ -22,11 +23,13 @@ public class QuizService : IQuizService
     }
     public async Task<GenerateQuizResponse> GenerateQuizFromPromptTemplateAsync(GenerateQuizCommand command)
     {
+        string questionTypeString = command.GetQuestionTypeString();
+
         var kernelArguments = new KernelArguments
         {
             {"content", command.Content },
             {"numberOfQuestions", command.NumberOfQuestions},
-            {"typeOfQuestions", command.QuestionTypes}
+            {"typeOfQuestions", questionTypeString}
         };
 
         var jsonResponse = await _kernelService.CreatePluginFromPromptDirectory("GenerateQuiz", kernelArguments);

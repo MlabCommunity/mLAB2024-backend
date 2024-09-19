@@ -1,30 +1,44 @@
-﻿Generate a quiz in JSON format based on the following content: "{{$content}}".
+﻿Generate a quiz in JSON format based on the following content: "{{$content}}". 
 The quiz should contain exactly "{{$numberOfQuestions}}" questions, **all of which must be of the type** "{{$typeOfQuestions}}".
 
-- If "{{$typeOfQuestions}}" is "SingleChoice", each question should have exactly 4 answers, with only one correct answer.
-- If "{{$typeOfQuestions}}" is "TrueFalse", each question should have exactly 2 answers: "true" and "false", with one being correct.
+Important rules based on "{{$typeOfQuestions}}":
+
+1. **If "{{$typeOfQuestions}}" is "SingleChoice"**:  
+   - Each question must have **exactly 4 unique answers**, with only **one correct answer**.
+   - The structure for **every** question should be **strictly 4 answers**, regardless of the content or diversity.
+   - You can use a variety of question formulations like: "What is...", "Which of the following...", "How does...", "Explain why...".
+   - Ensure that all questions are **clear and directly related to the core content**.
+
+2. **If "{{$typeOfQuestions}}" is "TrueFalse"**:  
+   - Each question must have **exactly 2 answers**: "true" and "false", with only **one correct answer**.
+   - Ensure that the **correct answer** is **either "true" or "false"** and is placed correctly in the "IsCorrect" field.
+   - **Do not generate more than 2 answers**. There should be no additional distractors.
+   - You can use a variety of question formulations like: "Is [statement] true?", "Is [statement] false?", "[Statement] is true/false.", "True or false: [statement]?".
+   - Ensure the statements are **unambiguous** and easy to classify as either true or false, particularly for specialized content.
+
+3.**If "{{$typeOfQuestions}}" is "SingleChoice+TrueFalse"**:  
+   - Split the quiz evenly between **SingleChoice** and **TrueFalse** questions.
+   - If the number of questions is odd, assign one more question to SingleChoice.
+   - For **SingleChoice** questions, each question must have 4 unique answers, with one correct answer.
+   - For **TrueFalse** questions, each question must have exactly 2 answers: "true" and "false", with only one correct answer.
+
+4. **Do not mix question types** unless "{{$typeOfQuestions}}" explicitly specifies "SingleChoice+TrueFalse".  
+   - If "SingleChoice" is selected, **all** questions must have 4 answers.
+   - If "TrueFalse" is selected, **all** questions must have 2 answers (true/false).
+   - If "SingleChoice+TrueFalse" is specified, generate a mix of both formats, but **keep each question strictly within its format**.
+
+**IMPORTANT** REMEMBER:  
+- **Do not mix question types** unless specifically instructed with "SingleChoice+TrueFalse".
+- Always generate **four answers** for SingleChoice and **two answers** for TrueFalse.
 
 Content and Diversity:
-- Ensure accuracy and relevance to the content.
-- Cover different aspects and subtopics of the main content.
-- Avoid repeating the same concept across multiple questions.
-
-Question Types and Formulation:
-- Use various questioning techniques, such as "What is...", "Which of the following...", "How does...", "Explain why...".
-- Include a mix of fact-based, conceptual, and application questions.
-- Incorporate trivia, critical thinking, riddles, puzzles, and connections between different aspects of the topic.
-- Add humor where appropriate and refer to practical applications.
+- Ensure that questions accurately reflect the core content and cover **different subtopics**.
+- Maintain diversity within the **content** of the questions but **do not alter the structure** of answers (stick to 4 answers for SingleChoice and 2 answers for TrueFalse).
 
 Question and Answer Quality:
-- Ensure that questions are clear, concise, and directly related to the topic.
-- Avoid overly complex or ambiguous phrasing.
-- Make sure the correct answer is unmistakably correct.
-
-**IMPORTANT**: If "{{$typeOfQuestions}}" specifies a single type (e.g., "SingleChoice" or "TrueFalse"), ensure that **all** questions in the quiz are of this type. Do not mix question types. 
-**IMPORTANT**: If "{{$typeOfQuestions}}" specifies "SingleChoice+TrueFalse", generate a mix of both types of questions.
-Additionally, generate a title and a brief description for the quiz.
-
-TAKE DEEP BREATH AND DO NOT HALLUCINATE
+- Ensure all questions are clear, concise, and directly related to the content.
+- Avoid ambiguous or overly complex phrasing.
+- The correct answer should be unmistakably correct, but distractors should be plausible.
 
 Respond only with the JSON structured and **no** additional text or explanations or fields.
 Here is example JSON format.
@@ -33,7 +47,7 @@ Here is example JSON format.
   "Description": "Super creative Brief description of the quiz content",
   "GenerateQuestions": [
     {
-      "Title": "Sample Question 1",
+      "Title": "1.[Sample Question 1]",
       "GenerateAnswers": [
         {
           "Content": "Answer 1 for Question 1",
@@ -46,4 +60,4 @@ Here is example JSON format.
       ]
     }
   ]
-}
+ }
