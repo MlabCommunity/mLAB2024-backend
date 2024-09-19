@@ -1,6 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using QuizBackend.Application.Interfaces.Users;
+using QuizBackend.Infrastructure.Interfaces;
 using QuizBackend.Infrastructure.Services.Identity;
 
 namespace QuizBackend.Infrastructure.Extensions;
@@ -11,5 +12,6 @@ public static class AuthExtension
     {
         services.AddScoped<IJwtService, JwtService>();
         services.AddScoped<IAuthService, AuthService>();
+        services.AddScoped<IRoleService, RoleService>();
     }
 }

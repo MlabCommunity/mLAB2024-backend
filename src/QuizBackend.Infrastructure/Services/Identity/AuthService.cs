@@ -4,7 +4,9 @@ using QuizBackend.Application.Dtos.Auth;
 using QuizBackend.Application.Extensions;
 using QuizBackend.Application.Interfaces.Users;
 using QuizBackend.Domain.Entities;
+using QuizBackend.Domain.Enums;
 using QuizBackend.Domain.Exceptions;
+using QuizBackend.Infrastructure.Interfaces;
 
 namespace QuizBackend.Infrastructure.Services.Identity;
 
@@ -13,13 +15,15 @@ public class AuthService : IAuthService
     private readonly UserManager<User> _userManager;
     private readonly SignInManager<User> _signInManager;
     private readonly IJwtService _jwtService;
+    private readonly IRoleService _roleService;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, IJwtService jwtService, IHttpContextAccessor httpContextAccessor)
+    public AuthService(UserManager<User> userManager, SignInManager<User> signInManager, IJwtService jwtService, IRoleService roleService, IHttpContextAccessor httpContextAccessor)
     {
         _userManager = userManager;
         _signInManager = signInManager;
         _jwtService = jwtService;
+        _roleService = roleService;
         _httpContextAccessor = httpContextAccessor;
     }
 
@@ -67,6 +71,7 @@ public class AuthService : IAuthService
         };
 
         var result = await _userManager.CreateAsync(user, request.Password);
+        
         if (!result.Succeeded)
         {
             var errors = result.Errors
@@ -75,6 +80,8 @@ public class AuthService : IAuthService
 
             throw new ValidationException("User creation failed", errors);
         }
+
+        await _roleService.AssignRole(user, AppRole.User);
 
         return new SignUpResponseDto
         {
@@ -95,7 +102,6 @@ public class AuthService : IAuthService
             Email = $"guest{Guid.NewGuid().ToString("N").Substring(0, 8)}@guest.com",
             UserName = $"guest{Guid.NewGuid().ToString("N").Substring(0, 8)}",
             DisplayName = displayName.Trim(),
-            IsGuest = true
         };
 
         var result = await _userManager.CreateAsync(guest);
@@ -105,6 +111,8 @@ public class AuthService : IAuthService
             throw new BadRequestException($"Unable to create guest user: {string.Join(", "
                 ,result.Errors.Select(e => e.Description))}");
         }
+
+        await _roleService.AssignRole(guest, AppRole.Guest);
 
         var tokens = await GenerateJwtAuthResultAsync(guest);
         return new JwtAuthResultDto

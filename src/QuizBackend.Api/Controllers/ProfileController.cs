@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using QuizBackend.Application.Dtos.Auth;
 using QuizBackend.Application.Dtos.Profile;
 using QuizBackend.Application.Interfaces.Users;
+using QuizBackend.Infrastructure.Authorization;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace QuizBackend.Api.Controllers;
@@ -41,11 +42,13 @@ public class ProfileController : BaseController
     }
 
     [HttpPut("convert-guest")]
+    [Authorize(Policy = "Guest")]
     [SwaggerOperation(Summary = "Converts the guest to user", Description = "Updates the guest account to user account with the provided data")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<ActionResult> ConvertGuestToUser(RegisterRequestDto request)
     {
         await _profileService.ConvertGuestToUser(request);

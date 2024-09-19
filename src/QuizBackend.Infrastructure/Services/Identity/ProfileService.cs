@@ -5,18 +5,22 @@ using QuizBackend.Application.Dtos.Profile;
 using QuizBackend.Application.Extensions;
 using QuizBackend.Application.Interfaces.Users;
 using QuizBackend.Domain.Entities;
+using QuizBackend.Domain.Enums;
 using QuizBackend.Domain.Exceptions;
+using QuizBackend.Infrastructure.Interfaces;
 
 namespace QuizBackend.Infrastructure.Services.Identity;
 
 public class ProfileService : IProfileService
 {
     private readonly UserManager<User> _userManager;
+    private readonly IRoleService _roleService;
     private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public ProfileService(UserManager<User> userManager, IHttpContextAccessor httpContextAccessor)
+    public ProfileService(UserManager<User> userManager, IRoleService roleService, IHttpContextAccessor httpContextAccessor)
     {
         _userManager = userManager;
+        _roleService = roleService;
         _httpContextAccessor = httpContextAccessor;
     }
 
@@ -54,13 +58,9 @@ public class ProfileService : IProfileService
         var user = await _userManager.FindByIdAsync(userId)
             ?? throw new NotFoundException(nameof(User), userId);
 
-        if (!user.IsGuest)
-        {
-            throw new BadRequestException("Only guest accounts can be converted to regular accounts.");
-        }
-
         user.Email = request.Email;
-        user.IsGuest = false;
+        await _roleService.RemoveRole(user, AppRole.Guest);
+        await _roleService.AssignRole(user, AppRole.User);
 
         await UpdateUser(user, request.Password);
     }

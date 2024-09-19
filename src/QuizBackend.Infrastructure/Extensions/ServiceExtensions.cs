@@ -24,6 +24,7 @@ public static class ServiceExtensions
 
         services.AddJwtExtension(configuration);
         services.AddAuthExtension(configuration);
+        services.AddAuthorizationPolicies();
 
         services.AddHttpContextAccessor();
 

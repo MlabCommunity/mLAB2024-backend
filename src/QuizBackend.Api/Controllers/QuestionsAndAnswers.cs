@@ -4,21 +4,23 @@ using Microsoft.AspNetCore.Mvc;
 using QuizBackend.Application.Commands.QuestionsAndAnswers.CreateQuestionAndAnswers;
 using QuizBackend.Application.Commands.QuestionsAndAnswers.DeleteQuestionAndAnswers;
 using QuizBackend.Application.Commands.QuestionsAndAnswers.UpdateQuestionAndAnswers;
+using QuizBackend.Infrastructure.Authorization;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace QuizBackend.Api.Controllers;
 
-[Authorize]
-public class QuestionsAndAnswersController : BaseController
+[Authorize(Roles = "User")]
+public class QuestionsAndAnswers : BaseController
 {
     private readonly IMediator _mediator;
 
-    public QuestionsAndAnswersController(IMediator mediator)
+    public QuestionsAndAnswers(IMediator mediator)
     {
         _mediator = mediator;
     }
 
-    [HttpPost("create-question")]
+    [HttpPost]
+    [Authorize(Policy = PolicyNames.QuestionOwner)]
     [SwaggerOperation(Summary = "Create Questions with Answers. Returned result is Question Id")]
     public async Task<IActionResult> CreateQuestionAndAnswers(CreateQuestionAndAnswersCommand command)
     {
@@ -26,7 +28,8 @@ public class QuestionsAndAnswersController : BaseController
         return Ok(result);
     }
 
-    [HttpPut("update-question")]
+    [HttpPut]
+    [Authorize(Policy = PolicyNames.QuestionOwner)]
     [SwaggerOperation(Summary = "Update Questions with Answers")]
     public async Task<IActionResult> UpdateQuestionAndAnswers(UpdateQuestionAndAnswersCommand command)
     {
@@ -35,6 +38,7 @@ public class QuestionsAndAnswersController : BaseController
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Policy = PolicyNames.QuestionOwner)]
     [SwaggerOperation(Summary = "Delete Question with Answers by Id.")]
     public async Task<IActionResult> DeleteQuestionAndAnswers([FromRoute] Guid id)
     {

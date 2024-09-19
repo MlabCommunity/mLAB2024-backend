@@ -62,4 +62,12 @@ public class QuestionAndAnswersRepository : IQuestionAndAnswersRepository
             .Where(q => q.QuizId == quizId)
             .ToListAsync();
     }
+
+    public async Task<Quiz?> GetQuizForQuestion(Guid questionId)
+    {
+        return await _dbContext.Questions
+            .Where(q => q.Id == questionId)
+            .Select(q => q.Quiz)
+            .FirstOrDefaultAsync();
+    }
 }
