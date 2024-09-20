@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
+using QuizBackend.Application.Extensions;
 using QuizBackend.Application.Extensions.Mappings.QuizParticipation;
 using QuizBackend.Application.Interfaces;
 using QuizBackend.Application.Interfaces.Messaging;
@@ -16,21 +18,31 @@ public class SubmitQuizAnswerCommandHandler : ICommandHandler<SubmitQuizAnswerCo
     private readonly IQuestionAndAnswersRepository _questionAndAnswersRepository;
     private readonly IQuizParticipationRepository _quizParticipationRepository;
     private readonly IDateTimeProvider _dateTimeProvider;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public SubmitQuizAnswerCommandHandler(IUserAnswerRepository userAnswerRepository, IQuizResultRepository quizResultRepository, IDateTimeProvider dateTimeProvider, IQuestionAndAnswersRepository questionAndAnswersRepository, IQuizParticipationRepository quizParticipationRepository)
+    public SubmitQuizAnswerCommandHandler(IUserAnswerRepository userAnswerRepository, IQuizResultRepository quizResultRepository, IQuestionAndAnswersRepository questionAndAnswersRepository, IQuizParticipationRepository quizParticipationRepository, IDateTimeProvider dateTimeProvider, IHttpContextAccessor httpContextAccessor)
     {
         _userAnswerRepository = userAnswerRepository;
         _quizResultRepository = quizResultRepository;
-        _dateTimeProvider = dateTimeProvider;
         _questionAndAnswersRepository = questionAndAnswersRepository;
         _quizParticipationRepository = quizParticipationRepository;
+        _dateTimeProvider = dateTimeProvider;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<Unit> Handle(SubmitQuizAnswerCommand request, CancellationToken cancellationToken)
     {
-        await AddUserAnswers(request);
-
         var quizParticipation = await GetQuizParticipationById(request.QuizParticipationId);
+
+        if (quizParticipation.Quiz.OwnerId != _httpContextAccessor.GetUserId())
+            throw new BadRequestException("QuizParticipation Not found");
+
+        if (quizParticipation.Status == QuizParticipationStatus.Stopped)
+        {
+            return Unit.Value;
+        }
+
+        await AddUserAnswers(request);
 
         var quizResultData = await CalculateQuizResultData(quizParticipation);
 

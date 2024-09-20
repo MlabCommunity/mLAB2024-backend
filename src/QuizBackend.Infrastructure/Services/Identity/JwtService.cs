@@ -59,8 +59,6 @@ public class JwtService : IJwtService
     {
         ArgumentNullException.ThrowIfNull(user);
 
-        bool isGuest = user.IsGuest;
-
         var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.Sub, user.Id),

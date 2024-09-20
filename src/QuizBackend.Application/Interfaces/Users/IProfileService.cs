@@ -5,7 +5,7 @@ namespace QuizBackend.Application.Interfaces.Users;
 
 public interface IProfileService
 {
-    Task ConvertGuestToUser(RegisterRequestDto request);
+    Task<JwtAuthResultDto> ConvertGuestToUser(RegisterRequestDto request);
     Task<UserProfileDto> GetProfileAsync();
     Task<UserProfileDto> UpdateProfileAsync(UpdateUserProfileRequest request);
 }
