@@ -8,7 +8,6 @@ public static class ExceptionHandlersExtensions
     public static IServiceCollection AddExceptionHandlers(this IServiceCollection services)
     {
         services.AddExceptionHandler<NotFoundExceptionHandler>();
-        services.AddExceptionHandler<ForbidExceptionHandler>();
         services.AddExceptionHandler<BadRequestExceptionHandler>();
         services.AddExceptionHandler<GlobalExceptionHandler>();
 
