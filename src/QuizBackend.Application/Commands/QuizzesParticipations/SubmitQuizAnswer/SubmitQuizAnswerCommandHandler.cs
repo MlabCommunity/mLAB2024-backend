@@ -32,6 +32,7 @@ public class SubmitQuizAnswerCommandHandler : ICommandHandler<SubmitQuizAnswerCo
 
     public async Task<Unit> Handle(SubmitQuizAnswerCommand request, CancellationToken cancellationToken)
     {
+<<<<<<< HEAD
         var quizParticipation = await GetQuizParticipationById(request.QuizParticipationId);
 
         if (quizParticipation.Quiz.OwnerId != _httpContextAccessor.GetUserId())
@@ -42,11 +43,17 @@ public class SubmitQuizAnswerCommandHandler : ICommandHandler<SubmitQuizAnswerCo
             return Unit.Value;
         }
 
+=======
+>>>>>>> develop
         await AddUserAnswers(request);
+
+        var quizParticipation = await GetQuizParticipationById(request.QuizParticipationId);
 
         var quizResultData = await CalculateQuizResultData(quizParticipation);
 
-        await SaveOrUpdateQuizResult(quizParticipation.Id, quizResultData);
+        await SaveQuizResult(quizParticipation.Id, quizResultData);
+
+        await UpdateQuizParticipationStatusToFinished(quizParticipation);
 
         return Unit.Value;
     }
@@ -58,7 +65,7 @@ public class SubmitQuizAnswerCommandHandler : ICommandHandler<SubmitQuizAnswerCo
 
     private async Task<QuizParticipation> GetQuizParticipationById(Guid quizParticipationId)
     {
-        return await _quizParticipationRepository.GetQuizParticipation(quizParticipationId)
+        return await _quizParticipationRepository.GetByIdWithUserAnswers(quizParticipationId)
             ?? throw new NotFoundException(nameof(QuizParticipation), quizParticipationId.ToString());
     }
 
@@ -97,28 +104,10 @@ public class SubmitQuizAnswerCommandHandler : ICommandHandler<SubmitQuizAnswerCo
         return totalQuestions > 0 ? (double)correctAnswers / totalQuestions * 100 : 0;
     }
 
-    private async Task SaveOrUpdateQuizResult(Guid quizParticipationId, QuizResultData resultData)
+    private async Task SaveQuizResult(Guid quizParticipationId, QuizResultData resultData)
     {
-        var existingResult = await _quizResultRepository.GetByQuizParticipationId(quizParticipationId);
-
-        if (existingResult != null)
-        {
-            UpdateQuizResult(existingResult, resultData);
-            await _quizResultRepository.Update(existingResult);
-        }
-        else
-        {
-            var newQuizResult = CreateNewQuizResult(quizParticipationId, resultData);
-            await _quizResultRepository.Add(newQuizResult);
-        }
-    }
-
-    private void UpdateQuizResult(QuizResult existingResult, QuizResultData resultData)
-    {
-        existingResult.TotalQuestions = resultData.TotalQuestions;
-        existingResult.CorrectAnswers = resultData.CorrectAnswers;
-        existingResult.ScorePercentage = resultData.ScorePercentage;
-        existingResult.CalculatedAt = _dateTimeProvider.UtcNow;
+        var newQuizResult = CreateNewQuizResult(quizParticipationId, resultData);
+        await _quizResultRepository.Add(newQuizResult);
     }
 
     private QuizResult CreateNewQuizResult(Guid quizParticipationId, QuizResultData resultData)

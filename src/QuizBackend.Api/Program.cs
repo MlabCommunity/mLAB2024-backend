@@ -1,8 +1,10 @@
+using Microsoft.AspNetCore.Rewrite;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using QuizBackend.Api.Extensions;
 using QuizBackend.Application.Extensions;
 using QuizBackend.Infrastructure.Extensions;
+using System.Net.Mime;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -28,6 +30,12 @@ builder.Services.AddRouting(options =>
 });
 
 var app = builder.Build();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    ServeUnknownFileTypes = true,
+    DefaultContentType = MediaTypeNames.Application.Json
+});
 
 if (app.Environment.IsDevelopment())
 {

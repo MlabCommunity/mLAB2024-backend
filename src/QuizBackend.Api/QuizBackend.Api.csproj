@@ -25,4 +25,13 @@
     <ProjectReference Include="..\QuizBackend.Infrastructure\QuizBackend.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Content Update="wwwroot\.well-known\assetlinks.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Update="wwwroot\.well-known\apple-app-site-association">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
+
 </Project>

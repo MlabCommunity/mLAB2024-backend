@@ -15,12 +15,10 @@ public static class QuizResultExtension
     {
         return new QuizResultResponse(
             quizParticipation.Id,
-            new QuizDetailsDto(
+            new QuizDetails(
                 quizParticipation.Quiz.Id,
                 quizParticipation.Quiz.Title,
                 quizParticipation.Quiz.Description,
-                quizParticipation.Quiz.Availability,
-                quizParticipation.Quiz.Status,
                 questionsDto
             ),
             userAnswersDto,
