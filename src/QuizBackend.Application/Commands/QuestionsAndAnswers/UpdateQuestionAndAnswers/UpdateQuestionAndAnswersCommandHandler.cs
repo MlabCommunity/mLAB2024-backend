@@ -31,10 +31,7 @@ public class UpdateQuestionAndAnswersCommandHandler : ICommandHandler<UpdateQues
             ?? throw new NotFoundException(nameof(Question), request.Id.ToString());
 
         if (questionEntity.Quiz.OwnerId != userId)
-            throw new ForbidException(
-               "You do not have permission to update this resource",
-               resourceName: nameof(Question),
-               actionAttempted: "Update");
+            throw new BadRequestException("Question not found");
 
         request.UpdateEntity(questionEntity,_dateTimeProvider);
         await _questionAndAnswersRepository.Update(questionEntity);

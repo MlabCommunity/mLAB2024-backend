@@ -30,10 +30,7 @@ public class CreateQuestionAndAnswersCommandHandler : ICommandHandler<CreateQues
             ?? throw new NotFoundException(nameof(Quiz), request.QuizId.ToString());
 
         if (quiz.OwnerId != _httpContextAccessor.GetUserId())
-            throw new ForbidException(
-                "You do not have permission to create this resource",
-                resourceName: nameof(Question),
-                actionAttempted: "Create");
+            throw new BadRequestException("Quiz not found");
 
         var question = request.ToEntity(_dateTimeProvider);
         await _questionAndAnswersRepository.Add(question);

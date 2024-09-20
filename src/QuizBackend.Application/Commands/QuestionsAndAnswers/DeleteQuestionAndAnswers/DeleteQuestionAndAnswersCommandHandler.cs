@@ -26,10 +26,7 @@ public class DeleteQuestionAndAnswersCommandHandler : ICommandHandler<DeleteQues
             ?? throw new NotFoundException(nameof(Question), request.Id.ToString());
 
         if (questionEntity.Quiz.OwnerId != _httpContextAccessor.GetUserId())
-            throw new ForbidException(
-               "You do not have permission to delete this resource",
-               resourceName: nameof(Question),
-               actionAttempted: "Delete");
+            throw new BadRequestException("Question not found");
 
         await _questionAndAnswersRepository.Delete(questionEntity);
 

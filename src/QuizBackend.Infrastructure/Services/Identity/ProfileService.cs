@@ -16,12 +16,14 @@ public class ProfileService : IProfileService
     private readonly UserManager<User> _userManager;
     private readonly IRoleService _roleService;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IJwtService _jwtService;
 
-    public ProfileService(UserManager<User> userManager, IRoleService roleService, IHttpContextAccessor httpContextAccessor)
+    public ProfileService(UserManager<User> userManager, IRoleService roleService, IHttpContextAccessor httpContextAccessor, IJwtService jwtService)
     {
         _userManager = userManager;
         _roleService = roleService;
         _httpContextAccessor = httpContextAccessor;
+        _jwtService = jwtService;
     }
 
     public async Task<UserProfileDto> GetProfileAsync()
@@ -51,7 +53,7 @@ public class ProfileService : IProfileService
         return new UserProfileDto(user.Id, user.Email!, user.DisplayName!);
     }
 
-    public async Task ConvertGuestToUser(RegisterRequestDto request)
+    public async Task<JwtAuthResultDto> ConvertGuestToUser(RegisterRequestDto request)
     {
         var userId = _httpContextAccessor.GetUserId();
 
@@ -59,10 +61,22 @@ public class ProfileService : IProfileService
             ?? throw new NotFoundException(nameof(User), userId);
 
         user.Email = request.Email;
+    
+        await UpdateUser(user, request.Password);
         await _roleService.RemoveRole(user, AppRole.Guest);
         await _roleService.AssignRole(user, AppRole.User);
 
-        await UpdateUser(user, request.Password);
+        var claims = await _jwtService.GetClaimsAsync(user);
+        var accessToken = _jwtService.GenerateJwtToken(claims);
+
+        var refreshToken = await _jwtService.GenerateOrRetrieveRefreshTokenAsync(user.Id);
+
+        return new JwtAuthResultDto
+        {
+            AccessToken = accessToken,
+            RefreshToken = refreshToken
+        };
+
     }
     private async Task UpdateUser(User user, string newPassword)
     {
@@ -92,7 +106,7 @@ public class ProfileService : IProfileService
             .GroupBy(e => e.Code)
             .ToDictionary(
                 g => g.Key,
-                g => g.Select(e => e.Description).ToArray()
+                g => g.Select(e => e.Description).Distinct().ToArray()
             );
 
         throw new BadRequestException(message, errorDictionary);

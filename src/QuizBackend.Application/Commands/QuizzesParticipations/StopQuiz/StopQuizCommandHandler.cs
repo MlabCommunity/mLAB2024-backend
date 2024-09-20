@@ -1,4 +1,6 @@
 ﻿using MediatR;
+using Microsoft.AspNetCore.Http;
+using QuizBackend.Application.Extensions;
 using QuizBackend.Application.Interfaces;
 using QuizBackend.Application.Interfaces.Messaging;
 using QuizBackend.Domain.Entities;
@@ -12,11 +14,13 @@ public class StopQuizCommandHandler : ICommandHandler<StopQuizCommand, Unit>
 {
     private readonly IQuizParticipationRepository _quizParticipationRepository;
     private readonly IDateTimeProvider _dateTimeProvider;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public StopQuizCommandHandler(IQuizParticipationRepository quizParticipationRepository, IDateTimeProvider dateTimeProvider)
+    public StopQuizCommandHandler(IQuizParticipationRepository quizParticipationRepository, IDateTimeProvider dateTimeProvider, IHttpContextAccessor httpContextAccessor)
     {
         _quizParticipationRepository = quizParticipationRepository;
         _dateTimeProvider = dateTimeProvider;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<Unit> Handle(StopQuizCommand request, CancellationToken cancellationToken)
@@ -24,9 +28,14 @@ public class StopQuizCommandHandler : ICommandHandler<StopQuizCommand, Unit>
         var quizParticipation = await _quizParticipationRepository.GetQuizParticipation(request.QuizParticipationId)
             ?? throw new NotFoundException(nameof(QuizParticipation), request.QuizParticipationId.ToString());
 
+        if (quizParticipation.Quiz.OwnerId != _httpContextAccessor.GetUserId())
+        {
+            throw new BadRequestException("Quiz not found");
+        }
+
         if (quizParticipation.Status == QuizParticipationStatus.Stopped)
         {
-            throw new ApplicationException("Quiz has already been stopped");
+            throw new BadRequestException("Quiz has already been stopped");
         }
 
         quizParticipation.Status = QuizParticipationStatus.Stopped;

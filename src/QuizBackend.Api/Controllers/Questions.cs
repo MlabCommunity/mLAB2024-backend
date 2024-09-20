@@ -20,7 +20,6 @@ public class Questions : BaseController
     }
 
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [SwaggerOperation(Summary = "Create Questions with Answers. Returned result is Question Id")]
     public async Task<IActionResult> CreateQuestionAndAnswers(CreateQuestionAndAnswersCommand command)
     {
@@ -29,7 +28,6 @@ public class Questions : BaseController
     }
 
     [HttpPut]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [SwaggerOperation(Summary = "Update Questions with Answers")]
     public async Task<IActionResult> UpdateQuestionAndAnswers(UpdateQuestionAndAnswersCommand command)
     {
@@ -38,7 +36,6 @@ public class Questions : BaseController
     }
 
     [HttpDelete("{id}")]
-    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [SwaggerOperation(Summary = "Delete Question with Answers by Id.")]
     public async Task<IActionResult> DeleteQuestionAndAnswers([FromRoute] Guid id)
     {
