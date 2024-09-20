@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using QuizBackend.Application.Dtos.Auth;
 using QuizBackend.Application.Dtos.Profile;
 using QuizBackend.Application.Interfaces.Users;
+using QuizBackend.Infrastructure.Authorization;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace QuizBackend.Api.Controllers;
@@ -41,7 +42,7 @@ public class ProfileController : BaseController
     }
 
     [HttpPut("convert-guest")]
-    [Authorize(Policy = "Guest")]
+    [Authorize(Policy = PolicyNames.Guest)]
     [SwaggerOperation(Summary = "Converts the guest to user", Description = "Updates the guest account to user account with the provided data")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
