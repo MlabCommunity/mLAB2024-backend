@@ -18,6 +18,7 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace QuizBackend.Api.Controllers;
 
+[Authorize(Policy = PolicyNames.User)]
 public class QuizController : BaseController
 {
     private readonly IMediator _mediator;
@@ -37,7 +38,6 @@ public class QuizController : BaseController
     }
 
     [HttpGet("{Id}")]
-    [Authorize(Policy = "QuizOwner")]
     [SwaggerOperation(
         Summary = "Retrieves a quiz by its unique Id.",
         Description = "Fetches the details of a quiz specified by its unique Id.")]
@@ -77,7 +77,6 @@ public class QuizController : BaseController
     }
 
     [HttpPatch("{id}/status")]
-    [Authorize(Policy = PolicyNames.QuizOwner)]
     [SwaggerOperation(
         Summary = "Update the status of a quiz",
         Description = "Updates the status of a quiz based on its ID. The status can be 'Active' or 'Inactive'."
@@ -93,7 +92,6 @@ public class QuizController : BaseController
     }
 
     [HttpPatch("{id}/availability")]
-    [Authorize(Policy = PolicyNames.QuizOwner)]
     [SwaggerOperation(
        Summary = "Update the availability of a quiz",
        Description = "Updates the availability of a quiz based on its ID. The status can be 'Public' or 'Private'."
@@ -110,7 +108,6 @@ public class QuizController : BaseController
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Policy = PolicyNames.QuizOwner)]
     [SwaggerOperation(
        Summary = "Delete a quiz",
        Description = "Deletes a quiz based on its ID."
@@ -127,7 +124,6 @@ public class QuizController : BaseController
     }
 
     [HttpPut]
-    [Authorize(Policy = PolicyNames.QuizOwner)]
     [SwaggerOperation(Summary = "Update quiz title and description. In future this function will be update status and availability")]
     public async Task<IActionResult> UpdateQuiz(UpdateQuizCommand command)
     {

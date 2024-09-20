@@ -75,10 +75,13 @@ public class AuthService : IAuthService
         if (!result.Succeeded)
         {
             var errors = result.Errors
-                .Select(e => new ValidationFailure() { PropertyName = e.Code, ErrorMessage = e.Description })
-                .ToList();
+                .GroupBy(e => e.Code)
+                .ToDictionary(
+                    g => g.Key,
+                    g => g.Select(e => e.Description).ToArray()
+                );
 
-            throw new ValidationException("User creation failed", errors);
+            throw new BadRequestException("User creation failed", errors);
         }
 
         await _roleService.AssignRole(user, AppRole.User);
@@ -108,8 +111,14 @@ public class AuthService : IAuthService
        
         if (!result.Succeeded)
         {
-            throw new BadRequestException($"Unable to create guest user: {string.Join(", "
-                ,result.Errors.Select(e => e.Description))}");
+            var errors = result.Errors
+                 .GroupBy(e => e.Code)
+                 .ToDictionary(
+                     g => g.Key,
+                     g => g.Select(e => e.Description).ToArray()
+                 );
+
+            throw new BadRequestException("Unable to creaet a guest", errors);
         }
 
         await _roleService.AssignRole(guest, AppRole.Guest);

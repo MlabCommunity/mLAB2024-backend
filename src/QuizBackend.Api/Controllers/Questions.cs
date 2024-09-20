@@ -9,18 +9,18 @@ using Swashbuckle.AspNetCore.Annotations;
 
 namespace QuizBackend.Api.Controllers;
 
-[Authorize(Roles = "User")]
-public class QuestionsAndAnswers : BaseController
+[Authorize(Policy = PolicyNames.User)]
+public class Questions : BaseController
 {
     private readonly IMediator _mediator;
 
-    public QuestionsAndAnswers(IMediator mediator)
+    public Questions(IMediator mediator)
     {
         _mediator = mediator;
     }
 
     [HttpPost]
-    [Authorize(Policy = PolicyNames.QuestionOwner)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [SwaggerOperation(Summary = "Create Questions with Answers. Returned result is Question Id")]
     public async Task<IActionResult> CreateQuestionAndAnswers(CreateQuestionAndAnswersCommand command)
     {
@@ -29,7 +29,7 @@ public class QuestionsAndAnswers : BaseController
     }
 
     [HttpPut]
-    [Authorize(Policy = PolicyNames.QuestionOwner)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [SwaggerOperation(Summary = "Update Questions with Answers")]
     public async Task<IActionResult> UpdateQuestionAndAnswers(UpdateQuestionAndAnswersCommand command)
     {
@@ -38,7 +38,7 @@ public class QuestionsAndAnswers : BaseController
     }
 
     [HttpDelete("{id}")]
-    [Authorize(Policy = PolicyNames.QuestionOwner)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [SwaggerOperation(Summary = "Delete Question with Answers by Id.")]
     public async Task<IActionResult> DeleteQuestionAndAnswers([FromRoute] Guid id)
     {

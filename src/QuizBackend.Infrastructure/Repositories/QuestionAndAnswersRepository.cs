@@ -16,6 +16,8 @@ public class QuestionAndAnswersRepository : IQuestionAndAnswersRepository
     public async Task<Question?> GetById(Guid id)
     {
         return await _dbContext.Questions
+            .AsNoTracking()
+            .Include(q => q.Quiz)
             .Include(q => q.Answers)
             .FirstOrDefaultAsync(q => q.Id == id);
     }
@@ -32,14 +34,10 @@ public class QuestionAndAnswersRepository : IQuestionAndAnswersRepository
         await _dbContext.SaveChangesAsync();
     }
 
-    public async Task Delete(Guid id)
+    public async Task Delete(Question question)
     {
-        var entity = await _dbContext.Questions.FindAsync(id);
-        if (entity != null)
-        {
-            _dbContext.Questions.Remove(entity);
-            await _dbContext.SaveChangesAsync();
-        }
+       _dbContext.Questions.Remove(question);
+       await _dbContext.SaveChangesAsync();
     }
 
     public async Task<Answer> GetCorrectAnswerByQuestionId(Guid questionId)
@@ -51,6 +49,7 @@ public class QuestionAndAnswersRepository : IQuestionAndAnswersRepository
     public async Task<List<Answer>> GetAnswersByQuestionId(Guid questionId)
     {
         return await _dbContext.Answers
+            .AsNoTracking()
             .Where(a => a.QuestionId == questionId)
             .ToListAsync();
     }
@@ -58,16 +57,9 @@ public class QuestionAndAnswersRepository : IQuestionAndAnswersRepository
     public async Task<List<Question>> GetQuestionsByQuizId(Guid quizId)
     {
         return await _dbContext.Questions
+            .AsNoTracking()
             .Include(q => q.Answers)
             .Where(q => q.QuizId == quizId)
             .ToListAsync();
-    }
-
-    public async Task<Quiz?> GetQuizForQuestion(Guid questionId)
-    {
-        return await _dbContext.Questions
-            .Where(q => q.Id == questionId)
-            .Select(q => q.Quiz)
-            .FirstOrDefaultAsync();
     }
 }

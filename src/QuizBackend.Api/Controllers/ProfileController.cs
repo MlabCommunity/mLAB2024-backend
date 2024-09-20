@@ -3,7 +3,6 @@ using Microsoft.AspNetCore.Mvc;
 using QuizBackend.Application.Dtos.Auth;
 using QuizBackend.Application.Dtos.Profile;
 using QuizBackend.Application.Interfaces.Users;
-using QuizBackend.Infrastructure.Authorization;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace QuizBackend.Api.Controllers;
