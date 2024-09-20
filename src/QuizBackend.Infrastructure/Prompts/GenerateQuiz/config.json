@@ -25,6 +25,11 @@
       "name": "typeOfQuestions",
       "description": "Type of questions to generate.",
       "required": true
+    },
+    {
+      "name": "language",
+      "description": "language to generate.",
+      "required": true
     }
   ]
 }

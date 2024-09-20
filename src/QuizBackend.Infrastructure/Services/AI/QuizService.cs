@@ -25,14 +25,15 @@ public class QuizService : IQuizService
     {
         string questionTypeString = command.GetQuestionTypeString();
 
-        var kernelArguments = new KernelArguments
+        var kernelArgumentsToQuiz = new KernelArguments
         {
             {"content", command.Content },
             {"numberOfQuestions", command.NumberOfQuestions},
+            {"language", command.Language },
             {"typeOfQuestions", questionTypeString}
         };
 
-        var jsonResponse = await _kernelService.CreatePluginFromPromptDirectory("GenerateQuiz", kernelArguments);
+        var jsonResponse = await _kernelService.CreatePluginFromPromptDirectory("GenerateQuiz", kernelArgumentsToQuiz);
         var jsonStartIndex = jsonResponse.IndexOf('{');
         var jsonEndIndex = jsonResponse.LastIndexOf('}') + 1;
         var validJson = jsonResponse.Substring(jsonStartIndex, jsonEndIndex - jsonStartIndex);
