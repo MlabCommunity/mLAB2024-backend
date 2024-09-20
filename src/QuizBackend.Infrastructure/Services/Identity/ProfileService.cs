@@ -66,6 +66,8 @@ public class ProfileService : IProfileService
         await _roleService.RemoveRole(user, AppRole.Guest);
         await _roleService.AssignRole(user, AppRole.User);
 
+        await _jwtService.InvalidateRefreshTokenAsync(userId);
+
         var claims = await _jwtService.GetClaimsAsync(user);
         var accessToken = _jwtService.GenerateJwtToken(claims);
 
@@ -76,7 +78,6 @@ public class ProfileService : IProfileService
             AccessToken = accessToken,
             RefreshToken = refreshToken
         };
-
     }
     private async Task UpdateUser(User user, string newPassword)
     {

@@ -32,7 +32,6 @@ public class SubmitQuizAnswerCommandHandler : ICommandHandler<SubmitQuizAnswerCo
 
     public async Task<Unit> Handle(SubmitQuizAnswerCommand request, CancellationToken cancellationToken)
     {
-<<<<<<< HEAD
         var quizParticipation = await GetQuizParticipationById(request.QuizParticipationId);
 
         if (quizParticipation.Quiz.OwnerId != _httpContextAccessor.GetUserId())
@@ -43,11 +42,7 @@ public class SubmitQuizAnswerCommandHandler : ICommandHandler<SubmitQuizAnswerCo
             return Unit.Value;
         }
 
-=======
->>>>>>> develop
         await AddUserAnswers(request);
-
-        var quizParticipation = await GetQuizParticipationById(request.QuizParticipationId);
 
         var quizResultData = await CalculateQuizResultData(quizParticipation);
 
