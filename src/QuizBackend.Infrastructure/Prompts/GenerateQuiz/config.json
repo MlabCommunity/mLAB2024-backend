@@ -1,10 +1,10 @@
 ﻿{
   "schema": 1,
   "type": "completion",
-  "description": "Generate quiz based on the given user topic, number of questions, and type of answers. Respond only with JSON.",
+  "description": "Generate quiz based on the given user content, number of questions, and type of answers. Respond only with JSON.",
   "execution_settings": {
     "default": {
-      "temperature": 0.8,
+      "temperature": 0.4,
       "response_format": {
         "type": "json_object"
       }
@@ -13,17 +13,22 @@
   "input_variables": [
     {
       "name": "content",
-      "description": "Information from attachments provided by user",
+      "description": "Information from attachment provided by user.",
       "required": true
     },
     {
       "name": "numberOfQuestions",
-      "description": "number of questions to generate",
+      "description": "Number of questions to generate.",
       "required": true
     },
     {
       "name": "typeOfQuestions",
-      "description": "The quiz should generate questions corresponding to the types specified in this array will determine the structure and format of the questions created.",
+      "description": "Type of questions to generate.",
+      "required": true
+    },
+    {
+      "name": "language",
+      "description": "language to generate.",
       "required": true
     }
   ]
