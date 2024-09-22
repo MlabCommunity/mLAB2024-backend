@@ -1,0 +1,25 @@
+{
+  "schema": 1,
+  "type": "completion",
+  "description": "Regenerate quiz based on history. Respond only with JSON.",
+  "execution_settings": {
+    "default": {
+      "temperature": 0.4,
+      "response_format": {
+        "type": "json_object"
+      }
+    }
+  },
+  "input_variables": [
+    {
+      "name": "content",
+      "description": "The initial content of the quiz.",
+      "required": true
+    },
+    {
+      "name": "quizResponse",
+      "description": "The previos generated quiz response.",
+      "required": true
+    }
+  ]
+}

@@ -2,4 +2,4 @@
 
 namespace QuizBackend.Application.Queries.QuizzesParticipations.GetUserAnswer;
 
-public record GetUserQuizHistoryQuery(string ParticipantId) : IQuery<List<QuizParticipationHistoryResponse>>;
+public record GetUserQuizHistoryQuery() : IQuery<List<QuizParticipationHistoryResponse>>;

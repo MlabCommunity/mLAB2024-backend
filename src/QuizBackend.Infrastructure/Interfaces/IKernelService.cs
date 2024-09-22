@@ -5,5 +5,6 @@ namespace QuizBackend.Infrastructure.Interfaces;
 public interface IKernelService
 {
     Task<string> InvokePromptAsync(string prompt);
-    Task<string> CreatePluginFromPromptDirectory(string promptKey, KernelArguments kernelArguments);
+    Task<string> InvokeAsync(KernelFunction kernelFunction, KernelArguments kernelArguments);
+    KernelPlugin ImportAllPlugins();
 }

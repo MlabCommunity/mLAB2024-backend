@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 using QuizBackend.Application.Commands.Quizzes.CreateQuiz;
 using QuizBackend.Application.Commands.Quizzes.DeleteQuiz;
 using QuizBackend.Application.Commands.Quizzes.GenerateQuiz;
+using QuizBackend.Application.Commands.Quizzes.RegenerateQuiz;
 using QuizBackend.Application.Commands.Quizzes.UpdateAvailability;
 using QuizBackend.Application.Commands.Quizzes.UpdateQuiz;
 using QuizBackend.Application.Commands.Quizzes.UpdateStatusQuiz;
@@ -29,7 +30,7 @@ public class QuizController : BaseController
     }
 
     [HttpPost("generate-quiz")]
-    [SwaggerOperation(Summary = "Generating Quiz with questions and anserws", Description = "QuestionType: MultipleChoices = 0, TrueFalse = 1")]
+    [SwaggerOperation(Summary = "Generating Quiz with questions and anserws", Description = "QuestionType: SingleChoice, TrueFalse")]
     [ProducesResponseType(typeof(GenerateQuizResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GenerateQuizFromPromptTemplateAsync([FromForm] GenerateQuizCommand command)
     {
@@ -129,5 +130,15 @@ public class QuizController : BaseController
     {
         await _mediator.Send(command);
         return NoContent();
+    }
+
+    [HttpPost("regenerate-quiz")]
+    [SwaggerOperation(Summary = "Regenerating Quiz with questions and anserws")]
+    [ProducesResponseType(typeof(GenerateQuizResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> RegenerateQuizFromPromptTemplateAsync()
+    {
+        var command = new RegenerateQuizCommand();
+        var result = await _mediator.Send(command);
+        return Ok(result);
     }
 }

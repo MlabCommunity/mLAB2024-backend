@@ -1,0 +1,4 @@
+Using the following content: {{$content}}.
+And previous generated quiz {{$quizResponse}}.
+Generate a new quiz that align with the provided content and previous quiz.
+Make sure the questions are different from thos ine the previous quiz repsonse, while keeping the same overall structure and question types.

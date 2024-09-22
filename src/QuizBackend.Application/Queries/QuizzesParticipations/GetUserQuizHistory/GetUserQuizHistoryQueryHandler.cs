@@ -1,4 +1,6 @@
-﻿using QuizBackend.Application.Dtos.Quizzes;
+﻿using Microsoft.AspNetCore.Http;
+using QuizBackend.Application.Dtos.Quizzes;
+using QuizBackend.Application.Extensions;
 using QuizBackend.Application.Interfaces.Messaging;
 using QuizBackend.Domain.Enums;
 using QuizBackend.Domain.Repositories;
@@ -22,16 +24,19 @@ public class GetUserQuizHistoryQueryHandler : IQueryHandler<GetUserQuizHistoryQu
 {
     private readonly IQuizParticipationRepository _quizParticipationRepository;
     private readonly IQuestionAndAnswersRepository _questionAndAnswersRepository;
+    private readonly IHttpContextAccessor _httpContextAccessor;
 
-    public GetUserQuizHistoryQueryHandler(IQuizParticipationRepository quizParticipationRepository, IQuestionAndAnswersRepository questionAndAnswersRepository)
+    public GetUserQuizHistoryQueryHandler(IQuizParticipationRepository quizParticipationRepository, IQuestionAndAnswersRepository questionAndAnswersRepository, IHttpContextAccessor httpContextAccessor)
     {
         _quizParticipationRepository = quizParticipationRepository;
         _questionAndAnswersRepository = questionAndAnswersRepository;
+        _httpContextAccessor = httpContextAccessor;
     }
 
     public async Task<List<QuizParticipationHistoryResponse>> Handle(GetUserQuizHistoryQuery request, CancellationToken cancellationToken)
     {
-        var quizParticipations = await _quizParticipationRepository.GetByParticipantId(request.ParticipantId);
+        var userId = _httpContextAccessor.GetUserId();
+        var quizParticipations = await _quizParticipationRepository.GetByParticipantId(userId);
 
         var result = new List<QuizParticipationHistoryResponse>();
 

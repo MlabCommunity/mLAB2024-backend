@@ -10,6 +10,5 @@ public static class AiServiceExtension
     public static void AddAiServiceExtension(this IServiceCollection services)
     {
         services.AddScoped<IQuizService, QuizService>();
-        services.AddScoped<IChatHistoryService, ChatHistoryService>();
     }
 }
