@@ -42,22 +42,14 @@ public class SubmitQuizAnswerCommandHandler : ICommandHandler<SubmitQuizAnswerCo
             throw new BadRequestException("QuizParticipation has been stopped or finished");
         }
 
-        var questions = await _questionAndAnswersRepository.GetQuestionsByQuizId(quizParticipation.QuizId);
+        bool exists = await _questionAndAnswersRepository.IsQuestionsAndAnswersExist(
+            quizParticipation.QuizId,
+            request.QuestionsId,
+            request.AnswersId);
 
-        var questionIdsInQuiz = new HashSet<Guid>(questions.Select(q => q.Id));
-        var answersIdsInQuiz = new HashSet<Guid>(questions.SelectMany(q => q.Answers.Select(a => a.Id)));
-
-        var questionsIds = request.QuestionsId;
-        var answersIds = request.AnswersId;
-
-        if (!questionsIds.All(qId => questionIdsInQuiz.Contains(qId)))
+        if (!exists)
         {
-            throw new BadRequestException("One or more questions do not exist in the current quiz.");
-        }
-
-        if (!answersIds.All(aId => answersIdsInQuiz.Contains(aId)))
-        {
-            throw new BadRequestException("One or more answers do not exist in the current quiz.");
+            throw new BadRequestException("One or more questions or answers do not exist in the current quiz.");
         }
 
         await AddUserAnswers(request);

@@ -30,7 +30,7 @@ public class StopQuizCommandHandler : ICommandHandler<StopQuizCommand, Unit>
 
         if (quizParticipation.ParticipantId != _httpContextAccessor.GetUserId())
         {
-            throw new BadRequestException("Quiz not found");
+            throw new BadRequestException("QuizParticipation Not found");
         }
 
         if (quizParticipation.Status == QuizParticipationStatus.Stopped)

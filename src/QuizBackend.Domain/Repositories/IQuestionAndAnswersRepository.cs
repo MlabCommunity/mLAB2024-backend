@@ -11,4 +11,5 @@ public interface IQuestionAndAnswersRepository
     Task<Answer> GetCorrectAnswerByQuestionId(Guid questionId);
     Task<List<Answer>> GetAnswersByQuestionId(Guid questionId);
     Task<List<Question>> GetQuestionsByQuizId(Guid quizId);
+    Task<bool> IsQuestionsAndAnswersExist(Guid quizId, List<Guid> questionsIds, List<Guid> answersIds);
 }

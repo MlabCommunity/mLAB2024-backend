@@ -62,4 +62,15 @@ public class QuestionAndAnswersRepository : IQuestionAndAnswersRepository
             .Where(q => q.QuizId == quizId)
             .ToListAsync();
     }
+
+    public async Task<bool> IsQuestionsAndAnswersExist(Guid quizId, List<Guid> questionsIds, List<Guid> answersIds)
+    {
+        var questions = await GetQuestionsByQuizId(quizId);
+
+        var questionIdsInQuiz = new HashSet<Guid>(questions.Select(q => q.Id));
+        var answersIdsInQuiz = new HashSet<Guid>(questions.SelectMany(q => q.Answers.Select(a => a.Id)));
+
+        return questionsIds.All(qId => questionIdsInQuiz.Contains(qId)) &&
+               answersIds.All(aId => answersIdsInQuiz.Contains(aId));
+    }
 }
