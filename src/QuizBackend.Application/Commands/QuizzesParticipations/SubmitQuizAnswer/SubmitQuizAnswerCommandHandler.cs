@@ -34,20 +34,35 @@ public class SubmitQuizAnswerCommandHandler : ICommandHandler<SubmitQuizAnswerCo
     {
         var quizParticipation = await GetQuizParticipationById(request.QuizParticipationId);
 
-        if (quizParticipation.Quiz.OwnerId != _httpContextAccessor.GetUserId())
+        if (quizParticipation.ParticipantId != _httpContextAccessor.GetUserId())
             throw new BadRequestException("QuizParticipation Not found");
 
-        if (quizParticipation.Status == QuizParticipationStatus.Stopped)
+        if (quizParticipation.Status == QuizParticipationStatus.Stopped || quizParticipation.Status == QuizParticipationStatus.Finished)
         {
-            return Unit.Value;
+            throw new BadRequestException("QuizParticipation has been stopped or finished");
+        }
+
+        var questions = await _questionAndAnswersRepository.GetQuestionsByQuizId(quizParticipation.QuizId);
+
+        var questionIdsInQuiz = new HashSet<Guid>(questions.Select(q => q.Id));
+        var answersIdsInQuiz = new HashSet<Guid>(questions.SelectMany(q => q.Answers.Select(a => a.Id)));
+
+        var questionsIds = request.QuestionsId;
+        var answersIds = request.AnswersId;
+
+        if (!questionsIds.All(qId => questionIdsInQuiz.Contains(qId)))
+        {
+            throw new BadRequestException("One or more questions do not exist in the current quiz.");
+        }
+
+        if (!answersIds.All(aId => answersIdsInQuiz.Contains(aId)))
+        {
+            throw new BadRequestException("One or more answers do not exist in the current quiz.");
         }
 
         await AddUserAnswers(request);
-
         var quizResultData = await CalculateQuizResultData(quizParticipation);
-
         await SaveQuizResult(quizParticipation.Id, quizResultData);
-
         await UpdateQuizParticipationStatusToFinished(quizParticipation);
 
         return Unit.Value;

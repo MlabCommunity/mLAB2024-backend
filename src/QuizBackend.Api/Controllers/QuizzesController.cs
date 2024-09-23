@@ -19,11 +19,11 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace QuizBackend.Api.Controllers;
 
 [Authorize(Policy = PolicyNames.User)]
-public class QuizController : BaseController
+public class QuizzesController : BaseController
 {
     private readonly IMediator _mediator;
 
-    public QuizController(IMediator mediator)
+    public QuizzesController(IMediator mediator)
     {
         _mediator = mediator;
     }
@@ -67,7 +67,7 @@ public class QuizController : BaseController
         return Ok(result);
     }
 
-    [HttpPost("create-quiz")]
+    [HttpPost]
     [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> CreateQuiz(CreateQuizCommand command)
