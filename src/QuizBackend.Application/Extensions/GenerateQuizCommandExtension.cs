@@ -25,4 +25,18 @@ public static class GenerateQuizCommandExtension
 
         throw new ArgumentException("Invalid question type list. Must contain at least one valid question type.");
     }
+
+    public static string GetSelectedLanguageString(this GenerateQuizCommand command)
+    {
+        return command.Language switch
+        {
+            QuizLanguage.English => "English",
+            QuizLanguage.Polish => "Polish",
+            QuizLanguage.German => "German",
+            QuizLanguage.Spanish => "Spanish",
+            QuizLanguage.French => "French",
+            QuizLanguage.Italian => "Italian",
+            _ => throw new ArgumentException("Invalid language selected. Must select one valid language."),
+        };
+    }
 }

@@ -28,7 +28,7 @@
     },
     {
       "name": "language",
-      "description": "language to generate.",
+      "description": "The language in which the quiz should be.",
       "required": true
     }
   ]

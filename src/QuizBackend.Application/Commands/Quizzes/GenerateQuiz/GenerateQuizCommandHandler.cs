@@ -1,11 +1,9 @@
-﻿using QuizBackend.Application.Interfaces;
+﻿using QuizBackend.Application.Dtos.Quizzes;
+using QuizBackend.Application.Interfaces;
 using QuizBackend.Application.Interfaces.Messaging;
 
 namespace QuizBackend.Application.Commands.Quizzes.GenerateQuiz;
 
-public record GenerateQuizResponse(string Title, string Description, List<GenerateQuestion> GenerateQuestions);
-public record GenerateQuestion(string Title, List<GenerateAnswer> GenerateAnswers);
-public record GenerateAnswer(string Content, bool IsCorrect);
 public class GenerateQuizCommandHandler : ICommandHandler<GenerateQuizCommand, GenerateQuizResponse>
 {
     private readonly IQuizService _quizService;
@@ -34,7 +32,7 @@ public class GenerateQuizCommandHandler : ICommandHandler<GenerateQuizCommand, G
         }
     
         var updatedCommand = command with { Content = content };
-        var quizDto = await _quizService.GenerateQuizFromPromptTemplateAsync(updatedCommand);
+        var quizDto = await _quizService.GenerateQuizFromPromptTemplate(updatedCommand);
        
         return quizDto;
     }

@@ -11,8 +11,13 @@
   },
   "input_variables": [
     {
-      "name": "content",
+      "name": "text",
       "description": "Text to summarize.",
+      "required": true
+    },
+    {
+      "name": "language",
+      "description": "the language in which the summary should be",
       "required": true
     }
   ]

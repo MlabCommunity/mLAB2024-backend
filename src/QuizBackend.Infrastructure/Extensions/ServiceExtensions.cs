@@ -34,6 +34,7 @@ public static class ServiceExtensions
         services.AddAiClientFactoryExtension(configuration);
         services.AddKernelExtension();
         services.AddAiServiceExtension();
+        services.AddMemoryCache();
 
         services.AddRepositories();
         services.AddDateTimeProvider();
