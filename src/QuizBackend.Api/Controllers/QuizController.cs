@@ -13,11 +13,12 @@ using QuizBackend.Application.Dtos.Quizzes;
 using QuizBackend.Application.Queries.Quizzes.GetQuiz;
 using QuizBackend.Application.Queries.Quizzes.GetQuizzes;
 using QuizBackend.Domain.Enums;
+using QuizBackend.Infrastructure.Authorization;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace QuizBackend.Api.Controllers;
 
-[Authorize]
+[Authorize(Policy = PolicyNames.User)]
 public class QuizController : BaseController
 {
     private readonly IMediator _mediator;

@@ -1,5 +1,4 @@
-﻿using QuizBackend.Application.Commands.QuizzesParticipations.JoinQuiz;
-using QuizBackend.Application.Dtos.Auth;
+﻿using QuizBackend.Application.Dtos.Auth;
 
 namespace QuizBackend.Application.Interfaces.Users;
 

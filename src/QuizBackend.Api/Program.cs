@@ -50,5 +50,6 @@ app.UseCors("AllowSpecificOrigins");
 app.MapControllers();
 
 await app.EnsureDatabaseMigratedAsync();
+await app.Services.Seed();
 
 app.Run();
