@@ -68,8 +68,12 @@ public class QuizzesController : BaseController
     }
 
     [HttpPost]
-    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+    [SwaggerOperation(
+        Summary = "Creates a new quiz.",
+        Description = "Create a new quiz based on generated quiz")]
+    [ProducesResponseType(typeof(CreateQuizResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> CreateQuiz(CreateQuizCommand command)
     {
         var quizId = await _mediator.Send(command);
