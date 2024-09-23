@@ -33,10 +33,10 @@
 
   <ItemGroup>
     <None Update="Prompts\GenerateQuiz\config.json">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Prompts\GenerateQuiz\skprompt.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Update="Prompts\RegenerateQuiz\config.json">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>

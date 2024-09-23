@@ -32,7 +32,7 @@ public class ProfileService : IProfileService
         var currentUser = await _userManager.FindByIdAsync(id)
             ?? throw new NotFoundException(nameof(User), id);
 
-        var userProfileDto = new UserProfileDto(currentUser.Id, currentUser.Email!, currentUser.DisplayName!);
+        var userProfileDto = new UserProfileDto(currentUser.Id, currentUser.Email!, currentUser.DisplayName!, currentUser.ImageUrl!);
         return userProfileDto;
     }
 
@@ -43,6 +43,7 @@ public class ProfileService : IProfileService
             ?? throw new NotFoundException(nameof(User), id);
 
         user.DisplayName = request.DisplayName;
+        user.ImageUrl = request.ImageUrl;
         var result = await _userManager.UpdateAsync(user);
 
         if (!result.Succeeded)
@@ -50,7 +51,7 @@ public class ProfileService : IProfileService
             HandleIdentityErrors(result.Errors, "Failed to update user");
         }
 
-        return new UserProfileDto(user.Id, user.Email!, user.DisplayName!);
+        return new UserProfileDto(user.Id, user.Email!, user.DisplayName!, user.ImageUrl!);
     }
 
     public async Task<JwtAuthResultDto> ConvertGuestToUser(RegisterRequestDto request)

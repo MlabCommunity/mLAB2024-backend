@@ -24,6 +24,7 @@ Important rules based on "{{$typeOfQuestions}}":
 **IMPORTANT** REMEMBER:  
 - **Do not mix question types** unless specifically instructed with "SingleChoice+TrueFalse".
 - Always generate **four answers** for SingleChoice and **two answers** for TrueFalse.
+- Enumerate from 1 to {{$numberOfQuestions}} to generate exactly quantity of questions.
 
 Content and Diversity:
 - Ensure that questions accurately reflect the core content and cover **different subtopics**.
@@ -41,7 +42,7 @@ Here is example JSON format.
   "Description": "Super creative Brief description of the quiz content",
   "GenerateQuestions": [
     {
-      "Title": "1.[Sample Question 1]",
+      "Title": "1. [Sample Question 1]",
       "GenerateAnswers": [
         {
           "Content": "Answer 1 for Question 1",

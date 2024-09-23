@@ -26,9 +26,9 @@ public class GenerateQuizCommandValidator : AbstractValidator<GenerateQuizComman
         RuleFor(x => x.NumberOfQuestions)
             .GreaterThan(0).WithMessage("Number of questions must be greater than 0");
 
-        //RuleFor(x => x.QuestionTypes)
-        //    .Must(ContainValidQuestionTypes).WithMessage("Type of questions must be either 'MultipleChoice' or 'TrueFalse'")
-        //    .When(x => x.QuestionTypes != null);
+        RuleFor(x => x.QuestionTypes)
+            .Must(ContainValidQuestionTypes).WithMessage("Type of questions must be either 'MultipleChoice' or 'TrueFalse'")
+            .When(x => x.QuestionTypes != null);
 
         RuleFor(x => x.Attachments)
             .Must(BeValidFiles).WithMessage($"Invalid file format or size or too many uploaded files {MaxFilesCount}")

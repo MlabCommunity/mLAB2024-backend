@@ -28,6 +28,11 @@ public class QuizService : IQuizService
     }
     public async Task<GenerateQuizResponse> GenerateQuizFromPromptTemplate(GenerateQuizCommand command)
     {
+        if (_memoryCache.TryGetValue(GetCacheKey(), out _))
+        {
+            _memoryCache.Remove(GetCacheKey());
+        }
+
         var prompts = _kernelService.ImportAllPlugins();
         var content = await _kernelService.InvokeAsync(prompts["SummaryContent"], new() { { "text", command.Content },
             {"language", command.GetSelectedLanguageString()} }); 
@@ -51,7 +56,9 @@ public class QuizService : IQuizService
         _memoryCache.Set(GetCacheKey(), new QuizCacheData
         {
             Content = content,
-            QuizResponse = validJson
+            QuizResponse = validJson,
+            NumberOfQuestions = command.NumberOfQuestions,
+            QuestionTypes = command.GetQuestionTypeString()
         },TimeSpan.FromMinutes(30));
 
         return quizDto;
@@ -61,15 +68,14 @@ public class QuizService : IQuizService
     {
         if (_memoryCache.TryGetValue(GetCacheKey(), out QuizCacheData quizData))
         {
-            var content = quizData.Content;
-            var quizResponse = quizData.QuizResponse;
-
             var prompts = _kernelService.ImportAllPlugins();
 
             var jsonResponse = await _kernelService.InvokeAsync(prompts["RegenerateQuiz"], new()
         {
-            { "content", content },
-            { "quizResponse", quizResponse }
+            { "content", quizData.Content },
+            { "quizResponse", quizData.QuizResponse },
+            { "numberOfQuestions", quizData.NumberOfQuestions},
+            { "questionTypes", quizData.QuestionTypes }
         });
 
             var validJson = ValidJson(jsonResponse);
@@ -103,6 +109,4 @@ public class QuizService : IQuizService
 
         return cacheKey;
     }
-
-
 }
