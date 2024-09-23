@@ -17,13 +17,15 @@ public class ProfileService : IProfileService
     private readonly IRoleService _roleService;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IJwtService _jwtService;
+    private readonly SignInManager<User> _signInManager;
 
-    public ProfileService(UserManager<User> userManager, IRoleService roleService, IHttpContextAccessor httpContextAccessor, IJwtService jwtService)
+    public ProfileService(UserManager<User> userManager, IRoleService roleService, IHttpContextAccessor httpContextAccessor, IJwtService jwtService, SignInManager<User> signInManager)
     {
         _userManager = userManager;
         _roleService = roleService;
         _httpContextAccessor = httpContextAccessor;
         _jwtService = jwtService;
+        _signInManager = signInManager;
     }
 
     public async Task<UserProfileDto> GetProfileAsync()
@@ -68,6 +70,7 @@ public class ProfileService : IProfileService
         await _roleService.AssignRole(user, AppRole.User);
 
         await _jwtService.InvalidateRefreshTokenAsync(userId);
+        await _signInManager.SignOutAsync();
 
         var claims = await _jwtService.GetClaimsAsync(user);
         var accessToken = _jwtService.GenerateJwtToken(claims);
