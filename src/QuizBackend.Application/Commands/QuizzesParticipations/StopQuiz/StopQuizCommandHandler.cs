@@ -28,9 +28,9 @@ public class StopQuizCommandHandler : ICommandHandler<StopQuizCommand, Unit>
         var quizParticipation = await _quizParticipationRepository.GetQuizParticipation(request.QuizParticipationId)
             ?? throw new NotFoundException(nameof(QuizParticipation), request.QuizParticipationId.ToString());
 
-        if (quizParticipation.Quiz.OwnerId != _httpContextAccessor.GetUserId())
+        if (quizParticipation.ParticipantId != _httpContextAccessor.GetUserId())
         {
-            throw new BadRequestException("Quiz not found");
+            throw new BadRequestException("QuizParticipation Not found");
         }
 
         if (quizParticipation.Status == QuizParticipationStatus.Stopped)

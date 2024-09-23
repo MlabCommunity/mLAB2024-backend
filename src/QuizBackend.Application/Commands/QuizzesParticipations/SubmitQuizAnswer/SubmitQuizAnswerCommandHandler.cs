@@ -34,20 +34,27 @@ public class SubmitQuizAnswerCommandHandler : ICommandHandler<SubmitQuizAnswerCo
     {
         var quizParticipation = await GetQuizParticipationById(request.QuizParticipationId);
 
-        if (quizParticipation.Quiz.OwnerId != _httpContextAccessor.GetUserId())
+        if (quizParticipation.ParticipantId != _httpContextAccessor.GetUserId())
             throw new BadRequestException("QuizParticipation Not found");
 
-        if (quizParticipation.Status == QuizParticipationStatus.Stopped)
+        if (quizParticipation.Status == QuizParticipationStatus.Stopped || quizParticipation.Status == QuizParticipationStatus.Finished)
         {
-            return Unit.Value;
+            throw new BadRequestException("QuizParticipation has been stopped or finished");
+        }
+
+        bool exists = await _questionAndAnswersRepository.IsQuestionsAndAnswersExist(
+            quizParticipation.QuizId,
+            request.QuestionsId,
+            request.AnswersId);
+
+        if (!exists)
+        {
+            throw new BadRequestException("One or more questions or answers do not exist in the current quiz.");
         }
 
         await AddUserAnswers(request);
-
         var quizResultData = await CalculateQuizResultData(quizParticipation);
-
         await SaveQuizResult(quizParticipation.Id, quizResultData);
-
         await UpdateQuizParticipationStatusToFinished(quizParticipation);
 
         return Unit.Value;
