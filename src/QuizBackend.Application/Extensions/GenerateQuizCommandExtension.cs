@@ -1,5 +1,6 @@
 ﻿using QuizBackend.Application.Commands.Quizzes.GenerateQuiz;
 using QuizBackend.Domain.Enums;
+using QuizBackend.Domain.Exceptions;
 
 namespace QuizBackend.Application.Extensions;
 
@@ -23,6 +24,20 @@ public static class GenerateQuizCommandExtension
             return "TrueFalse";
         }
 
-        throw new ArgumentException("Invalid question type list. Must contain at least one valid question type.");
+        throw new BadRequestException("Invalid question type list. Must contain at least one valid question type.");
+    }
+
+    public static string GetSelectedLanguageString(this GenerateQuizCommand command)
+    {
+        return command.Language switch
+        {
+            QuizLanguage.English => "English",
+            QuizLanguage.Polish => "Polish",
+            QuizLanguage.German => "German",
+            QuizLanguage.Spanish => "Spanish",
+            QuizLanguage.French => "French",
+            QuizLanguage.Italian => "Italian",
+            _ => throw new BadRequestException("Invalid language selected. Must select one valid language."),
+        };
     }
 }
