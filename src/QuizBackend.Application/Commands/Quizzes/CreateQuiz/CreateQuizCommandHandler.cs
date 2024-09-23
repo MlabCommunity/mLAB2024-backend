@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Caching.Memory;
 using QuizBackend.Application.Extensions;
 using QuizBackend.Application.Extensions.Mappings.Quizzes;
 using QuizBackend.Application.Interfaces;
@@ -16,18 +17,21 @@ public class CreateQuizCommandHandler : ICommandHandler<CreateQuizCommand, Creat
     private readonly IQuizRepository _quizRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IDateTimeProvider _dateTimeProvider;
+    private readonly IMemoryCache _memoryCache;
 
-    public CreateQuizCommandHandler(IQuizRepository quizRepository, IHttpContextAccessor httpContextAccessor, IDateTimeProvider dateTimeProvider)
+    public CreateQuizCommandHandler(IQuizRepository quizRepository, IHttpContextAccessor httpContextAccessor, IDateTimeProvider dateTimeProvider, IMemoryCache memoryCache)
     {
         _quizRepository = quizRepository;
         _httpContextAccessor = httpContextAccessor;
         _dateTimeProvider = dateTimeProvider;
+        _memoryCache = memoryCache;
     }
 
     public async Task<CreateQuizResponse> Handle(CreateQuizCommand request, CancellationToken cancellationToken)
     {
         var ownerId = _httpContextAccessor.GetUserId();
-
+        var cacheKey = "QuizData_" + ownerId;
+        _memoryCache.Remove(cacheKey);
         var httpRequest = _httpContextAccessor.HttpContext?.Request;
 
         string joinCode = GenerateJoinCode();

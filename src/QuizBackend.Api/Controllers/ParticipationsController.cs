@@ -84,10 +84,12 @@ public class ParticipationsController : BaseController
         return NoContent();
     }
 
-    [HttpGet("{participantId}/history")]
-    public async Task<IActionResult> GetUserQuizHistory(string participantId)
+    [HttpGet("history")]
+    [SwaggerOperation(Summary = "Get User particpation history")]
+    [ProducesResponseType(typeof(QuizParticipationHistoryResponse), StatusCodes.Status200OK)]
+    public async Task<IActionResult> GetUserQuizHistory()
     {
-        var result = await _mediator.Send(new GetUserQuizHistoryQuery(participantId));
+        var result = await _mediator.Send(new GetUserQuizHistoryQuery());
         return Ok(result);
     }
 }

@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "type": "completion",
+  "description": "Regenerate quiz based on history. Respond only with JSON.",
+  "execution_settings": {
+    "default": {
+      "temperature": 0.8,
+      "response_format": {
+        "type": "json_object"
+      }
+    }
+  },
+  "input_variables": [
+    {
+      "name": "content",
+      "description": "The initial content of the quiz.",
+      "required": true
+    },
+    {
+      "name": "quizResponse",
+      "description": "The previous generated quiz response.",
+      "required": true
+    },
+    {
+      "name": "numberOfQuestions",
+      "description": "Number of Questions to regenerate.",
+      "required": true
+    },
+    {
+      "name": "questionTypes",
+      "description": "Type of questions to regenerate.",
+      "required": true
+    }
+  ]
+}
