@@ -45,6 +45,11 @@ public class ProfileService : IProfileService
             ?? throw new NotFoundException(nameof(User), id);
 
         user.DisplayName = request.DisplayName;
+        if (!string.IsNullOrEmpty(request.ImageUrl) && !IsValidUrl(request.ImageUrl))
+        {
+            throw new BadRequestException("Invalid URL format for ImageUrl");
+        }
+
         user.ImageUrl = request.ImageUrl;
         var result = await _userManager.UpdateAsync(user);
 
@@ -115,5 +120,11 @@ public class ProfileService : IProfileService
             );
 
         throw new BadRequestException(message, errorDictionary);
+    }
+
+    private bool IsValidUrl(string url)
+    {
+        return Uri.TryCreate(url, UriKind.Absolute, out var uriResult)
+               && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
     }
 }
