@@ -10,11 +10,11 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace QuizBackend.Api.Controllers;
 
 [Authorize(Policy = PolicyNames.User)]
-public class Questions : BaseController
+public class QuestionsController : BaseController
 {
     private readonly IMediator _mediator;
 
-    public Questions(IMediator mediator)
+    public QuestionsController(IMediator mediator)
     {
         _mediator = mediator;
     }

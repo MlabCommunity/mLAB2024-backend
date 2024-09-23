@@ -19,11 +19,11 @@ using Swashbuckle.AspNetCore.Annotations;
 namespace QuizBackend.Api.Controllers;
 
 [Authorize(Policy = PolicyNames.User)]
-public class QuizController : BaseController
+public class QuizzesController : BaseController
 {
     private readonly IMediator _mediator;
 
-    public QuizController(IMediator mediator)
+    public QuizzesController(IMediator mediator)
     {
         _mediator = mediator;
     }
@@ -67,9 +67,13 @@ public class QuizController : BaseController
         return Ok(result);
     }
 
-    [HttpPost("create-quiz")]
-    [ProducesResponseType(typeof(Guid), StatusCodes.Status200OK)]
+    [HttpPost]
+    [SwaggerOperation(
+        Summary = "Creates a new quiz.",
+        Description = "Create a new quiz based on generated quiz")]
+    [ProducesResponseType(typeof(CreateQuizResponse), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status403Forbidden)]
     public async Task<IActionResult> CreateQuiz(CreateQuizCommand command)
     {
         var quizId = await _mediator.Send(command);
