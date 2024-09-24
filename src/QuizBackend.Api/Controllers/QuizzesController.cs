@@ -47,9 +47,9 @@ public class QuizzesController : BaseController
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<QuizDetailsDto>> GetQuiz([FromRoute] Guid Id, CancellationToken cancellationToken)
+    public async Task<ActionResult<QuizDetailsDto>> GetQuiz([FromRoute] Guid Id, [FromQuery] int? page, [FromQuery] int? pageSize, CancellationToken cancellationToken)
     {
-        var query = new GetQuizQuery(Id);
+        var query = new GetQuizQuery(Id, page, pageSize);
         var quiz = await _mediator.Send(query);
 
         return Ok(quiz);

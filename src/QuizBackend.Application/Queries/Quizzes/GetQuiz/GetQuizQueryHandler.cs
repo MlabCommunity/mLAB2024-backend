@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using QuizBackend.Application.Dtos.Paged;
 using QuizBackend.Application.Dtos.Quizzes;
 using QuizBackend.Application.Extensions;
 using QuizBackend.Application.Extensions.Mappings.Quizzes;
@@ -24,13 +25,21 @@ public class GetQuizQueryHandler : IQueryHandler<GetQuizQuery, QuizDetailsDto>
 
     public async Task<QuizDetailsDto> Handle(GetQuizQuery request, CancellationToken cancellationToken)
     {
+        var page = request.Page ?? 1;
+        var pageSize = request.PageSize ?? 10;
         var quiz = await _quizRepository.GetQuizForUser(request.Id, _httpContextAccessor.GetUserId())
                    ?? throw new NotFoundException(nameof(Quiz), request.Id.ToString());
 
         var httpRequest = _httpContextAccessor.HttpContext?.Request;
         var shareLink = $"{httpRequest!.Scheme}://{httpRequest.Host}/{quiz.JoinCode}";
-        var quizParticipations = await _quizParticipationRepository.GetQuizParticipationsForQuiz(quiz.Id);
+        var (quizParticipations, totalCount) = await _quizParticipationRepository.GetQuizParticipationsForQuiz(quiz.Id, pageSize, page);
 
-        return quiz.ToResponse(shareLink, quizParticipations);
+        var pagedQuizParticipations = new PagedDto<QuizParticipation>(
+            quizParticipations,
+            totalCount,
+            pageSize,
+            page
+        );
+        return quiz.ToResponse(shareLink, pagedQuizParticipations);
     }
 }
