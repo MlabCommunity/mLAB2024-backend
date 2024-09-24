@@ -15,6 +15,7 @@ public class GetQuizQueryHandler : IQueryHandler<GetQuizQuery, QuizDetailsDto>
     private readonly IQuizRepository _quizRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IQuizParticipationRepository _quizParticipationRepository;
+    private const int MaxPageSize = 10;
 
     public GetQuizQueryHandler(IQuizRepository quizRepository, IHttpContextAccessor httpContextAccessor, IQuizParticipationRepository quizParticipationRepository)
     {
@@ -25,6 +26,11 @@ public class GetQuizQueryHandler : IQueryHandler<GetQuizQuery, QuizDetailsDto>
 
     public async Task<QuizDetailsDto> Handle(GetQuizQuery request, CancellationToken cancellationToken)
     {
+        if (request.Page < 1 ||
+            (request.PageSize.HasValue && (request.PageSize <= 0 || request.PageSize > MaxPageSize)))
+        {
+            throw new BadRequestException("Page number must be greater than 0 and page size must be greater than 0 and less than or equal to 10.");
+        }
         var page = request.Page ?? 1;
         var pageSize = request.PageSize ?? 10;
         var quiz = await _quizRepository.GetQuizForUser(request.Id, _httpContextAccessor.GetUserId())

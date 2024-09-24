@@ -38,20 +38,19 @@ public class QuizzesController : BaseController
         return Ok(result);
     }
 
-    [HttpGet("{Id}")]
+    [HttpGet("{id}")]
     [SwaggerOperation(
         Summary = "Retrieves a quiz by its unique Id.",
-        Description = "Fetches the details of a quiz specified by its unique Id.")]
+        Description = "Fetches the participants score of a quiz specified by its unique Id. Max pagesize = 10")]
     [ProducesResponseType(typeof(QuizDetailsDto), StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
     [ProducesResponseType(StatusCodes.Status401Unauthorized)]
     [ProducesResponseType(StatusCodes.Status403Forbidden)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public async Task<ActionResult<QuizDetailsDto>> GetQuiz([FromRoute] Guid Id, [FromQuery] int? page, [FromQuery] int? pageSize, CancellationToken cancellationToken)
+    public async Task<ActionResult<QuizDetailsDto>> GetQuiz([FromRoute] Guid id, [FromQuery] int? page, [FromQuery] int? pageSize, CancellationToken cancellationToken)
     {
-        var query = new GetQuizQuery(Id, page, pageSize);
+        var query = new GetQuizQuery(id, page, pageSize);
         var quiz = await _mediator.Send(query);
-
         return Ok(quiz);
     }
 

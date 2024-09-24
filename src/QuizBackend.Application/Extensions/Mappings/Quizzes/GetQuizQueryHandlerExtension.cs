@@ -23,7 +23,7 @@ public static class GetQuizQueryHandlerExtension
             var score = participation.QuizResult?.ScorePercentage;
 
             return new ParticipantDto(
-                participant.DisplayName ?? "Anonymous",
+                participant.DisplayName!,
                 score,
                 participation.Status,
                 participation.ParticipationDateUtc
