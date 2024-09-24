@@ -6,6 +6,7 @@ using QuizBackend.Application.Cache;
 using QuizBackend.Application.Commands.Quizzes.GenerateQuiz;
 using QuizBackend.Application.Dtos.Quizzes;
 using QuizBackend.Application.Extensions;
+using QuizBackend.Application.Extensions.Mappings.Quizzes;
 using QuizBackend.Application.Interfaces;
 using QuizBackend.Domain.Exceptions;
 using QuizBackend.Infrastructure.Interfaces;
