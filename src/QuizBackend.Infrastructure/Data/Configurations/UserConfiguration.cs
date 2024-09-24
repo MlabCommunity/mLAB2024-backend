@@ -15,11 +15,18 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
             .OnDelete(DeleteBehavior.NoAction);
 
         builder
-            .HasMany(u => u.ParticipatedQuizzes)
-            .WithMany(q => q.Participants)
+            .HasMany(q => q.ParticipatedQuizzes)
+            .WithMany(u => u.Participants)
             .UsingEntity<QuizParticipation>(
-                j => j.HasOne(qp => qp.Quiz).WithMany().HasForeignKey(qp => qp.QuizId),
-                j => j.HasOne(qp => qp.Participant).WithMany().HasForeignKey(qp => qp.ParticipantId),
+                j => j
+                    .HasOne(qp => qp.Quiz)
+                    .WithMany()
+                    .HasForeignKey(qp => qp.QuizId)
+                    .OnDelete(DeleteBehavior.Cascade), 
+                j => j
+                    .HasOne(qp => qp.Participant)
+                    .WithMany()
+                    .HasForeignKey(qp => qp.ParticipantId),
                 j =>
                 {
                     j.ToTable("QuizzesParticipations");
