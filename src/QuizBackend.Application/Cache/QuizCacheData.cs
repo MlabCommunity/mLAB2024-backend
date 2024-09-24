@@ -1,6 +1,4 @@
-﻿using QuizBackend.Domain.Enums;
-
-namespace QuizBackend.Application.Cache;
+﻿namespace QuizBackend.Application.Cache;
 
 public class QuizCacheData
 {
