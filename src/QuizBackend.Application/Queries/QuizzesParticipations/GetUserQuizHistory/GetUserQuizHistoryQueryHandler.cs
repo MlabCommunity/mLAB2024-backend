@@ -15,7 +15,7 @@ public record QuizParticipationHistoryResponse(
     Guid QuizId,
     string QuizTitle,
     string? QuizDescription,
-    DateTime ParticiptionDateUtc,
+    DateTime ParticipationDateUtc,
     QuizParticipationStatus Status,
     List<QuestionDto> Questions, 
     List<UserAnswerHistory> UserAnswers,

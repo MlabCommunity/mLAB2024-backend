@@ -68,6 +68,9 @@ public class ParticipationsController : BaseController
     [HttpGet("{quizParticipationId}/result")]
     [SwaggerOperation(Summary = "Get Quiz result from quizParticipationId")]
     [ProducesResponseType(typeof(QuizResultResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetQuizResult(Guid quizParticipationId)
     {
         var query = new GetQuizResultQuery(quizParticipationId);
@@ -87,6 +90,9 @@ public class ParticipationsController : BaseController
     [HttpGet("history")]
     [SwaggerOperation(Summary = "Get User particpation history")]
     [ProducesResponseType(typeof(QuizParticipationHistoryResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> GetUserQuizHistory()
     {
         var result = await _mediator.Send(new GetUserQuizHistoryQuery());
