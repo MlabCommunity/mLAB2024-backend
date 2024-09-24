@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using QuizBackend.Application.Dtos.Quizzes;
 using QuizBackend.Application.Extensions;
+using QuizBackend.Application.Extensions.Mappings.Quizzes;
 using QuizBackend.Application.Interfaces.Messaging;
 using QuizBackend.Domain.Entities;
 using QuizBackend.Domain.Exceptions;
@@ -12,11 +13,13 @@ public class GetQuizQueryHandler : IQueryHandler<GetQuizQuery, QuizDetailsDto>
 {
     private readonly IQuizRepository _quizRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
+    private readonly IQuizParticipationRepository _quizParticipationRepository;
 
-    public GetQuizQueryHandler(IQuizRepository quizRepository, IHttpContextAccessor httpContextAccessor)
+    public GetQuizQueryHandler(IQuizRepository quizRepository, IHttpContextAccessor httpContextAccessor, IQuizParticipationRepository quizParticipationRepository)
     {
         _quizRepository = quizRepository;
         _httpContextAccessor = httpContextAccessor;
+        _quizParticipationRepository = quizParticipationRepository;
     }
 
     public async Task<QuizDetailsDto> Handle(GetQuizQuery request, CancellationToken cancellationToken)
@@ -24,30 +27,10 @@ public class GetQuizQueryHandler : IQueryHandler<GetQuizQuery, QuizDetailsDto>
         var quiz = await _quizRepository.GetQuizForUser(request.Id, _httpContextAccessor.GetUserId())
                    ?? throw new NotFoundException(nameof(Quiz), request.Id.ToString());
 
-        var questionsDto = quiz.Questions
-            .Select(q => new QuestionDto(
-                q.Id,
-                 q.Title,
-                 q.Answers.Select(a => new AnswerDto(
-                     a.Id,
-                     a.Content,
-                     a.IsCorrect
-                 )).ToList()
-             ))
-             .ToList();
-
         var httpRequest = _httpContextAccessor.HttpContext?.Request;
         var shareLink = $"{httpRequest!.Scheme}://{httpRequest.Host}/{quiz.JoinCode}";
+        var quizParticipations = await _quizParticipationRepository.GetQuizParticipationsForQuiz(quiz.Id);
 
-        var quizDto = new QuizDetailsDto(
-            quiz.Id,
-            quiz.Title,
-            quiz.Description,
-            shareLink,
-            quiz.Availability,
-            quiz.Status,
-            questionsDto);
-
-        return quizDto;
+        return quiz.ToResponse(shareLink, quizParticipations);
     }
 }

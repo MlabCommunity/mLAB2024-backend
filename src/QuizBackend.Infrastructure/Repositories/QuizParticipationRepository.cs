@@ -54,4 +54,13 @@ public class QuizParticipationRepository : IQuizParticipationRepository
             .Where(q => q.ParticipantId == participantId)
             .ToListAsync();
     }
+
+    public async Task<ICollection<QuizParticipation>> GetQuizParticipationsForQuiz(Guid quizId)
+    {
+        return await _dbContext.QuizParticipations
+            .Where(qp => qp.QuizId == quizId)
+            .Include(qp => qp.Participant)
+            .Include(qp => qp.QuizResult)
+            .ToListAsync();
+    }
 }

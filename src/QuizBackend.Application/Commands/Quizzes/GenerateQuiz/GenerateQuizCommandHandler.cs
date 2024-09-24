@@ -1,6 +1,7 @@
 ﻿using QuizBackend.Application.Dtos.Quizzes;
 using QuizBackend.Application.Interfaces;
 using QuizBackend.Application.Interfaces.Messaging;
+using System.Text.RegularExpressions;
 
 namespace QuizBackend.Application.Commands.Quizzes.GenerateQuiz;
 
@@ -33,7 +34,19 @@ public class GenerateQuizCommandHandler : ICommandHandler<GenerateQuizCommand, G
     
         var updatedCommand = command with { Content = content };
         var quizDto = await _quizService.GenerateQuizFromPromptTemplate(updatedCommand);
-       
-        return quizDto;
+        var updatedQuestions = new List<GenerateQuestion>();
+
+        foreach (var question in quizDto.GenerateQuestions)
+        {
+            var updatedQuestion = question with { Title = RemoveNumberPrefix(question.Title) };
+            updatedQuestions.Add(updatedQuestion);
+        }
+
+        return quizDto with { GenerateQuestions = updatedQuestions };
+    }
+
+    private string RemoveNumberPrefix(string title)
+    {
+        return Regex.Replace(title, @"^\d+\.\s+", string.Empty);
     }
 }
