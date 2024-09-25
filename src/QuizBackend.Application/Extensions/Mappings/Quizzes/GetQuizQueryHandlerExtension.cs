@@ -1,4 +1,5 @@
-﻿using QuizBackend.Application.Dtos.Paged;
+﻿
+using QuizBackend.Application.Dtos.Paged;
 using QuizBackend.Application.Dtos.Quizzes;
 using QuizBackend.Domain.Entities;
 
@@ -33,8 +34,8 @@ public static class GetQuizQueryHandlerExtension
         var pagedParticipantsDto = new PagedDto<ParticipantDto>(
             participantsDto,
             pagedQuizParticipations.TotalItemsCount,
-            pagedQuizParticipations.ItemsTo - pagedQuizParticipations.ItemsFrom + 1,
-            (pagedQuizParticipations.ItemsFrom - 1) / participantsDto.Count + 1 
+            pagedQuizParticipations.ItemsTo,
+            pagedQuizParticipations.ItemsFrom
         );
 
         return new QuizDetailsDto(
