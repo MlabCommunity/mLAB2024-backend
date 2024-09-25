@@ -23,7 +23,7 @@ public class QuizConfiguration : IEntityTypeConfiguration<Quiz>
             .HasOne(q => q.Owner)
             .WithMany(u => u.OwnedQuizzes)
             .HasForeignKey(q => q.OwnerId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Cascade);
 
         builder
             .HasMany(q => q.Participants)

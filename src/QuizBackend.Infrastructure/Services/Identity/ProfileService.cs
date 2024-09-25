@@ -7,6 +7,7 @@ using QuizBackend.Application.Interfaces.Users;
 using QuizBackend.Domain.Entities;
 using QuizBackend.Domain.Enums;
 using QuizBackend.Domain.Exceptions;
+using QuizBackend.Domain.Repositories;
 using QuizBackend.Infrastructure.Interfaces;
 
 namespace QuizBackend.Infrastructure.Services.Identity;
@@ -18,14 +19,16 @@ public class ProfileService : IProfileService
     private readonly IHttpContextAccessor _httpContextAccessor;
     private readonly IJwtService _jwtService;
     private readonly SignInManager<User> _signInManager;
+    private readonly IQuizRepository _quizRepository;
 
-    public ProfileService(UserManager<User> userManager, IRoleService roleService, IHttpContextAccessor httpContextAccessor, IJwtService jwtService, SignInManager<User> signInManager)
+    public ProfileService(UserManager<User> userManager, IRoleService roleService, IHttpContextAccessor httpContextAccessor, IJwtService jwtService, SignInManager<User> signInManager, IQuizRepository quizRepository)
     {
         _userManager = userManager;
         _roleService = roleService;
         _httpContextAccessor = httpContextAccessor;
         _jwtService = jwtService;
         _signInManager = signInManager;
+        _quizRepository = quizRepository;
     }
 
     public async Task<UserProfileDto> GetProfileAsync()
@@ -126,5 +129,15 @@ public class ProfileService : IProfileService
     {
         return Uri.TryCreate(url, UriKind.Absolute, out var uriResult)
                && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+    }
+
+    public async Task DeleteProfile()
+    {
+        var userId = _httpContextAccessor.GetUserId();
+        var user = await _userManager.FindByIdAsync(userId)
+            ?? throw new NotFoundException(nameof(User), userId);
+
+        user.IsDeleted = true;
+        await _quizRepository.UpdateQuizzesStatusForUser(userId, Status.Inactive);
     }
 }

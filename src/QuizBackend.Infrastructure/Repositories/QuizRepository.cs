@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using QuizBackend.Domain.Entities;
+using QuizBackend.Domain.Enums;
 using QuizBackend.Domain.Repositories;
 using QuizBackend.Infrastructure.Data;
 
@@ -89,5 +90,15 @@ public class QuizRepository : IQuizRepository
             .Include(q => q.Questions)
             .ThenInclude(quest => quest.Answers)
             .FirstOrDefaultAsync(q => q.JoinCode == code);
+    }
+
+    public async Task UpdateQuizzesStatusForUser(string userId, Status status)
+    {
+        await _dbContext.Quizzes
+            .Where(q => q.OwnerId == userId)
+            .ExecuteUpdateAsync(s => s
+                .SetProperty(q => q.Status, status));
+
+        await _dbContext.SaveChangesAsync();
     }
 }

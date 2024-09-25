@@ -1,4 +1,5 @@
 ﻿using QuizBackend.Domain.Entities;
+using QuizBackend.Domain.Enums;
 
 namespace QuizBackend.Domain.Repositories;
 
@@ -21,4 +22,5 @@ public interface IQuizRepository
     Task<bool> IsExistsWithCode(string code);
 
     Task<Quiz?> GetQuizByJoinCode(string code);
+    Task UpdateQuizzesStatusForUser(string userId, Status status);
 }
