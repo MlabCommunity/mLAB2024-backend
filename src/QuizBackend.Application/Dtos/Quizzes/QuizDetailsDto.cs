@@ -1,4 +1,5 @@
-﻿using QuizBackend.Domain.Enums;
+﻿using QuizBackend.Application.Dtos.Paged;
+using QuizBackend.Domain.Enums;
 
 namespace QuizBackend.Application.Dtos.Quizzes;
 
@@ -10,4 +11,4 @@ public record QuizDetailsDto(
     Availability Availability,
     Status Status,
     List<QuestionDto> Questions,
-    List<ParticipantDto> Participants);
+    PagedDto<ParticipantDto> Participants);

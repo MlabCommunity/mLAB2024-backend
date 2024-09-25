@@ -1,4 +1,5 @@
-﻿using QuizBackend.Application.Dtos.Paged;
+﻿
+using QuizBackend.Application.Dtos.Paged;
 using QuizBackend.Application.Dtos.Quizzes;
 using QuizBackend.Domain.Entities;
 
@@ -30,6 +31,13 @@ public static class GetQuizQueryHandlerExtension
             );
         }).ToList();
 
+        var pagedParticipantsDto = new PagedDto<ParticipantDto>(
+            participantsDto,
+            pagedQuizParticipations.TotalItemsCount,
+            pagedQuizParticipations.ItemsTo,
+            pagedQuizParticipations.ItemsFrom
+        );
+
         return new QuizDetailsDto(
             quiz.Id,
             quiz.Title,
@@ -38,7 +46,7 @@ public static class GetQuizQueryHandlerExtension
             quiz.Availability,
             quiz.Status,
             questionDto,
-            participantsDto
+            pagedParticipantsDto 
         );
     }
 }
