@@ -10,7 +10,7 @@ using QuizBackend.Domain.Repositories;
 
 namespace QuizBackend.Application.Queries.Quizzes.GetQuiz;
 
-public class GetQuizQueryHandler : IQueryHandler<GetQuizQuery, PagedDto<QuizDetailsDto>>
+public class GetQuizQueryHandler : IQueryHandler<GetQuizQuery, QuizDetailsDto>
 {
     private readonly IQuizRepository _quizRepository;
     private readonly IHttpContextAccessor _httpContextAccessor;
@@ -24,7 +24,7 @@ public class GetQuizQueryHandler : IQueryHandler<GetQuizQuery, PagedDto<QuizDeta
         _quizParticipationRepository = quizParticipationRepository;
     }
 
-    public async Task<PagedDto<QuizDetailsDto>> Handle(GetQuizQuery request, CancellationToken cancellationToken)
+    public async Task<QuizDetailsDto> Handle(GetQuizQuery request, CancellationToken cancellationToken)
     {
         if (request.Page < 1 ||
             (request.PageSize.HasValue && (request.PageSize <= 0 || request.PageSize > MaxPageSize)))
@@ -46,16 +46,6 @@ public class GetQuizQueryHandler : IQueryHandler<GetQuizQuery, PagedDto<QuizDeta
             pageSize,
             page
         );
-
-        var quizDetailsDto = quiz.ToResponse(shareLink, pagedQuizParticipations);
-
-        var pagedQuizDetails = new PagedDto<QuizDetailsDto>(
-            new List<QuizDetailsDto> { quizDetailsDto },
-            totalCount,
-            pageSize,
-            page
-            );
-
-        return pagedQuizDetails;
+        return quiz.ToResponse(shareLink, pagedQuizParticipations);
     }
 }

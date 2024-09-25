@@ -30,6 +30,13 @@ public static class GetQuizQueryHandlerExtension
             );
         }).ToList();
 
+        var pagedParticipantsDto = new PagedDto<ParticipantDto>(
+            participantsDto,
+            pagedQuizParticipations.TotalItemsCount,
+            pagedQuizParticipations.ItemsTo - pagedQuizParticipations.ItemsFrom + 1,
+            (pagedQuizParticipations.ItemsFrom - 1) / participantsDto.Count + 1 
+        );
+
         return new QuizDetailsDto(
             quiz.Id,
             quiz.Title,
@@ -38,7 +45,7 @@ public static class GetQuizQueryHandlerExtension
             quiz.Availability,
             quiz.Status,
             questionDto,
-            participantsDto
+            pagedParticipantsDto 
         );
     }
 }
