@@ -12,8 +12,8 @@ using QuizBackend.Infrastructure.Data;
 namespace QuizBackend.Infrastructure.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240924070537_DeleteCascadeQuiz")]
-    partial class DeleteCascadeQuiz
+    [Migration("20240925070522_AddSoftDeleteUser")]
+    partial class AddSoftDeleteUser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -392,6 +392,9 @@ namespace QuizBackend.Infrastructure.Migrations
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
+
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
 
@@ -544,7 +547,7 @@ namespace QuizBackend.Infrastructure.Migrations
                     b.HasOne("QuizBackend.Domain.Entities.User", "Owner")
                         .WithMany("OwnedQuizzes")
                         .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Owner");
@@ -574,7 +577,7 @@ namespace QuizBackend.Infrastructure.Migrations
                     b.HasOne("QuizBackend.Domain.Entities.QuizParticipation", "QuizParticipation")
                         .WithOne("QuizResult")
                         .HasForeignKey("QuizBackend.Domain.Entities.QuizResult", "QuizParticipationId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("QuizParticipation");
@@ -585,7 +588,7 @@ namespace QuizBackend.Infrastructure.Migrations
                     b.HasOne("QuizBackend.Domain.Entities.QuizParticipation", "QuizParticipation")
                         .WithMany("UserAnswers")
                         .HasForeignKey("QuizParticipationId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("QuizParticipation");

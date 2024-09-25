@@ -8,4 +8,5 @@ public class User : IdentityUser
     public string? ImageUrl { get; set; }
     public ICollection<Quiz> OwnedQuizzes { get; set; } = [];
     public ICollection<Quiz> ParticipatedQuizzes { get; set; } = [];
+    public bool IsDeleted { get; set; }
 }

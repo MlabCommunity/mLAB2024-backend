@@ -29,6 +29,9 @@ public class GetQuizParticipationHandler : IQueryHandler<GetQuizParticipationQue
         var quizParticipation = await _quizParticipationRepository.GetQuizParticipation(request.Id)
             ?? throw new NotFoundException(nameof(QuizParticipation), request.Id.ToString());
 
+        if (quizParticipation.ParticipantId != userId)
+            throw new BadRequestException($"{nameof(QuizParticipation)} not found");
+
         var quiz = quizParticipation.Quiz;
 
         var questions = quiz.Questions.Select(question => new QuizQuestionsResponse(

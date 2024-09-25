@@ -11,8 +11,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
         builder
             .HasMany(u => u.OwnedQuizzes)
             .WithOne(q => q.Owner)
-            .HasForeignKey(q => q.OwnerId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .HasForeignKey(q => q.OwnerId);
 
         builder
             .HasMany(q => q.ParticipatedQuizzes)
@@ -33,5 +32,7 @@ public class UserConfiguration : IEntityTypeConfiguration<User>
                     j.HasKey(qp => qp.Id);
                     j.Property(qp => qp.ParticipationDateUtc).IsRequired();
                 });
+
+        builder.HasQueryFilter(u => !u.IsDeleted);
     }
 }

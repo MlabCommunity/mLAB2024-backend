@@ -8,4 +8,5 @@ public interface IProfileService
     Task<JwtAuthResultDto> ConvertGuestToUser(RegisterRequestDto request);
     Task<UserProfileDto> GetProfileAsync();
     Task<UserProfileDto> UpdateProfileAsync(UpdateUserProfileRequest request);
+    Task DeleteProfile();
 }

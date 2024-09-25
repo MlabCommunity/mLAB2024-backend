@@ -154,7 +154,7 @@ namespace QuizBackend.Infrastructure.Migrations
 
                     b.HasIndex("QuestionId");
 
-                    b.ToTable("Answers");
+                    b.ToTable("Answers", (string)null);
                 });
 
             modelBuilder.Entity("QuizBackend.Domain.Entities.Question", b =>
@@ -184,7 +184,7 @@ namespace QuizBackend.Infrastructure.Migrations
 
                     b.HasIndex("QuizId");
 
-                    b.ToTable("Questions");
+                    b.ToTable("Questions", (string)null);
                 });
 
             modelBuilder.Entity("QuizBackend.Domain.Entities.Quiz", b =>
@@ -230,7 +230,7 @@ namespace QuizBackend.Infrastructure.Migrations
 
                     b.HasIndex("OwnerId");
 
-                    b.ToTable("Quizzes");
+                    b.ToTable("Quizzes", (string)null);
                 });
 
             modelBuilder.Entity("QuizBackend.Domain.Entities.QuizParticipation", b =>
@@ -303,7 +303,7 @@ namespace QuizBackend.Infrastructure.Migrations
                     b.HasIndex("QuizParticipationId")
                         .IsUnique();
 
-                    b.ToTable("QuizResults");
+                    b.ToTable("QuizResults", (string)null);
                 });
 
             modelBuilder.Entity("QuizBackend.Domain.Entities.RefreshToken", b =>
@@ -334,7 +334,7 @@ namespace QuizBackend.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RefreshTokens");
+                    b.ToTable("RefreshTokens", (string)null);
                 });
 
             modelBuilder.Entity("QuizBackend.Domain.Entities.Role", b =>
@@ -388,6 +388,9 @@ namespace QuizBackend.Infrastructure.Migrations
 
                     b.Property<string>("ImageUrl")
                         .HasColumnType("nvarchar(max)");
+
+                    b.Property<bool>("IsDeleted")
+                        .HasColumnType("bit");
 
                     b.Property<bool>("LockoutEnabled")
                         .HasColumnType("bit");
@@ -460,7 +463,7 @@ namespace QuizBackend.Infrastructure.Migrations
 
                     b.HasIndex("QuizParticipationId");
 
-                    b.ToTable("UserAnswers");
+                    b.ToTable("UserAnswers", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -541,7 +544,7 @@ namespace QuizBackend.Infrastructure.Migrations
                     b.HasOne("QuizBackend.Domain.Entities.User", "Owner")
                         .WithMany("OwnedQuizzes")
                         .HasForeignKey("OwnerId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Owner");
@@ -571,7 +574,7 @@ namespace QuizBackend.Infrastructure.Migrations
                     b.HasOne("QuizBackend.Domain.Entities.QuizParticipation", "QuizParticipation")
                         .WithOne("QuizResult")
                         .HasForeignKey("QuizBackend.Domain.Entities.QuizResult", "QuizParticipationId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("QuizParticipation");
@@ -582,7 +585,7 @@ namespace QuizBackend.Infrastructure.Migrations
                     b.HasOne("QuizBackend.Domain.Entities.QuizParticipation", "QuizParticipation")
                         .WithMany("UserAnswers")
                         .HasForeignKey("QuizParticipationId")
-                        .OnDelete(DeleteBehavior.NoAction)
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("QuizParticipation");

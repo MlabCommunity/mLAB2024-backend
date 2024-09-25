@@ -15,6 +15,6 @@ public class UserAnswerConfiguration : IEntityTypeConfiguration<UserAnswer>
             .HasOne(ua => ua.QuizParticipation)
             .WithMany(qp => qp.UserAnswers)
             .HasForeignKey(ua => ua.QuizParticipationId)
-            .OnDelete(DeleteBehavior.NoAction);
+            .OnDelete(DeleteBehavior.Cascade);
     }
 }
