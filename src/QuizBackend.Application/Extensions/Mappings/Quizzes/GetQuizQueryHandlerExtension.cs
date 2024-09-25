@@ -1,12 +1,12 @@
-﻿using QuizBackend.Application.Dtos.Quizzes;
+﻿using QuizBackend.Application.Dtos.Paged;
+using QuizBackend.Application.Dtos.Quizzes;
 using QuizBackend.Domain.Entities;
-using QuizBackend.Domain.Enums;
 
 namespace QuizBackend.Application.Extensions.Mappings.Quizzes;
 
 public static class GetQuizQueryHandlerExtension
 {
-    public static QuizDetailsDto ToResponse(this Quiz quiz, string? shareLink, ICollection<QuizBackend.Domain.Entities.QuizParticipation> quizParticipations)
+    public static QuizDetailsDto ToResponse(this Quiz quiz, string? shareLink, PagedDto<QuizBackend.Domain.Entities.QuizParticipation> pagedQuizParticipations)
     {
         var questionDto = quiz.Questions.Select(q => new QuestionDto(
             q.Id,
@@ -17,13 +17,13 @@ public static class GetQuizQueryHandlerExtension
                 a.IsCorrect)).ToList()
             )).ToList();
 
-        var participantsDto = quizParticipations.Where(participation => participation.QuizId == quiz.Id).Select(participation =>
+        var participantsDto = pagedQuizParticipations.Items.Select(participation =>
         {
             var participant = participation.Participant;
-            var score = participation.QuizResult?.ScorePercentage; 
+            var score = participation.QuizResult?.ScorePercentage;
 
             return new ParticipantDto(
-                participant.DisplayName ?? "Anonymous",
+                participant.DisplayName!,
                 score,
                 participation.Status,
                 participation.ParticipationDateUtc

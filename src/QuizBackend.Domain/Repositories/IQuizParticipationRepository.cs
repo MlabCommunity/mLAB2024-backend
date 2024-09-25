@@ -9,5 +9,5 @@ public interface IQuizParticipationRepository
     Task<QuizParticipation?> GetByIdWithUserAnswers(Guid quizParticipationId);
     Task<List<QuizParticipation>> GetByParticipantId(string participantId);
     Task Update(QuizParticipation quizParticipation);
-    Task<ICollection<QuizParticipation>> GetQuizParticipationsForQuiz(Guid quizId);
+    Task<(List<QuizParticipation> quizparticipations, int totalCount)> GetQuizParticipationsForQuiz(Guid quizId, int pageSize, int pageNumber);
 }
