@@ -2,7 +2,7 @@
 using QuizBackend.Domain.Enums;
 using QuizBackend.Domain.Exceptions;
 
-namespace QuizBackend.Application.Extensions;
+namespace QuizBackend.Application.Extensions.Mappings.Quizzes;
 
 public static class GenerateQuizCommandExtension
 {

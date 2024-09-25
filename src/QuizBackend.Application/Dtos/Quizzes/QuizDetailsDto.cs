@@ -9,4 +9,5 @@ public record QuizDetailsDto(
     string? ShareLink,
     Availability Availability,
     Status Status,
-    List<QuestionDto> Questions);
+    List<QuestionDto> Questions,
+    List<ParticipantDto> Participants);

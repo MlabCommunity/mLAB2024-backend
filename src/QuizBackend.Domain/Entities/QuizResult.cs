@@ -10,5 +10,4 @@ public class QuizResult : BaseEntity
     public int CorrectAnswers { get; set; }
     public double ScorePercentage { get; set; }
     public DateTime CalculatedAt { get; set; }
-
 }

@@ -55,4 +55,23 @@ public class QuizParticipationRepository : IQuizParticipationRepository
             .Where(q => q.ParticipantId == participantId)
             .ToListAsync();
     }
+
+    public async Task<(List<QuizParticipation> quizparticipations, int totalCount)> GetQuizParticipationsForQuiz(Guid quizId, int pageSize, int pageNumber)
+    {
+        var baseQuery = _dbContext.QuizParticipations
+            .AsNoTracking()
+            .Where(qp => qp.QuizId == quizId)
+            .Include(qp => qp.Participant)
+            .Include(qp => qp.QuizResult);
+
+        var totalCount = await baseQuery.CountAsync();
+
+        var quizParticipations = await baseQuery
+            .OrderByDescending(qp => qp.ParticipationDateUtc)
+            .Skip(pageSize * (pageNumber - 1))
+            .Take(pageSize)
+            .ToListAsync();
+
+        return (quizParticipations, totalCount);
+    }
 }
