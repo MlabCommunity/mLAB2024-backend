@@ -113,7 +113,6 @@ public class ProfileService : IProfileService
         }
     }
 
-
     private void HandleIdentityErrors(IEnumerable<IdentityError> errors, string message)
     {
         var errorDictionary = errors

@@ -56,7 +56,7 @@ public class ProfileController : BaseController
     }
 
     [HttpDelete]
-    [SwaggerOperation(Summary = "Deletes a user", Description = "Deletes permamently the user account")]
+    [SwaggerOperation(Summary = "Deletes a user", Description = "Deletes permanently the user account")]
     [ProducesResponseType(StatusCodes.Status204NoContent)]
     public async Task<ActionResult> RemoveUser()
     {

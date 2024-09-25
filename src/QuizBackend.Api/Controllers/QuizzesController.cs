@@ -30,7 +30,7 @@ public class QuizzesController : BaseController
     }
 
     [HttpPost("generate-quiz")]
-    [SwaggerOperation(Summary = "Generating Quiz with questions and anserws", Description = "QuestionType: SingleChoice, TrueFalse")]
+    [SwaggerOperation(Summary = "Generating Quiz with questions and answers", Description = "QuestionType: SingleChoice, TrueFalse")]
     [ProducesResponseType(typeof(GenerateQuizResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> GenerateQuizFromPromptTemplateAsync([FromForm] GenerateQuizCommand command)
     {
@@ -136,7 +136,7 @@ public class QuizzesController : BaseController
     }
 
     [HttpPost("regenerate-quiz")]
-    [SwaggerOperation(Summary = "Regenerating Quiz with questions and anserws")]
+    [SwaggerOperation(Summary = "Regenerating Quiz with questions and answers")]
     [ProducesResponseType(typeof(GenerateQuizResponse), StatusCodes.Status200OK)]
     public async Task<IActionResult> RegenerateQuizFromPromptTemplateAsync()
     {
