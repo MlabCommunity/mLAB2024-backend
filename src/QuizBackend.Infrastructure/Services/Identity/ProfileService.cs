@@ -138,6 +138,10 @@ public class ProfileService : IProfileService
             ?? throw new NotFoundException(nameof(User), userId);
 
         user.IsDeleted = true;
+        user.Email = string.Empty;
+        user.NormalizedEmail = string.Empty;
+        user.NormalizedUserName = string.Empty;
+        user.UserName = string.Empty;
         await _quizRepository.UpdateQuizzesStatusForUser(userId, Status.Inactive);
     }
 }
