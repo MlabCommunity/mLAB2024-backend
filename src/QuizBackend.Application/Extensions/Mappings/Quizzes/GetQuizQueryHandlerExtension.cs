@@ -1,5 +1,4 @@
-﻿
-using QuizBackend.Application.Dtos.Paged;
+﻿using QuizBackend.Application.Dtos.Paged;
 using QuizBackend.Application.Dtos.Quizzes;
 using QuizBackend.Domain.Entities;
 
@@ -7,8 +6,10 @@ namespace QuizBackend.Application.Extensions.Mappings.Quizzes;
 
 public static class GetQuizQueryHandlerExtension
 {
-    public static QuizDetailsDto ToResponse(this Quiz quiz, string? shareLink, PagedDto<QuizBackend.Domain.Entities.QuizParticipation> pagedQuizParticipations)
+    public static QuizDetailsDto ToResponse(this Quiz quiz, string? shareLink, (List<QuizBackend.Domain.Entities.QuizParticipation> quizParticipations, int totalCount, int pageSize, int pageNumber) data)
     {
+        var (quizParticipations, totalCount, pageSize, pageNumber) = data;
+
         var questionDto = quiz.Questions.Select(q => new QuestionDto(
             q.Id,
             q.Title,
@@ -16,9 +17,9 @@ public static class GetQuizQueryHandlerExtension
                 a.Id,
                 a.Content,
                 a.IsCorrect)).ToList()
-            )).ToList();
+        )).ToList();
 
-        var participantsDto = pagedQuizParticipations.Items.Select(participation =>
+        var participantsDto = quizParticipations.Select(participation =>
         {
             var participant = participation.Participant;
             var score = participation.QuizResult?.ScorePercentage;
@@ -33,9 +34,9 @@ public static class GetQuizQueryHandlerExtension
 
         var pagedParticipantsDto = new PagedDto<ParticipantDto>(
             participantsDto,
-            pagedQuizParticipations.TotalItemsCount,
-            pagedQuizParticipations.ItemsTo,
-            pagedQuizParticipations.ItemsFrom
+            totalCount,
+            pageSize,
+            pageNumber
         );
 
         return new QuizDetailsDto(
@@ -46,7 +47,7 @@ public static class GetQuizQueryHandlerExtension
             quiz.Availability,
             quiz.Status,
             questionDto,
-            pagedParticipantsDto 
+            pagedParticipantsDto
         );
     }
 }

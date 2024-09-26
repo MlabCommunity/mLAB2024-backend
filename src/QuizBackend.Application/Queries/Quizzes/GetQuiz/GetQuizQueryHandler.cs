@@ -40,12 +40,6 @@ public class GetQuizQueryHandler : IQueryHandler<GetQuizQuery, QuizDetailsDto>
         var shareLink = $"{httpRequest!.Scheme}://{httpRequest.Host}/{quiz.JoinCode}";
         var (quizParticipations, totalCount) = await _quizParticipationRepository.GetQuizParticipationsForQuiz(quiz.Id, pageSize, page);
 
-        var pagedQuizParticipations = new PagedDto<QuizParticipation>(
-            quizParticipations,
-            totalCount,
-            pageSize,
-            page
-        );
-        return quiz.ToResponse(shareLink, pagedQuizParticipations);
+        return quiz.ToResponse(shareLink, (quizParticipations, totalCount, pageSize, page));
     }
 }
