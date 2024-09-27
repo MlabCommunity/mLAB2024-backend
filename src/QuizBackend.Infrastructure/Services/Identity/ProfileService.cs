@@ -9,6 +9,8 @@ using QuizBackend.Domain.Enums;
 using QuizBackend.Domain.Exceptions;
 using QuizBackend.Domain.Repositories;
 using QuizBackend.Infrastructure.Interfaces;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace QuizBackend.Infrastructure.Services.Identity;
 
@@ -115,28 +117,28 @@ public class ProfileService : IProfileService
 
     public async Task DeleteProfile()
     {
-         var userId = _httpContextAccessor.GetUserId();
-         var user = await _userManager.FindByIdAsync(userId)
-                ?? throw new NotFoundException(nameof(User), userId);
+        var userId = _httpContextAccessor.GetUserId();
+        var user = await _userManager.FindByIdAsync(userId)
+               ?? throw new NotFoundException(nameof(User), userId);
 
-         var uniqueSuffix = Guid.NewGuid().ToString()[..10];
+        var uniqueSuffix = Guid.NewGuid().ToString()[..10];
+        var hashedValue = ComputeMd5Hash($"{user.Email}{user.UserName}{uniqueSuffix}");
+        var hiddenIdentifier = $"deleted-{hashedValue}";
 
-         var newEmail = $"DELETED-USER-{uniqueSuffix}@example.com";
-         var setEmailResult = await _userManager.SetEmailAsync(user, newEmail);
-         if (!setEmailResult.Succeeded)
-         {
-             HandleIdentityErrors(setEmailResult.Errors, "Set email for deleted user");
-         }
+        user.Email = $"{hiddenIdentifier}@example.com";
+        user.NormalizedEmail = user.Email.ToUpper();
+        user.UserName = hiddenIdentifier;
+        user.NormalizedUserName = user.UserName.ToUpper();
+        user.DisplayName = "DELETED USER";
+        user.IsDeleted = true;
 
-         user.DisplayName = "DELETED USER";
-         await _quizRepository.UpdateQuizzesStatusForUser(userId, Status.Inactive);
-         user.IsDeleted = true;
+        await _quizRepository.UpdateQuizzesStatusForUser(userId, Status.Inactive);
 
-         var updateResult = await _userManager.UpdateAsync(user);
-         if (!updateResult.Succeeded)
-         {
-             HandleIdentityErrors(updateResult.Errors, "Update deleted user profile");
-         }
+        var updateResult = await _userManager.UpdateAsync(user);
+        if (!updateResult.Succeeded)
+        {
+            HandleIdentityErrors(updateResult.Errors, "Update deleted user profile");
+        }
     }
 
     private void HandleIdentityErrors(IEnumerable<IdentityError> errors, string message)
@@ -155,5 +157,18 @@ public class ProfileService : IProfileService
     {
         return Uri.TryCreate(url, UriKind.Absolute, out var uriResult)
                && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+    }
+
+    private string ComputeMd5Hash(string input)
+    {
+        byte[] inputBytes = Encoding.ASCII.GetBytes(input);
+        byte[] hashBytes = MD5.HashData(inputBytes);
+
+        StringBuilder sb = new();
+        for (int i = 0; i < hashBytes.Length; i++)
+        {
+            sb.Append(hashBytes[i].ToString("X2"));
+        }
+        return sb.ToString().ToLower();
     }
 }
