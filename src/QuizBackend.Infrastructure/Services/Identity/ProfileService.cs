@@ -130,9 +130,8 @@ public class ProfileService : IProfileService
         user.UserName = hiddenIdentifier;
         user.NormalizedUserName = user.UserName.ToUpper();
         user.DisplayName = "DELETED USER";
-        user.IsDeleted = true;
-
         await _quizRepository.UpdateQuizzesStatusForUser(userId, Status.Inactive);
+        user.IsDeleted = true;
 
         var updateResult = await _userManager.UpdateAsync(user);
         if (!updateResult.Succeeded)
