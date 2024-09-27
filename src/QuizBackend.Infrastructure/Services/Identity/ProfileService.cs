@@ -122,7 +122,7 @@ public class ProfileService : IProfileService
         user.IsDeleted = true;
         user.Email = "DELETED-USER";
         user.NormalizedEmail = "DELETED-USER";
-        user.DisplayName = string.Empty;
+        user.DisplayName = "DELETED USER";
         await _quizRepository.UpdateQuizzesStatusForUser(userId, Status.Inactive);
     }
 
