@@ -9,6 +9,8 @@ using QuizBackend.Domain.Enums;
 using QuizBackend.Domain.Exceptions;
 using QuizBackend.Domain.Repositories;
 using QuizBackend.Infrastructure.Interfaces;
+using System.Security.Cryptography;
+using System.Text;
 
 namespace QuizBackend.Infrastructure.Services.Identity;
 
@@ -117,27 +119,25 @@ public class ProfileService : IProfileService
     {
         var userId = _httpContextAccessor.GetUserId();
         var user = await _userManager.FindByIdAsync(userId)
-            ?? throw new NotFoundException(nameof(User), userId);
-
-        user.IsDeleted = true;
+               ?? throw new NotFoundException(nameof(User), userId);
 
         var uniqueSuffix = Guid.NewGuid().ToString()[..10];
+        var hashedValue = ComputeMd5Hash($"{user.Email}{user.UserName}{uniqueSuffix}");
+        var hiddenIdentifier = $"deleted-{hashedValue}";
 
-        user.Email = $"DELETED-USER-{uniqueSuffix}@example.com";
+        user.Email = $"{hiddenIdentifier}@example.com";
         user.NormalizedEmail = user.Email.ToUpper();
-
-        user.UserName = $"DELETED-USER-{uniqueSuffix}";  
+        user.UserName = hiddenIdentifier;
         user.NormalizedUserName = user.UserName.ToUpper();
-
         user.DisplayName = "DELETED USER";
-       
         await _quizRepository.UpdateQuizzesStatusForUser(userId, Status.Inactive);
-        var result = await _userManager.UpdateAsync(user);
-        if (!result.Succeeded)
+        user.IsDeleted = true;
+
+        var updateResult = await _userManager.UpdateAsync(user);
+        if (!updateResult.Succeeded)
         {
-            HandleIdentityErrors(result.Errors, "Deletes a user failure");
+            HandleIdentityErrors(updateResult.Errors, "Update deleted user profile");
         }
-       
     }
 
     private void HandleIdentityErrors(IEnumerable<IdentityError> errors, string message)
@@ -156,5 +156,18 @@ public class ProfileService : IProfileService
     {
         return Uri.TryCreate(url, UriKind.Absolute, out var uriResult)
                && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
+    }
+
+    private string ComputeMd5Hash(string input)
+    {
+        byte[] inputBytes = Encoding.ASCII.GetBytes(input);
+        byte[] hashBytes = MD5.HashData(inputBytes);
+
+        StringBuilder sb = new();
+        for (int i = 0; i < hashBytes.Length; i++)
+        {
+            sb.Append(hashBytes[i].ToString("X2"));
+        }
+        return sb.ToString().ToLower();
     }
 }
