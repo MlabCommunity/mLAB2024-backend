@@ -120,10 +120,24 @@ public class ProfileService : IProfileService
             ?? throw new NotFoundException(nameof(User), userId);
 
         user.IsDeleted = true;
-        user.Email = "DELETED-USER";
-        user.NormalizedEmail = "DELETED-USER";
+
+        var uniqueSuffix = Guid.NewGuid().ToString()[..10];
+
+        user.Email = $"DELETED-USER-{uniqueSuffix}@example.com";
+        user.NormalizedEmail = user.Email.ToUpper();
+
+        user.UserName = $"DELETED-USER-{uniqueSuffix}";  
+        user.NormalizedUserName = user.UserName.ToUpper();
+
         user.DisplayName = "DELETED USER";
+       
         await _quizRepository.UpdateQuizzesStatusForUser(userId, Status.Inactive);
+        var result = await _userManager.UpdateAsync(user);
+        if (!result.Succeeded)
+        {
+            HandleIdentityErrors(result.Errors, "Deletes a user failure");
+        }
+       
     }
 
     private void HandleIdentityErrors(IEnumerable<IdentityError> errors, string message)
