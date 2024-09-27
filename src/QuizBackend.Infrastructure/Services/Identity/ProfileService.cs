@@ -119,10 +119,9 @@ public class ProfileService : IProfileService
     {
         var userId = _httpContextAccessor.GetUserId();
         var user = await _userManager.FindByIdAsync(userId)
-               ?? throw new NotFoundException(nameof(User), userId);
+                   ?? throw new NotFoundException(nameof(User), userId);
 
-        var uniqueSuffix = Guid.NewGuid().ToString()[..10];
-        var hashedValue = ComputeMd5Hash($"{user.Email}{user.UserName}{uniqueSuffix}");
+        var hashedValue = ComputeMd5Hash($"{user.Email}{user.UserName}").Substring(0, 8);
         var hiddenIdentifier = $"deleted-{hashedValue}";
 
         user.Email = $"{hiddenIdentifier}@example.com";
@@ -130,8 +129,10 @@ public class ProfileService : IProfileService
         user.UserName = hiddenIdentifier;
         user.NormalizedUserName = user.UserName.ToUpper();
         user.DisplayName = "DELETED USER";
-        await _quizRepository.UpdateQuizzesStatusForUser(userId, Status.Inactive);
         user.IsDeleted = true;
+
+        await _quizRepository.UpdateQuizzesStatusForUser(userId, Status.Inactive);
+        
 
         var updateResult = await _userManager.UpdateAsync(user);
         if (!updateResult.Succeeded)
