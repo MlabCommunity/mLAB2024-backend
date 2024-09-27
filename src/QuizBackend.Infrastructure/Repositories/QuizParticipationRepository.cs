@@ -37,7 +37,6 @@ public class QuizParticipationRepository : IQuizParticipationRepository
             .Include(qp => qp.Quiz)
             .ThenInclude(q => q.Questions)
             .Include(qp => qp.UserAnswers)
-            .IgnoreQueryFilters()
             .FirstOrDefaultAsync(qp => qp.Id == quizParticipationId);
     }
 
@@ -54,7 +53,6 @@ public class QuizParticipationRepository : IQuizParticipationRepository
             .Include(q => q.Quiz)
             .Include(q => q.UserAnswers)
             .Include(q => q.QuizResult)
-            .IgnoreQueryFilters()
             .Where(q => q.ParticipantId == participantId)
             .ToListAsync();
     }
@@ -65,9 +63,8 @@ public class QuizParticipationRepository : IQuizParticipationRepository
             .AsNoTracking()
             .Where(qp => qp.QuizId == quizId)
             .Include(qp => qp.Participant)
-            .Include(qp => qp.QuizResult)
-            .IgnoreQueryFilters();
-
+            .Include(qp => qp.QuizResult);
+         
         var totalCount = await baseQuery.CountAsync();
 
         var quizParticipations = await baseQuery
