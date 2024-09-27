@@ -113,6 +113,18 @@ public class ProfileService : IProfileService
         }
     }
 
+    public async Task DeleteProfile()
+    {
+        var userId = _httpContextAccessor.GetUserId();
+        var user = await _userManager.FindByIdAsync(userId)
+            ?? throw new NotFoundException(nameof(User), userId);
+
+        user.IsDeleted = true;
+        user.Email = string.Empty;
+        user.NormalizedEmail = string.Empty;
+        await _quizRepository.UpdateQuizzesStatusForUser(userId, Status.Inactive);
+    }
+
     private void HandleIdentityErrors(IEnumerable<IdentityError> errors, string message)
     {
         var errorDictionary = errors
@@ -129,19 +141,5 @@ public class ProfileService : IProfileService
     {
         return Uri.TryCreate(url, UriKind.Absolute, out var uriResult)
                && (uriResult.Scheme == Uri.UriSchemeHttp || uriResult.Scheme == Uri.UriSchemeHttps);
-    }
-
-    public async Task DeleteProfile()
-    {
-        var userId = _httpContextAccessor.GetUserId();
-        var user = await _userManager.FindByIdAsync(userId)
-            ?? throw new NotFoundException(nameof(User), userId);
-
-        user.IsDeleted = true;
-        user.Email = string.Empty;
-        user.NormalizedEmail = string.Empty;
-        user.NormalizedUserName = string.Empty;
-        user.UserName = string.Empty;
-        await _quizRepository.UpdateQuizzesStatusForUser(userId, Status.Inactive);
     }
 }

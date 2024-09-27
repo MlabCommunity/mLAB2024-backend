@@ -33,9 +33,11 @@ public class QuizParticipationRepository : IQuizParticipationRepository
     public async Task<QuizParticipation?> GetByIdWithUserAnswers(Guid quizParticipationId)
     {
         return await _dbContext.QuizParticipations
+            .AsNoTracking()
             .Include(qp => qp.Quiz)
             .ThenInclude(q => q.Questions)
             .Include(qp => qp.UserAnswers)
+            .IgnoreQueryFilters()
             .FirstOrDefaultAsync(qp => qp.Id == quizParticipationId);
     }
 
@@ -48,9 +50,11 @@ public class QuizParticipationRepository : IQuizParticipationRepository
     public async Task<List<QuizParticipation>> GetByParticipantId(string participantId)
     {
         return await _dbContext.QuizParticipations
+            .AsNoTracking()
             .Include(q => q.Quiz)
             .Include(q => q.UserAnswers)
             .Include(q => q.QuizResult)
+            .IgnoreQueryFilters()
             .Where(q => q.ParticipantId == participantId)
             .ToListAsync();
     }
@@ -61,7 +65,8 @@ public class QuizParticipationRepository : IQuizParticipationRepository
             .AsNoTracking()
             .Where(qp => qp.QuizId == quizId)
             .Include(qp => qp.Participant)
-            .Include(qp => qp.QuizResult);
+            .Include(qp => qp.QuizResult)
+            .IgnoreQueryFilters();
 
         var totalCount = await baseQuery.CountAsync();
 
