@@ -115,29 +115,28 @@ public class ProfileService : IProfileService
 
     public async Task DeleteProfile()
     {
-        var userId = _httpContextAccessor.GetUserId();
-        var user = await _userManager.FindByIdAsync(userId)
-            ?? throw new NotFoundException(nameof(User), userId);
+         var userId = _httpContextAccessor.GetUserId();
+         var user = await _userManager.FindByIdAsync(userId)
+                ?? throw new NotFoundException(nameof(User), userId);
 
-        user.IsDeleted = true;
+         var uniqueSuffix = Guid.NewGuid().ToString()[..10];
 
-        var uniqueSuffix = Guid.NewGuid().ToString()[..10];
+         var newEmail = $"DELETED-USER-{uniqueSuffix}@example.com";
+         var setEmailResult = await _userManager.SetEmailAsync(user, newEmail);
+         if (!setEmailResult.Succeeded)
+         {
+             HandleIdentityErrors(setEmailResult.Errors, "Set email for deleted user");
+         }
 
-        user.Email = $"DELETED-USER-{uniqueSuffix}@example.com";
-        user.NormalizedEmail = user.Email.ToUpper();
+         user.DisplayName = "DELETED USER";
+         await _quizRepository.UpdateQuizzesStatusForUser(userId, Status.Inactive);
+         user.IsDeleted = true;
 
-        user.UserName = $"DELETED-USER-{uniqueSuffix}";  
-        user.NormalizedUserName = user.UserName.ToUpper();
-
-        user.DisplayName = "DELETED USER";
-       
-        await _quizRepository.UpdateQuizzesStatusForUser(userId, Status.Inactive);
-        var result = await _userManager.UpdateAsync(user);
-        if (!result.Succeeded)
-        {
-            HandleIdentityErrors(result.Errors, "Deletes a user failure");
-        }
-       
+         var updateResult = await _userManager.UpdateAsync(user);
+         if (!updateResult.Succeeded)
+         {
+             HandleIdentityErrors(updateResult.Errors, "Update deleted user profile");
+         }
     }
 
     private void HandleIdentityErrors(IEnumerable<IdentityError> errors, string message)
