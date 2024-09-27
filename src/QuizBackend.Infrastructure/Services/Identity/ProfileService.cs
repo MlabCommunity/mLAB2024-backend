@@ -130,9 +130,14 @@ public class ProfileService : IProfileService
         user.NormalizedUserName = user.UserName.ToUpper();
 
         user.DisplayName = "DELETED USER";
-
+       
         await _quizRepository.UpdateQuizzesStatusForUser(userId, Status.Inactive);
-        await _userManager.UpdateAsync(user);
+        var result = await _userManager.UpdateAsync(user);
+        if (!result.Succeeded)
+        {
+            HandleIdentityErrors(result.Errors, "Deletes a user failure");
+        }
+       
     }
 
     private void HandleIdentityErrors(IEnumerable<IdentityError> errors, string message)
