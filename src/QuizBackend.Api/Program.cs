@@ -53,3 +53,8 @@ await app.EnsureDatabaseMigratedAsync();
 await app.Services.Seed();
 
 app.Run();
+
+public partial class Program
+{
+
+}

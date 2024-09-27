@@ -34,4 +34,8 @@
     </Content>
   </ItemGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="Api.IntegrationTests"/>
+  </ItemGroup>
+
 </Project>
