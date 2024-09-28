@@ -1,0 +1,36 @@
+{
+  "schema": 1,
+  "type": "completion",
+  "description": "Compare generated quiz to right format and change questions and answers if needed. Respond only with JSON.",
+  "execution_settings": {
+    "default": {
+      "temperature": 0,
+      "max_tokens": 4250,
+      "response_format": {
+        "type": "json_object"
+      }
+    }
+  },
+  "input_variables": [
+    {
+      "name": "jsonResponse",
+      "description": "Previuosly generated quiz to validate to right format.",
+      "required": true
+    },
+    {
+      "name": "typeOfQuestions",
+      "description": "Type of questions to generate.",
+      "required": true
+    },
+    {
+      "name": "language",
+      "description": "The language in which the quiz should be.",
+      "required": true
+    },
+    {
+      "name": "numberOfQuestions",
+      "description": "the number of questions quiz should have",
+      "required": true
+    }
+  ]
+}

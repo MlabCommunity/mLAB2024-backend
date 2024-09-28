@@ -56,9 +56,16 @@
     <None Update="Prompts\SummaryContent\skprompt.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Update="Prompts\ValidateQuizFormat\config.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <None Update="Prompts\ValidateQuizFormat\skprompt.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Prompts\ValidateQuizFormat\" />
     <Folder Include="Prompts\RegenerateQuiz\" />
   </ItemGroup>
 

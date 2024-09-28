@@ -43,7 +43,12 @@ public class QuizService : IQuizService
             {"language", command.GetSelectedLanguageString()},
             {"typeOfQuestions", command.GetQuestionTypeString()} });
 
-        var validJson = ValidJson(jsonResponse);
+        var quizJson = await _kernelService.InvokeAsync(prompts["ValidateQuizFormat"], new() { {"jsonResponse", jsonResponse },
+            {"typeOfQuestions", command.GetQuestionTypeString()},
+            {"language", command.Language },
+            {"numberOfQuestions", command.NumberOfQuestions} });
+
+        var validJson = ValidJson(quizJson);
 
         var quizDto = JsonConvert.DeserializeObject<GenerateQuizResponse>(validJson);
 
@@ -59,6 +64,7 @@ public class QuizService : IQuizService
             Content = content,
             QuizResponse = validJson,
             NumberOfQuestions = command.NumberOfQuestions,
+            Language = command.GetSelectedLanguageString(),
             QuestionTypes = command.GetQuestionTypeString()
         },TimeSpan.FromMinutes(30));
 
@@ -79,7 +85,12 @@ public class QuizService : IQuizService
             { "questionTypes", quizData.QuestionTypes }
         });
 
-            var validJson = ValidJson(jsonResponse);
+            var quizJson = await _kernelService.InvokeAsync(prompts["ValidateQuizFormat"], new() { {"jsonResponse", jsonResponse },
+            {"typeOfQuestions", quizData.QuestionTypes},
+            {"language", quizData.Language },
+            {"numberOfQuestions", quizData.NumberOfQuestions} });
+
+            var validJson = ValidJson(quizJson);
             var quizDto = JsonConvert.DeserializeObject<GenerateQuizResponse>(validJson);
 
             if (string.IsNullOrWhiteSpace(validJson) || quizDto is null)

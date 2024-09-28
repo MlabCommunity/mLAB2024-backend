@@ -1,0 +1,65 @@
+Based on the generated quiz: {{$jsonResponse}}.
+Check whether the quiz matches the JSON pattern based on "{{$typeOfQuestions}}" type of questions. If not, adjust the questions and answers to match the pattern **strictly**.
+
+Make sure you return the quiz in the provided language: {{$language}}.
+The matched quiz should contain exactly {{$numberOfQuestions}} questions.
+
+**IMPORTANT: Strictly adhere to the following patterns based on question type.**  
+When the number of questions is greater than 10, ensure that **every question** conforms exactly to the specified format.
+
+1. **If {{$typeOfQuestions}} is "SingleChoice"**:
+
+- Every question must follow this structure:
+{
+  "title": "generated quiz title",
+  "description": "generated quiz description",
+  "generateQuestions": [
+    {
+      "title": "1. [Single Choice Question 1]",
+      "generateAnswers": [
+        {
+          "content": "generated Answer 1",
+          "isCorrect": false
+        },
+        {
+          "content": "generated Answer 2",
+          "isCorrect": true
+        },
+        {
+          "content": "generated Answer 3",
+          "isCorrect": false
+        },
+        {
+          "content": "generated Answer 4",
+          "isCorrect": false
+        }
+      ]
+    }
+  ]
+}
+
+2. **If {{$typeOfQuestions}} is "TrueFalse"**:
+{
+  "title": "generated quiz title",
+  "description": "generated quiz description",
+  "generateQuestions": [
+    {
+      "title": "1. [TrueFalse Question 1]",
+      "generateAnswers": [
+        {
+          "content": "true",
+          "isCorrect": true
+        },
+        {
+          "content": "false",
+          "isCorrect": false
+        }
+      ]
+    }
+  ]
+}
+
+3. **If {{$typeOfQuestions}} is "SingleChoice+TrueFalse"**:
+Use an alternating pattern, but **each question** must adhere to its format (SingleChoice with 4 answers, TrueFalse with 2 answers).
+
+**When the quiz contains more than 10 questions**, do not change the pattern or introduce mixed types within a single question.

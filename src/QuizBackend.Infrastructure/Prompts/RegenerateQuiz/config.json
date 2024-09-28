@@ -4,7 +4,7 @@
   "description": "Regenerate quiz based on history. Respond only with JSON.",
   "execution_settings": {
     "default": {
-      "temperature": 0.8,
+      "temperature": 0.4,
       "response_format": {
         "type": "json_object"
       }
