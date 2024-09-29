@@ -10,13 +10,13 @@ When the number of questions is greater than 10, ensure that **every question** 
 **IMPORTANT RULES if {{$typeofQuestions}} is TrueFalse**
 - If language is Polish:
 content for true is "Prawda",
-content for false is "Fa³sz"
+content for false is "Falsz"
 -If language is English:
 content for true is "True",
 content for false is "False"
 -If language is German:
 content for true is "Wahr",
-content for false is "Lüge",
+content for false is "Luge",
 -If language is Spanish:
 content for true is "Verdadero",
 content for false is "Falso"
