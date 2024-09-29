@@ -58,10 +58,4 @@
     </None>
   </ItemGroup>
 
-  <ItemGroup>
-	<Folder Include="Prompts\GenerateQuiz\" />
-    <Folder Include="Prompts\ValidateQuizFormat\" />
-    <Folder Include="Prompts\RegenerateQuiz\" />
-  </ItemGroup>
-
 </Project>
