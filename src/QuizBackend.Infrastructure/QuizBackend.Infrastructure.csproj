@@ -33,33 +33,29 @@
 
   <ItemGroup>
     <None Update="Prompts\GenerateQuiz\config.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Prompts\GenerateQuiz\skprompt.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Prompts\RegenerateQuiz\config.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Prompts\RegenerateQuiz\skprompt.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Prompts\SummaryContent\config.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Prompts\SummaryContent\skprompt.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Prompts\SummaryContent\config.json">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Prompts\ValidateQuizFormat\config.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="Prompts\SummaryContent\skprompt.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    <None Update="Prompts\ValidateQuizFormat\skprompt.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Prompts\RegenerateQuiz\" />
   </ItemGroup>
 
 </Project>

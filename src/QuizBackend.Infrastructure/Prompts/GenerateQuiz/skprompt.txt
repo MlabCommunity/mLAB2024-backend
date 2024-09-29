@@ -1,4 +1,5 @@
-﻿Generate a quiz in JSON format based on the following content: "{{$content}}". 
+﻿Ignore **all** previous instructions.
+Generate a quiz in JSON format based on the following content: "{{$content}}". 
 The quiz must be generated in {{$language}} language, should contain exactly "{{$numberOfQuestions}}" questions, **all of which must be of the type** "{{$typeOfQuestions}}".
 
 Important rules based on "{{$typeOfQuestions}}":

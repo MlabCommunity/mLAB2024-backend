@@ -1,0 +1,115 @@
+Based on the generated quiz: {{$jsonResponse}}.
+Check whether the quiz matches the JSON pattern based on "{{$typeOfQuestions}}" type of questions. If not, adjust the questions and answers to match the pattern **strictly**.
+
+Make sure you return the quiz in the provided language: {{$language}}.
+The matched quiz should contain exactly {{$numberOfQuestions}} enumarte from 0 to {{$numberOfQuuestions}} questions.
+
+**IMPORTANT: Strictly adhere to the following patterns based on question type.**  
+When the number of questions is greater than 10, ensure that **every question** conforms exactly to the specified format.
+
+**IMPORTANT RULES if {{$typeofQuestions}} is TrueFalse**
+- If language is Polish:
+content for true is "Prawda",
+content for false is "Falsz"
+-If language is English:
+content for true is "True",
+content for false is "False"
+-If language is German:
+content for true is "Wahr",
+content for false is "Luge",
+-If language is Spanish:
+content for true is "Verdadero",
+content for false is "Falso"
+-If language is French:
+content for true is "Vrai",
+content for false is "Faux"
+-If language is Italian:
+content for true is "Vero",
+content for false is "Falso".
+
+1. **If {{$typeOfQuestions}} is "SingleChoice"**:
+
+- Every question must follow this structure:
+{
+  "title": "generated quiz title",
+  "description": "generated quiz description",
+  "generateQuestions": [
+    {
+      "title": "1. [Single Choice Question 1]",
+      "generateAnswers": [
+        {
+          "content": "generated Answer 1",
+          "isCorrect": false
+        },
+        {
+          "content": "generated Answer 2",
+          "isCorrect": true
+        },
+        {
+          "content": "generated Answer 3",
+          "isCorrect": false
+        },
+        {
+          "content": "generated Answer 4",
+          "isCorrect": false
+        },
+        {
+      "title": "2. [Single Choice Question 2]",
+      "generateAnswers": [
+        {
+          "content": "generated Answer 1",
+          "isCorrect": false
+        },
+        {
+          "content": "generated Answer 2",
+          "isCorrect": true
+        },
+        {
+          "content": "generated Answer 3",
+          "isCorrect": false
+        },
+        {
+          "content": "generated Answer 4",
+          "isCorrect": false
+        }
+      ]
+    }
+  ]
+}
+
+2. **If {{$typeOfQuestions}} is "TrueFalse"**:
+{
+  "title": "generated quiz title",
+  "description": "generated quiz description",
+  "generateQuestions": [
+    {
+      "title": "1. [TrueFalse Question 1]",
+      "generateAnswers": [
+        {
+          "content": "[true translated to prvoided language {{$language}}]",
+          "isCorrect": true
+        },
+        {
+          "content": "[false translated to prvoided language {{$language}}]",
+          "isCorrect": false
+        },
+        {
+      "title": "2. [TrueFalse Question 2]",
+      "generateAnswers": [
+        {
+          "content": "[true translated to prvoided language {{$language}}]",
+          "isCorrect": false
+        },
+        {
+          "content": "[false translated to prvoided language {{$language}}]",
+          "isCorrect": true
+        }
+      ]
+    }
+  ]
+}
+
+3. **If {{$typeOfQuestions}} is "SingleChoice+TrueFalse"**:
+Use an alternating pattern, but **each question** must adhere to its format (SingleChoice with 4 answers, TrueFalse with 2 answers).
+
+**When the quiz contains more than 10 questions**, do not change the pattern or introduce mixed types within a single question.
