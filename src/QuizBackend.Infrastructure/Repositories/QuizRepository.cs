@@ -95,10 +95,9 @@ public class QuizRepository : IQuizRepository
     public async Task UpdateQuizzesStatusForUser(string userId, Status status)
     {
         await _dbContext.Quizzes
+            .IgnoreQueryFilters()
             .Where(q => q.OwnerId == userId)
             .ExecuteUpdateAsync(s => s
                 .SetProperty(q => q.Status, status));
-
-        await _dbContext.SaveChangesAsync();
     }
 }

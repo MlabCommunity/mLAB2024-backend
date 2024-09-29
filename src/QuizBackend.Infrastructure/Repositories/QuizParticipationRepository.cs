@@ -33,7 +33,6 @@ public class QuizParticipationRepository : IQuizParticipationRepository
     public async Task<QuizParticipation?> GetByIdWithUserAnswers(Guid quizParticipationId)
     {
         return await _dbContext.QuizParticipations
-            .AsNoTracking()
             .Include(qp => qp.Quiz)
             .ThenInclude(q => q.Questions)
             .Include(qp => qp.UserAnswers)

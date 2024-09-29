@@ -120,24 +120,25 @@ public class ProfileService : IProfileService
         var userId = _httpContextAccessor.GetUserId();
         var user = await _userManager.FindByIdAsync(userId)
                ?? throw new NotFoundException(nameof(User), userId);
-
-        var uniqueSuffix = Guid.NewGuid().ToString()[..10];
-        var hashedValue = ComputeMd5Hash($"{user.Email}{user.UserName}{uniqueSuffix}");
+        
+        var hashedValue = ComputeMd5Hash($"{user.Email}{user.UserName}");
         var hiddenIdentifier = $"deleted-{hashedValue}";
-
-        user.Email = $"{hiddenIdentifier}@example.com";
-        user.NormalizedEmail = user.Email.ToUpper();
-        user.UserName = hiddenIdentifier;
-        user.NormalizedUserName = user.UserName.ToUpper();
-        user.DisplayName = "DELETED USER";
+        
         await _quizRepository.UpdateQuizzesStatusForUser(userId, Status.Inactive);
+        var setEmailResult = await _userManager.SetEmailAsync(user, $"{hiddenIdentifier}@example.com");
+        var setUserNameResult = await _userManager.SetUserNameAsync(user, hiddenIdentifier);
+        user.DisplayName = "DELETED USER";
         user.IsDeleted = true;
-
-        var updateResult = await _userManager.UpdateAsync(user);
-        if (!updateResult.Succeeded)
+        
+        await _jwtService.InvalidateRefreshTokenAsync(userId);
+        await _signInManager.SignOutAsync();
+        
+        var result = await _userManager.UpdateAsync(user);
+        if (!result.Succeeded && !setEmailResult.Succeeded && !setUserNameResult.Succeeded)
         {
-            HandleIdentityErrors(updateResult.Errors, "Update deleted user profile");
+            HandleIdentityErrors(result.Errors, "Error deleting user.");
         }
+        
     }
 
     private void HandleIdentityErrors(IEnumerable<IdentityError> errors, string message)
@@ -168,6 +169,6 @@ public class ProfileService : IProfileService
         {
             sb.Append(hashBytes[i].ToString("X2"));
         }
-        return sb.ToString().ToLower();
+        return sb.ToString().ToLower()[..8];
     }
 }
