@@ -66,7 +66,7 @@ public class QuizService : IQuizService
             NumberOfQuestions = command.NumberOfQuestions,
             Language = command.GetSelectedLanguageString(),
             QuestionTypes = command.GetQuestionTypeString()
-        },TimeSpan.FromMinutes(30));
+        },TimeSpan.FromMinutes(15));
 
         return quizDto;
     }
