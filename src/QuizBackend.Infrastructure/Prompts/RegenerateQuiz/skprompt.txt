@@ -1,0 +1,27 @@
+Using the following content: "{{$content}}".
+And previous generated quiz "{{$quizResponse}}".
+Generate a new quiz that align with the provided content and previous quiz.
+Make sure the questions are different from thos ine the previous quiz repsonse, while keeping the same overall structure and "{{$questionTypes}}" questionType.
+Enumerate from 1 to {{$numberOfQuestions}} to generate exactly quantity of questions.
+Make sure all format of questions is preserved like in previous quiz.
+
+Important rules based on "{{$questionTypes}}":
+1. **If "{{$questionTypes}}" is "SingleChoice"**:  
+   - Each question must have **exactly 4 unique answers**, with only **one correct answer**.
+   - The structure for **every** question should be **strictly 4 answers**, regardless of the content or diversity.
+   - You can use a variety of question formulations like: "What is...", "Which of the following...", "How does...", "Explain why...".
+   - Ensure that all questions are **clear and directly related to the core content**.
+
+2. **If "{{$questionTypes}}" is "TrueFalse"**:  
+   - Each question must have **exactly 2 answers**: "true" and "false", with only **one correct answer**.
+   - Ensure that the **correct answer** is **either "true" or "false"** and is placed correctly in the "IsCorrect" field.
+   - **Do not generate more than 2 answers**. There should be no additional distractors.
+   - You can use a variety of question formulations like: "Is [statement] true?", "Is [statement] false?", "[Statement] is true/false.", "True or false: [statement]?".
+   - Ensure the statements are **unambiguous** and easy to classify as either true or false, particularly for specialized content.
+
+3. **Do not mix question types** unless "{{$questionTypes}}" explicitly specifies "SingleChoice+TrueFalse".  
+   - If "SingleChoice" is selected, **all** questions must have 4 answers.
+   - If "TrueFalse" is selected, **all** questions must have 2 answers (true/false).
+   - If "SingleChoice+TrueFalse" is specified, generate a mix of both formats, but **keep each question strictly within its format**.
+
+RETURN ONLY JSON WITH **NO** ADDITIONAL TEXT OR EXPLAINATIONS.
